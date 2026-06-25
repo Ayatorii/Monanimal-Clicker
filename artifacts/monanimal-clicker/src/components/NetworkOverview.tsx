@@ -68,28 +68,33 @@ export default function NetworkOverview() {
   const stage = getCharacterStage(state.characterLevel);
 
   const tpsHistoryRef = useRef<number[]>([]);
-  const blocksHistoryRef = useRef<number[]>([]);
+  const clicksHistoryRef = useRef<number[]>([]);
   const nodesHistoryRef = useRef<number[]>([]);
+  const prevClicksRef = useRef<number>(state.totalClicks);
+  const [clicksPerSec, setClicksPerSec] = useState(0);
   const [, forceRender] = useState(0);
 
   const totalUpgrades = Object.values(state.upgrades).reduce((a, b) => a + (b as number), 0);
-  const tps = Math.max(state.coinsPerSecond * 100, state.totalClicks > 0 ? 1000 : 0);
-  const blocks = state.totalClicks + Math.floor(state.totalCoinsEarned / 100);
   const nodes = Math.max(totalUpgrades, 0);
 
   useEffect(() => {
     const interval = setInterval(() => {
+      const delta = state.totalClicks - prevClicksRef.current;
+      prevClicksRef.current = state.totalClicks;
+      const cps = delta * 2; // interval is 500ms → *2 = per sec
+      setClicksPerSec(cps);
+
       const push = (arr: number[], val: number) => {
         arr.push(val);
         if (arr.length > HISTORY_SIZE) arr.shift();
       };
-      push(tpsHistoryRef.current, tps);
-      push(blocksHistoryRef.current, blocks);
+      push(tpsHistoryRef.current, cps);
+      push(clicksHistoryRef.current, state.totalClicks);
       push(nodesHistoryRef.current, nodes);
       forceRender(n => n + 1);
     }, 500);
     return () => clearInterval(interval);
-  }, [tps, blocks, nodes]);
+  }, [state.totalClicks, nodes]);
 
   const xpInfo = getLevelXpInfo(state.totalCoinsEarned);
   const rankLabel = stage.title.toUpperCase();
@@ -97,17 +102,17 @@ export default function NetworkOverview() {
   const metrics: Metric[] = [
     {
       label: "TPS",
-      value: tps >= 1e6 ? (tps / 1e6).toFixed(2) + "M" : tps >= 1000 ? (tps / 1000).toFixed(1) + "K" : Math.floor(tps).toString(),
-      sub: "Transactions / sec",
+      value: clicksPerSec.toString(),
+      sub: "Clicks / sec",
       color: "#6E54FF",
       history: [...tpsHistoryRef.current],
     },
     {
-      label: "BLOCKS",
-      value: formatNumber(blocks),
-      sub: "Blocks confirmed",
+      label: "CLICKS",
+      value: formatNumber(state.totalClicks),
+      sub: "Total clicks",
       color: "#85E6FF",
-      history: [...blocksHistoryRef.current],
+      history: [...clicksHistoryRef.current],
     },
     {
       label: "NODES",
@@ -187,25 +192,6 @@ export default function NetworkOverview() {
         ))}
       </div>
 
-      {/* Network status footer */}
-      <div className="px-3 pb-3">
-        <div className="rounded-lg border border-white/5 bg-white/[0.02] p-3 flex flex-col gap-1.5">
-          <span className="text-[9px] tracking-[0.18em] uppercase font-bold text-white/30">Network Status</span>
-          {[
-            { dot: "#4ade80", label: "Monad Mainnet", val: "LIVE" },
-            { dot: "#6E54FF", label: "Consensus", val: "BFT" },
-            { dot: "#85E6FF", label: "Finality", val: "<1s" },
-          ].map((row) => (
-            <div key={row.label} className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: row.dot }} />
-                <span className="text-[9px] text-white/35 font-mono">{row.label}</span>
-              </div>
-              <span className="text-[9px] font-black font-mono" style={{ color: row.dot }}>{row.val}</span>
-            </div>
-          ))}
-        </div>
-      </div>
     </motion.div>
   );
 }
