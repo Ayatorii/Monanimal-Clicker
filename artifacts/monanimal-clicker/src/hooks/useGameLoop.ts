@@ -26,7 +26,7 @@ export function useGameLoop() {
     const interval = setInterval(() => {
       dispatch(prev => {
         const newState = { ...prev, lastSaveTime: Date.now() };
-        localStorage.setItem("monanimal-clicker-save", JSON.stringify(newState));
+        localStorage.setItem("monanimal-clicker-save-v2", JSON.stringify(newState));
         return newState;
       });
     }, 5000);

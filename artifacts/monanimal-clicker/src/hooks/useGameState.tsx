@@ -54,13 +54,11 @@ export function useGameState() {
 export function GameProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const [state, dispatch] = useState<GameState>(() => {
-    const saved = localStorage.getItem("monanimal-clicker-save");
+    const saved = localStorage.getItem("monanimal-clicker-save-v2");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Strip out removed fields from old saves
-        const { dailyRewardLastClaimed: _a, dailyRewardStreak: _b, ...rest } = parsed;
-        return { ...DEFAULT_STATE, ...rest };
+        return { ...DEFAULT_STATE, ...parsed };
       } catch (e) {
         return DEFAULT_STATE;
       }

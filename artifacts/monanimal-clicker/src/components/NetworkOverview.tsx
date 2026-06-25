@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
-import { getCharacterStage, formatNumber } from "@/lib/utils";
+import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
 
 const HISTORY_SIZE = 30;
 
@@ -91,6 +91,7 @@ export default function NetworkOverview() {
     return () => clearInterval(interval);
   }, [tps, blocks, nodes]);
 
+  const xpInfo = getLevelXpInfo(state.totalCoinsEarned);
   const rankLabel = stage.title.toUpperCase();
 
   const metrics: Metric[] = [
@@ -151,7 +152,7 @@ export default function NetworkOverview() {
             <motion.div
               className="h-full rounded-full"
               style={{ background: stage.glowColor }}
-              animate={{ width: `${Math.min(((state.characterLevel % 10) / 10) * 100, 100)}%` }}
+              animate={{ width: `${Math.min(xpInfo.pct * 100, 100)}%` }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             />
           </div>

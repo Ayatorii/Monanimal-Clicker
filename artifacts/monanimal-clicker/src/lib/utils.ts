@@ -15,6 +15,38 @@ export function formatNumber(n: number): string {
   return Math.floor(n).toString();
 }
 
+export interface LevelXpInfo {
+  level: number;
+  currentXp: number;
+  neededXp: number;
+  pct: number;
+}
+
+/**
+ * Level 1 → 2 costs 1 000 XP.
+ * Each subsequent level costs +250 XP more.
+ * Level N → N+1 costs: 1000 + (N-1) * 250
+ * XP = totalCoinsEarned (1 coin = 1 XP)
+ */
+export function getLevelXpInfo(xp: number): LevelXpInfo {
+  let level = 1;
+  let spent = 0;
+  while (level < 999) {
+    const cost = 1000 + (level - 1) * 250;
+    if (xp < spent + cost) {
+      const current = Math.floor(xp - spent);
+      return { level, currentXp: current, neededXp: cost, pct: current / cost };
+    }
+    spent += cost;
+    level++;
+  }
+  return { level: 999, currentXp: 0, neededXp: 1, pct: 1 };
+}
+
+export function calculateCharacterLevel(xp: number): number {
+  return getLevelXpInfo(xp).level;
+}
+
 export interface CharacterStage {
   stage: number;
   title: string;
@@ -39,11 +71,4 @@ export function getCharacterStage(level: number): CharacterStage {
     if (level >= s.minLevel) stage = s;
   }
   return stage;
-}
-
-export function calculateCharacterLevel(totalCoinsEarned: number): number {
-  if (totalCoinsEarned <= 0) return 1;
-  // Logarithmic level scale: level = floor(log10(totalCoins) * 10) + 1, capped at 999
-  const level = Math.floor(Math.log10(totalCoinsEarned + 1) * 10) + 1;
-  return Math.min(Math.max(level, 1), 999);
 }
