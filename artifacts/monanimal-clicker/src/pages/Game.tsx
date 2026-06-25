@@ -8,6 +8,7 @@ import EquipmentPanel from "@/components/EquipmentPanel";
 import AchievementsModal from "@/components/AchievementsModal";
 import DailyReward from "@/components/DailyReward";
 import OfflineProgress from "@/components/OfflineProgress";
+import NetworkOverview from "@/components/NetworkOverview";
 import { Button } from "@/components/ui/button";
 import { Trophy } from "lucide-react";
 
@@ -49,6 +50,9 @@ function GameInner() {
       </div>
 
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row relative z-10">
+        {/* Left: Network Overview Panel */}
+        <NetworkOverview />
+
         {/* Main Stage */}
         <div className="flex-1 relative flex flex-col">
           <div className="flex-1 relative overflow-hidden flex items-center justify-center">
