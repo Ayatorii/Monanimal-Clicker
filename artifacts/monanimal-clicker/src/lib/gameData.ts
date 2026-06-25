@@ -15,8 +15,8 @@ export interface PowerUpgrade {
 }
 
 export const BUILDINGS: BuildingUpgrade[] = [
-  { id: "smartphone", name: "Smartphone", baseCost: 15, cps: 0.1, icon: "📱" },
-  { id: "laptop", name: "Laptop", baseCost: 100, cps: 0.5, icon: "💻" },
+  { id: "smartphone", name: "Smartphone", baseCost: 15, cps: 1, icon: "📱" },
+  { id: "laptop", name: "Laptop", baseCost: 100, cps: 2, icon: "💻" },
   { id: "gpu", name: "GPU", baseCost: 1100, cps: 4, icon: "🎮" },
   { id: "ai_agent", name: "AI Agent", baseCost: 12000, cps: 20, icon: "🤖" },
   { id: "validator_node", name: "Validator Node", baseCost: 130000, cps: 100, icon: "⚡" },
