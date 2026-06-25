@@ -16,8 +16,6 @@ export interface GameState {
   lastSaveTime: number;
   darkMode: boolean;
   soundEnabled: boolean;
-  dailyRewardLastClaimed: string;
-  dailyRewardStreak: number;
 }
 
 const DEFAULT_STATE: GameState = {
@@ -33,8 +31,6 @@ const DEFAULT_STATE: GameState = {
   lastSaveTime: Date.now(),
   darkMode: true,
   soundEnabled: true,
-  dailyRewardLastClaimed: "",
-  dailyRewardStreak: 0,
 };
 
 interface GameContextType {
@@ -45,7 +41,6 @@ interface GameContextType {
   buyPower: (id: string) => void;
   equipItem: (id: string) => void;
   calculateUpgradeCost: (baseCost: number, owned: number) => number;
-  claimDailyReward: () => number;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -63,7 +58,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        return { ...DEFAULT_STATE, ...parsed };
+        // Strip out removed fields from old saves
+        const { dailyRewardLastClaimed: _a, dailyRewardStreak: _b, ...rest } = parsed;
+        return { ...DEFAULT_STATE, ...rest };
       } catch (e) {
         return DEFAULT_STATE;
       }
@@ -71,25 +68,21 @@ export function GameProvider({ children }: { children: ReactNode }) {
     return DEFAULT_STATE;
   });
 
-  // Derived state updates (recalculating multipliers, etc.)
   const recalculateStats = useCallback((currentState: GameState) => {
     let baseCps = 0;
     let baseCpc = 1;
     let multiplier = 1;
 
-    // Buildings CPS
     BUILDINGS.forEach(b => {
       const owned = currentState.upgrades[b.id] || 0;
       baseCps += b.cps * owned;
     });
 
-    // Power CPC
     POWER_UPGRADES.forEach(p => {
       const owned = currentState.upgrades[p.id] || 0;
       baseCpc += p.cpc * owned;
     });
 
-    // Equipment Multipliers
     EQUIPMENT.forEach(e => {
       if (currentState.equipment[e.id]) {
         multiplier += e.multiplier;
@@ -100,7 +93,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       ...currentState,
       coinsPerSecond: baseCps * multiplier,
       coinsPerClick: baseCpc * multiplier,
-      characterLevel: calculateCharacterLevel(currentState.totalCoinsEarned)
+      characterLevel: calculateCharacterLevel(currentState.totalCoinsEarned),
     };
   }, []);
 
@@ -127,13 +120,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const owned = prev.upgrades[id] || 0;
       const cost = calculateUpgradeCost(b.baseCost, owned);
       if (prev.coins < cost) return prev;
-
-      const newState = {
+      return recalculateStats({
         ...prev,
         coins: prev.coins - cost,
-        upgrades: { ...prev.upgrades, [id]: owned + 1 }
-      };
-      return recalculateStats(newState);
+        upgrades: { ...prev.upgrades, [id]: owned + 1 },
+      });
     });
   }, [recalculateStats]);
 
@@ -144,13 +135,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const owned = prev.upgrades[id] || 0;
       const cost = calculateUpgradeCost(p.baseCost, owned);
       if (prev.coins < cost) return prev;
-
-      const newState = {
+      return recalculateStats({
         ...prev,
         coins: prev.coins - cost,
-        upgrades: { ...prev.upgrades, [id]: owned + 1 }
-      };
-      return recalculateStats(newState);
+        upgrades: { ...prev.upgrades, [id]: owned + 1 },
+      });
     });
   }, [recalculateStats]);
 
@@ -158,52 +147,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     dispatch(prev => {
       const item = EQUIPMENT.find(x => x.id === id);
       if (!item) return prev;
-      
-      // Unequip others in same category
       const newEquipment = { ...prev.equipment };
       EQUIPMENT.filter(x => x.category === item.category).forEach(x => {
         newEquipment[x.id] = false;
       });
       newEquipment[id] = true;
-
-      const newState = {
-        ...prev,
-        equipment: newEquipment
-      };
-      return recalculateStats(newState);
+      return recalculateStats({ ...prev, equipment: newEquipment });
     });
-  }, [recalculateStats]);
-
-  const claimDailyReward = useCallback(() => {
-    let reward = 0;
-    dispatch(prev => {
-      const today = new Date().toISOString().split("T")[0];
-      if (prev.dailyRewardLastClaimed === today) return prev;
-
-      const lastClaim = new Date(prev.dailyRewardLastClaimed || 0);
-      const diffTime = Math.abs(new Date().getTime() - lastClaim.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
-      let newStreak = prev.dailyRewardStreak;
-      if (diffDays === 1) {
-        newStreak++;
-        if (newStreak > 7) newStreak = 1;
-      } else {
-        newStreak = 1;
-      }
-
-      const REWARDS = [0, 100, 250, 500, 1000, 2500, 5000, 10000];
-      reward = REWARDS[newStreak] || 100;
-
-      return recalculateStats({
-        ...prev,
-        coins: prev.coins + reward,
-        totalCoinsEarned: prev.totalCoinsEarned + reward,
-        dailyRewardLastClaimed: today,
-        dailyRewardStreak: newStreak
-      });
-    });
-    return reward;
   }, [recalculateStats]);
 
   // Achievement checker
@@ -211,7 +161,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     let changed = false;
     const newAchievements = [...state.achievements];
     const newlyUnlocked: string[] = [];
-    
+
     ACHIEVEMENTS.forEach(a => {
       if (!newAchievements.includes(a.id) && a.check(state)) {
         newAchievements.push(a.id);
@@ -222,11 +172,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
     if (newlyUnlocked.length > 0) {
       newlyUnlocked.forEach(name => {
-        toast({
-          title: "Achievement Unlocked!",
-          description: name,
-          duration: 3000,
-        });
+        toast({ title: "Achievement Unlocked!", description: name, duration: 3000 });
       });
     }
 
@@ -237,7 +183,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   return (
     <GameContext.Provider value={{
-      state, dispatch, handleClick, buyBuilding, buyPower, equipItem, calculateUpgradeCost, claimDailyReward
+      state, dispatch, handleClick, buyBuilding, buyPower, equipItem, calculateUpgradeCost,
     }}>
       {children}
     </GameContext.Provider>

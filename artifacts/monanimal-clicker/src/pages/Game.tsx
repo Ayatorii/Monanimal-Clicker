@@ -6,7 +6,6 @@ import MonanimalCharacter from "@/components/MonanimalCharacter";
 import UpgradeShop from "@/components/UpgradeShop";
 import EquipmentPanel from "@/components/EquipmentPanel";
 import AchievementsModal from "@/components/AchievementsModal";
-import DailyReward from "@/components/DailyReward";
 import OfflineProgress from "@/components/OfflineProgress";
 import NetworkOverview from "@/components/NetworkOverview";
 import { Button } from "@/components/ui/button";
@@ -28,7 +27,6 @@ function GameInner() {
 
   return (
     <div className="h-[100dvh] w-full flex flex-col bg-background text-foreground overflow-hidden font-sans relative">
-      <DailyReward />
       <OfflineProgress />
       <AchievementsModal open={showAchievements} onOpenChange={setShowAchievements} />
       
