@@ -1,0 +1,172 @@
+Create a complete browser clicker game called "Monanimal Clicker".
+
+Theme:
+The game is inspired by the Monad ecosystem and uses a futuristic samurai mascot called Monanimal.
+
+Target platforms:
+- Web browser
+- Mobile responsive (Android/iOS browsers)
+- Single Page Application
+
+Visual Style:
+- Premium Web3 aesthetic
+- Minimalist UI
+- Light gray background (#F5F5F5)
+- Monad colors:
+  Primary:
+  #6E54FF
+  #DDD7FE
+  #0E091C
+  #000000
+  #FFFFFF
+
+  Secondary:
+  #85E6FF
+  #B9E3F9
+  #FF8EE4
+  #FFAE45
+
+- Modern glassmorphism
+- Smooth animations
+- Large character in the center
+
+Core Gameplay:
+The player clicks on Monanimal to earn coins.
+
+Currencies:
+1. Coins (main currency)
+2. MON (premium currency, reserved for future implementation)
+
+Main Loop:
+Click → Earn Coins → Buy Upgrades → Increase Income → Evolve Monanimal → Unlock New Areas
+
+Character System:
+The central focus of the game is Monanimal.
+
+Players should feel they are upgrading the character, not just numbers.
+
+Character progression:
+
+Level 1:
+- Basic Monanimal
+
+Level 10:
+- Builder
+
+Level 25:
+- Engineer
+
+Level 50:
+- Validator
+
+Level 100:
+- Ronin
+
+Level 250:
+- Shogun
+
+Each evolution changes:
+- Outfit
+- Armor
+- Effects
+- Background
+- Animations
+
+Upgrade System:
+Instead of generic upgrades, players purchase visible items.
+
+Examples:
+
+Smartphone
++1 income
+
+Laptop
++5 income
+
+GPU
++20 income
+
+AI Agent
++100 income
+
+Validator Node
++500 income
+
+Data Center
++5000 income
+
+Every purchased upgrade must appear visually near the character.
+
+Examples:
+- Laptop appears beside Monanimal
+- Validator Node appears behind Monanimal
+- Data Center changes environment
+
+Character Equipment:
+Equipment categories:
+
+- Head
+- Mask
+- Armor
+- Weapon
+- Aura
+- Companion
+
+Visual progression should be obvious.
+
+Background Progression:
+
+Stage 1:
+White Room
+
+Stage 2:
+Builder Garage
+
+Stage 3:
+Validator Temple
+
+Stage 4:
+Monad City
+
+Stage 5:
+Hyperlane Nexus
+
+Stage 6:
+Genesis Citadel
+
+UI Layout:
+
+Top:
+- Coins
+- Coins per second
+- Level
+
+Center:
+- Large animated Monanimal
+
+Right side:
+- Upgrade shop
+
+Bottom:
+- Equipment and evolution panel
+
+Features:
+- Auto save using local storage
+- Offline progress
+- Achievement system
+- Daily rewards
+- Responsive mobile layout
+- Smooth animations
+- Sound effects toggle
+- Dark mode toggle
+
+Architecture:
+Use:
+- React
+- TypeScript
+- TailwindCSS
+- Framer Motion
+
+Organize code into reusable components.
+
+Generate a complete MVP version with production-quality code structure.
