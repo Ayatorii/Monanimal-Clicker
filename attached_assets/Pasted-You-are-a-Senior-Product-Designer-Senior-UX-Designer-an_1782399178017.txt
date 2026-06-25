@@ -1,0 +1,391 @@
+You are a Senior Product Designer, Senior UX Designer and Senior React Frontend Engineer.
+
+Redesign the entire Monanimal Clicker interface from scratch.
+
+IMPORTANT:
+Do not create a typical clicker game UI.
+Do not create a mobile game UI.
+Do not create a casino UI.
+Do not create a dark cyberpunk dashboard.
+
+The final result must feel like a premium Monad ecosystem product.
+
+Design references:
+
+- Monad.xyz
+- Apple
+- Linear
+- Arc Browser
+- Notion
+- Raycast
+
+The interface should look like a real Web3 startup product with a collectible mascot, not a cheap game.
+
+--------------------------------------------------
+VISUAL DIRECTION
+--------------------------------------------------
+
+Primary colors:
+
+#6E54FF
+#DDD7FE
+#0E091C
+#FFFFFF
+
+Secondary accents:
+
+#85E6FF
+#FF8EE4
+
+Background:
+
+#F8F8FC
+
+Use large amounts of whitespace.
+
+Use soft shadows.
+
+Use glassmorphism sparingly.
+
+Use subtle gradients.
+
+Avoid heavy borders.
+
+Avoid neon overload.
+
+Avoid clutter.
+
+The UI must feel premium and expensive.
+
+--------------------------------------------------
+LAYOUT
+--------------------------------------------------
+
+HEADER
+
+Top navigation should contain:
+
+Left:
+- Monad Logo
+- MONANIMAL
+
+Center:
+- Coin Counter
+- CPS Counter
+- Level Progress
+
+Right:
+- Settings
+- Sound
+- Theme Switcher
+
+Header height:
+80px
+
+Clean and minimal.
+
+--------------------------------------------------
+MAIN HERO SECTION
+--------------------------------------------------
+
+The character must be the center of the experience.
+
+Character occupies approximately 60% of the viewport.
+
+Behind the character:
+
+Huge Monad logo.
+
+Opacity:
+3% to 8%.
+
+Slowly rotating.
+
+Very subtle.
+
+Character should stand on a floating platform.
+
+Platform glows slightly in Monad purple.
+
+--------------------------------------------------
+BACKGROUND SYSTEM
+--------------------------------------------------
+
+Background changes automatically by rank.
+
+Recruit:
+White Room
+
+Builder:
+Builder Garage
+
+Engineer:
+Validator Temple
+
+Validator:
+Monad City
+
+Ronin:
+Hyperlane Nexus
+
+Shogun:
+Genesis Citadel
+
+Transition between backgrounds:
+
+Fade duration:
+1000ms
+
+No abrupt changes.
+
+--------------------------------------------------
+EVOLUTION DISPLAY
+--------------------------------------------------
+
+Replace current evolution section.
+
+Create a premium timeline.
+
+Recruit → Builder → Engineer → Validator → Ronin → Shogun
+
+Each stage displayed as icon only.
+
+Current stage highlighted.
+
+Future stages semi-transparent.
+
+Display underneath character.
+
+Very clean.
+
+Inspired by product roadmaps.
+
+--------------------------------------------------
+NETWORK OVERVIEW
+--------------------------------------------------
+
+Move stats into compact floating cards.
+
+Display:
+
+TPS
+
+Blocks
+
+Nodes
+
+Rank
+
+Coins per second
+
+Use small animated line charts.
+
+Charts must look similar to Linear analytics.
+
+Minimal.
+
+No giant side panel.
+
+--------------------------------------------------
+UPGRADE SHOP
+--------------------------------------------------
+
+Move shop to right side.
+
+Use clean cards.
+
+Each card contains:
+
+Item image
+
+Item name
+
+Income bonus
+
+Cost
+
+Buy button
+
+Card style:
+
+White background
+
+Soft shadow
+
+12px radius
+
+Hover animation
+
+No dark containers.
+
+No gaming style.
+
+--------------------------------------------------
+PURCHASED ITEMS
+--------------------------------------------------
+
+When items are purchased they appear around the character.
+
+Smartphone:
+Hand accessory
+
+Laptop:
+Near feet
+
+GPU:
+Behind character
+
+AI Agent:
+Floating companion
+
+Validator Node:
+Floating above character
+
+Data Center:
+Background structure
+
+Items must remain visible.
+
+Items are part of progression.
+
+--------------------------------------------------
+EQUIPMENT SYSTEM
+--------------------------------------------------
+
+Replace current equipment slots.
+
+Use premium inventory drawer.
+
+Categories:
+
+Head
+
+Mask
+
+Armor
+
+Weapon
+
+Aura
+
+Companion
+
+Locked items:
+
+Display silhouette only.
+
+Unlocked:
+
+Display actual asset.
+
+--------------------------------------------------
+CLICK INTERACTION
+--------------------------------------------------
+
+Clicking the character should feel satisfying.
+
+Add:
+
+Scale animation
+
+Particles
+
+Floating numbers
+
+Purple ripple effect
+
+Tiny screen shake
+
+Smooth easing
+
+--------------------------------------------------
+LEVEL UP
+--------------------------------------------------
+
+When leveling up:
+
+Play evolution animation.
+
+Purple energy wave.
+
+Light burst.
+
+Character glow.
+
+Display:
+
+LEVEL UP
+
+Centered overlay.
+
+--------------------------------------------------
+TYPOGRAPHY
+--------------------------------------------------
+
+Use modern sans-serif.
+
+Large headings.
+
+Clean spacing.
+
+Minimal labels.
+
+Avoid all-caps everywhere.
+
+Only use uppercase for section titles.
+
+--------------------------------------------------
+RESPONSIVE DESIGN
+--------------------------------------------------
+
+Desktop first.
+
+Tablet optimized.
+
+Mobile friendly.
+
+On mobile:
+
+Shop becomes bottom drawer.
+
+Stats collapse into cards.
+
+Character remains central focus.
+
+--------------------------------------------------
+TECHNICAL REQUIREMENTS
+--------------------------------------------------
+
+React
+
+TypeScript
+
+TailwindCSS
+
+Framer Motion
+
+Component architecture
+
+Asset registry
+
+LocalStorage save
+
+Offline progress
+
+Lazy image loading
+
+Performance optimized
+
+--------------------------------------------------
+FINAL GOAL
+--------------------------------------------------
+
+The result should feel like:
+
+"A premium Monad ecosystem product where users evolve a collectible Monanimal mascot."
+
+The character must be the hero.
+
+The UI must disappear into the background.
+
+Everything should focus attention on progression, evolution and Monad branding.
