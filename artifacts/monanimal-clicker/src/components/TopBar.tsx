@@ -20,15 +20,10 @@ export default function TopBar() {
           <h1 className="font-black text-lg md:text-xl tracking-tighter uppercase hidden sm:block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Monanimal</h1>
         </div>
 
-        {/* Center: coins + CPS/CPC */}
+        {/* Center: coins */}
         <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
           <div className="text-3xl md:text-5xl font-black font-mono tracking-tighter text-foreground drop-shadow-md">
             {formatNumber(Math.floor(state.coins))}
-          </div>
-          <div className="flex gap-4 text-[10px] md:text-sm font-mono text-muted-foreground font-semibold uppercase tracking-wider">
-            <span className="text-accent">{formatNumber(state.coinsPerSecond)} CPS</span>
-            <span>•</span>
-            <span className="text-primary">{formatNumber(state.coinsPerClick)} CPC</span>
           </div>
         </div>
 

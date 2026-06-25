@@ -57,7 +57,7 @@ export default function UpgradeShop() {
                           <h4 className="font-bold truncate pr-2">{item.name}</h4>
                           <Badge variant={owned > 0 ? "default" : "outline"} className="font-mono">{owned}</Badge>
                         </div>
-                        <p className="text-xs text-muted-foreground font-mono mt-1">+{formatNumber(item.cps)} CPS</p>
+                        <p className="text-xs text-muted-foreground font-mono mt-1">+{formatNumber(item.cps)} PPS</p>
                         <p className={cn("text-sm font-bold font-mono mt-1", canAfford ? "text-accent" : "text-destructive")}>
                           Cost: {formatNumber(cost)}
                         </p>
@@ -104,7 +104,7 @@ export default function UpgradeShop() {
                           <h4 className="font-bold truncate pr-2">{item.name}</h4>
                           <Badge variant={owned > 0 ? "secondary" : "outline"} className="font-mono">{owned}</Badge>
                         </div>
-                        <p className="text-xs text-muted-foreground font-mono mt-1">+{formatNumber(item.cpc)} CPC</p>
+                        <p className="text-xs text-muted-foreground font-mono mt-1">+{formatNumber(item.cpc)} PPC</p>
                         <p className={cn("text-sm font-bold font-mono mt-1", canAfford ? "text-accent" : "text-destructive")}>
                           Cost: {formatNumber(cost)}
                         </p>

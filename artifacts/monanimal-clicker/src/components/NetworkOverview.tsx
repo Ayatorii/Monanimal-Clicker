@@ -101,7 +101,7 @@ export default function NetworkOverview() {
 
   const metrics: Metric[] = [
     {
-      label: "TPS",
+      label: "CPS",
       value: clicksPerSec.toString(),
       sub: "Clicks / sec",
       color: "#6E54FF",
