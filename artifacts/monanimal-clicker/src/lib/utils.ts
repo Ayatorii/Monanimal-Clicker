@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { CHARACTERS, ENVIRONMENTS } from "@/assets/index"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -18,17 +19,18 @@ export interface CharacterStage {
   stage: number;
   title: string;
   minLevel: number;
-  bgClass: string;
+  bgKey: keyof typeof ENVIRONMENTS;
   glowColor: string;
+  characterKey: keyof typeof CHARACTERS;
 }
 
 const CHARACTER_STAGES: CharacterStage[] = [
-  { stage: 1, title: "Basic Monanimal", minLevel: 1, bgClass: "from-slate-300 to-slate-500", glowColor: "#94a3b8" },
-  { stage: 2, title: "Builder", minLevel: 10, bgClass: "from-blue-400 to-blue-700", glowColor: "#3b82f6" },
-  { stage: 3, title: "Engineer", minLevel: 25, bgClass: "from-cyan-400 to-cyan-600", glowColor: "#06b6d4" },
-  { stage: 4, title: "Validator", minLevel: 50, bgClass: "from-violet-500 to-purple-700", glowColor: "#6E54FF" },
-  { stage: 5, title: "Ronin", minLevel: 100, bgClass: "from-orange-400 to-red-600", glowColor: "#f97316" },
-  { stage: 6, title: "Shogun", minLevel: 250, bgClass: "from-indigo-500 via-purple-500 to-pink-500", glowColor: "#FF8EE4" },
+  { stage: 1, title: "Recruit",   minLevel: 1,   bgKey: "whiteRoom",       glowColor: "#94a3b8", characterKey: "recruit" },
+  { stage: 2, title: "Builder",   minLevel: 10,  bgKey: "builderGarage",   glowColor: "#3b82f6", characterKey: "builder" },
+  { stage: 3, title: "Engineer",  minLevel: 25,  bgKey: "validatorTemple", glowColor: "#06b6d4", characterKey: "engineer" },
+  { stage: 4, title: "Validator", minLevel: 50,  bgKey: "monadCity",       glowColor: "#6E54FF", characterKey: "validator" },
+  { stage: 5, title: "Ronin",     minLevel: 100, bgKey: "hyperlaneNexus",  glowColor: "#FF8EE4", characterKey: "ronin" },
+  { stage: 6, title: "Shogun",    minLevel: 250, bgKey: "genesisCitadel",  glowColor: "#FFAE45", characterKey: "shogun" },
 ];
 
 export function getCharacterStage(level: number): CharacterStage {

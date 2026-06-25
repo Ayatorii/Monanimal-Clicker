@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { ITEMS } from "@/assets/index";
 
 export default function UpgradeShop() {
   const { state, buyBuilding, buyPower, calculateUpgradeCost } = useGameState();
@@ -40,7 +41,17 @@ export default function UpgradeShop() {
                     onClick={() => canAfford && buyBuilding(item.id)}
                   >
                     <CardContent className="p-3 flex items-center gap-3">
-                      <div className="text-3xl bg-muted p-2 rounded-md border border-border shadow-inner">{item.icon}</div>
+                      <div className="w-12 h-12 bg-muted/50 rounded-md border border-border flex items-center justify-center overflow-hidden flex-shrink-0">
+                        {item.id in ITEMS ? (
+                          <img
+                            src={ITEMS[item.id as keyof typeof ITEMS]}
+                            alt={item.name}
+                            className="w-10 h-10 object-contain"
+                          />
+                        ) : (
+                          <span className="text-2xl">{item.icon}</span>
+                        )}
+                      </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <h4 className="font-bold truncate pr-2">{item.name}</h4>
@@ -77,7 +88,17 @@ export default function UpgradeShop() {
                     onClick={() => canAfford && buyPower(item.id)}
                   >
                     <CardContent className="p-3 flex items-center gap-3">
-                      <div className="text-3xl bg-muted p-2 rounded-md border border-border shadow-inner">{item.icon}</div>
+                      <div className="w-12 h-12 bg-muted/50 rounded-md border border-border flex items-center justify-center overflow-hidden flex-shrink-0">
+                        {item.id in ITEMS ? (
+                          <img
+                            src={ITEMS[item.id as keyof typeof ITEMS]}
+                            alt={item.name}
+                            className="w-10 h-10 object-contain"
+                          />
+                        ) : (
+                          <span className="text-2xl">{item.icon}</span>
+                        )}
+                      </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <h4 className="font-bold truncate pr-2">{item.name}</h4>

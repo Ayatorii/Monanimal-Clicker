@@ -1,0 +1,279 @@
+You are a senior React, TypeScript and Tailwind game developer.
+
+I am building a browser clicker game called "Monanimal Clicker".
+
+The game is inspired by the Monad ecosystem.
+
+I have already uploaded all graphical assets.
+
+Your task is to completely replace placeholder graphics with my uploaded assets and build the game around them.
+
+## Core Concept
+
+The player clicks on Monanimal to earn Coins.
+
+Coins are used to buy infrastructure upgrades.
+
+Infrastructure upgrades increase CPS (Coins Per Second).
+
+As the player progresses, Monanimal evolves visually.
+
+The game should feel like upgrading a character rather than upgrading numbers.
+
+---
+
+## Asset Mapping
+
+### Character Evolutions
+
+Use uploaded character images:
+
+* Recruit
+* Builder
+* Engineer
+* Validator
+* Ronin
+* Shogun
+
+Evolution thresholds:
+
+Level 1 → Recruit
+
+Level 10 → Builder
+
+Level 25 → Engineer
+
+Level 50 → Validator
+
+Level 100 → Ronin
+
+Level 250 → Shogun
+
+Only one evolution is visible at a time.
+
+The currently active evolution must be displayed in the center of the screen.
+
+Character should smoothly transition between stages using Framer Motion.
+
+---
+
+## Upgrade Assets
+
+Use uploaded item graphics:
+
+Smartphone
++1 CPS
+
+Laptop
++5 CPS
+
+GPU Rig
++20 CPS
+
+AI Agent
++100 CPS
+
+Validator Node
++500 CPS
+
+Data Center
++5000 CPS
+
+Show these items both:
+
+1. Inside the shop
+2. Around the character after purchase
+
+Visual placement:
+
+Smartphone:
+appears in character hand
+
+Laptop:
+appears next to character
+
+GPU:
+appears behind character
+
+AI Agent:
+floats around character
+
+Validator Node:
+floats above character
+
+Data Center:
+appears in background environment
+
+Purchased items must remain visible permanently.
+
+---
+
+## Environment System
+
+Use uploaded environment images.
+
+Environment progression:
+
+White Room
+
+Builder Garage
+
+Validator Temple
+
+Monad City
+
+Hyperlane Nexus
+
+Genesis Citadel
+
+Background changes automatically according to character level.
+
+Use smooth fade transitions.
+
+---
+
+## Effect System
+
+Use uploaded effects assets.
+
+Click Effect:
+
+Display click burst effect at mouse position.
+
+Show floating:
+
++1
+
++10
+
++100
+
+depending on click power.
+
+Level Up Effect:
+
+Play aura animation around character.
+
+Evolution Effect:
+
+Full screen purple energy flash.
+
+Buy Effect:
+
+Purple pulse effect when upgrade is purchased.
+
+---
+
+## UI Layout
+
+Top Bar:
+
+Coins
+
+CPS
+
+Level
+
+Current Evolution
+
+Settings
+
+Center Area:
+
+Large character display
+
+Animated environment
+
+Visible purchased items
+
+Effects layer
+
+Right Sidebar:
+
+Upgrade shop
+
+Item icon
+
+Cost
+
+Owned amount
+
+Bottom Panel:
+
+Evolution timeline
+
+Recruit → Builder → Engineer → Validator → Ronin → Shogun
+
+Current stage highlighted.
+
+---
+
+## Stats Panel
+
+Add a left panel called:
+
+NETWORK OVERVIEW
+
+Display:
+
+TPS
+
+Blocks
+
+Nodes
+
+Rank
+
+Use animated values.
+
+Add small animated line charts.
+
+Charts should update in real time.
+
+---
+
+## Visual Style
+
+Premium Web3
+
+Monad aesthetic
+
+Dark mode default
+
+Purple glow accents
+
+Smooth transitions
+
+Modern glassmorphism
+
+High-end game UI
+
+Responsive for desktop and mobile
+
+---
+
+## Technical Requirements
+
+React
+
+TypeScript
+
+TailwindCSS
+
+Framer Motion
+
+LocalStorage save system
+
+Offline progress
+
+Component-based architecture
+
+Reusable asset management system
+
+Lazy loading for images
+
+Asset preloading
+
+Use uploaded images instead of generated placeholders everywhere.
+
+Generate complete production-ready implementation.
