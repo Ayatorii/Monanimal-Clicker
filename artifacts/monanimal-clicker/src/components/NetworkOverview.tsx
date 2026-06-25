@@ -69,13 +69,9 @@ export default function NetworkOverview() {
 
   const tpsHistoryRef = useRef<number[]>([]);
   const clicksHistoryRef = useRef<number[]>([]);
-  const nodesHistoryRef = useRef<number[]>([]);
   const prevClicksRef = useRef<number>(state.totalClicks);
   const [clicksPerSec, setClicksPerSec] = useState(0);
   const [, forceRender] = useState(0);
-
-  const totalUpgrades = Object.values(state.upgrades).reduce((a, b) => a + (b as number), 0);
-  const nodes = Math.max(totalUpgrades, 0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,11 +86,10 @@ export default function NetworkOverview() {
       };
       push(tpsHistoryRef.current, cps);
       push(clicksHistoryRef.current, state.totalClicks);
-      push(nodesHistoryRef.current, nodes);
       forceRender(n => n + 1);
     }, 500);
     return () => clearInterval(interval);
-  }, [state.totalClicks, nodes]);
+  }, [state.totalClicks]);
 
   const xpInfo = getLevelXpInfo(state.totalCoinsEarned);
   const rankLabel = stage.title.toUpperCase();
@@ -113,13 +108,6 @@ export default function NetworkOverview() {
       sub: "Total clicks",
       color: "#85E6FF",
       history: [...clicksHistoryRef.current],
-    },
-    {
-      label: "NODES",
-      value: nodes.toString(),
-      sub: "Active nodes",
-      color: "#FF8EE4",
-      history: [...nodesHistoryRef.current],
     },
   ];
 
