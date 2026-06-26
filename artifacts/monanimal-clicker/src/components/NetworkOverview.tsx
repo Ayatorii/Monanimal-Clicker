@@ -230,7 +230,8 @@ export default function NetworkOverview() {
       <div className="px-3 pb-4 mt-auto">
         <button
           onClick={() => setShowReset(true)}
-          className="w-full py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest text-white/30 border border-white/5 hover:border-red-500/30 hover:text-red-400/60 transition-all duration-200"
+          className="w-full py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all duration-200 hover:brightness-110"
+          style={{ background: "#E60000", color: "#fff" }}
         >
           Reset Progress
         </button>
