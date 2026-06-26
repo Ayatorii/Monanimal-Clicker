@@ -87,7 +87,7 @@ export default function MonanimalCharacter() {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 />
               </div>
-              <span className="text-[8px] font-mono text-white/30">
+              <span className="text-[8px] font-mono text-white/80">
                 {formatNumber(xp.currentXp)} / {formatNumber(xp.neededXp)} XP
               </span>
             </div>

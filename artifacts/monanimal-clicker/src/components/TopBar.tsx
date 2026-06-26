@@ -40,38 +40,6 @@ export default function TopBar() {
         </div>
       </div>
 
-      {/* XP Progress bar row */}
-      <div className="px-4 pb-2 flex items-center gap-3">
-        {/* Level badge */}
-        <div
-          className="flex-shrink-0 text-[10px] font-black font-mono tracking-widest uppercase px-2 py-0.5 rounded-full border"
-          style={{ color: stage.glowColor, borderColor: `${stage.glowColor}50`, background: `${stage.glowColor}15` }}
-        >
-          LV {xpInfo.level}
-        </div>
-
-        {/* Bar */}
-        <div className="flex-1 flex flex-col gap-0.5">
-          <div className="relative h-2 rounded-full bg-white/10 overflow-hidden">
-            <motion.div
-              className="absolute inset-y-0 left-0 rounded-full"
-              style={{ background: `linear-gradient(90deg, ${stage.glowColor}90, ${stage.glowColor})` }}
-              initial={false}
-              animate={{ width: `${Math.min(xpInfo.pct * 100, 100)}%` }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            />
-          </div>
-          <div className="flex justify-between text-[9px] font-mono text-white/30">
-            <span>{formatNumber(xpInfo.currentXp)} XP</span>
-            <span>{formatNumber(xpInfo.neededXp)} XP</span>
-          </div>
-        </div>
-
-        {/* Next level */}
-        <div className="flex-shrink-0 text-[10px] font-mono text-white/25 tracking-wider">
-          LV {xpInfo.level < 999 ? xpInfo.level + 1 : "MAX"}
-        </div>
-      </div>
     </div>
   );
 }
