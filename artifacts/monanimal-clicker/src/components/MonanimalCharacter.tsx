@@ -77,70 +77,67 @@ export default function MonanimalCharacter() {
       </div>
 
       {/* === PURCHASED ITEM OVERLAYS === */}
-      {/* Smartphone — in character's hand area (bottom-left) */}
+      {/* LEFT COLUMN: Smartphone (top), Laptop (middle), GPU (bottom) */}
       {ownedItems.includes("smartphone") && (
         <motion.img
           src={ITEMS.smartphone}
           alt="Smartphone"
-          className="absolute bottom-[20%] left-[8%] w-14 h-14 object-contain z-10 pointer-events-none"
-          animate={{ y: [0, -4, 0] }}
+          className="absolute w-14 h-14 object-contain z-10 pointer-events-none"
+          style={{ top: "22%", left: "8%", filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }}
+          animate={{ y: [0, -5, 0] }}
           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-          style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }}
         />
       )}
-      {/* Laptop — beside character (left) */}
       {ownedItems.includes("laptop") && (
         <motion.img
           src={ITEMS.laptop}
           alt="Laptop"
-          className="absolute bottom-[18%] left-[18%] w-20 h-20 object-contain z-10 pointer-events-none"
-          animate={{ y: [0, -3, 0] }}
-          transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
-          style={{ filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+          className="absolute w-20 h-20 object-contain z-10 pointer-events-none"
+          style={{ top: "46%", left: "5%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+          animate={{ y: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.4 }}
         />
       )}
-      {/* GPU — behind character (right side, lower) */}
       {ownedItems.includes("gpu") && (
         <motion.img
           src={ITEMS.gpu}
           alt="GPU"
-          className="absolute bottom-[18%] right-[12%] w-20 h-20 object-contain z-10 pointer-events-none"
-          animate={{ y: [0, -4, 0], rotate: [0, 2, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.3 }}
-          style={{ filter: `drop-shadow(0 0 12px ${stageData.glowColor})` }}
+          className="absolute w-20 h-20 object-contain z-10 pointer-events-none"
+          style={{ top: "66%", left: "8%", filter: `drop-shadow(0 0 12px ${stageData.glowColor})` }}
+          animate={{ y: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.8 }}
         />
       )}
-      {/* AI Agent — floats around character (top-right orbit) */}
+
+      {/* RIGHT COLUMN: AI Agent (top), Validator Node (middle), Data Center (bottom) */}
       {ownedItems.includes("ai_agent") && (
         <motion.img
           src={ITEMS.ai_agent}
           alt="AI Agent"
           className="absolute w-16 h-16 object-contain z-10 pointer-events-none"
-          style={{ top: "30%", right: "15%", filter: `drop-shadow(0 0 14px ${stageData.glowColor})` }}
-          animate={{ y: [-10, 10, -10], x: [0, 5, 0], rotate: [0, 5, 0] }}
-          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+          style={{ top: "22%", right: "8%", filter: `drop-shadow(0 0 14px ${stageData.glowColor})` }}
+          animate={{ y: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut", delay: 0.2 }}
         />
       )}
-      {/* Validator Node — floats above character */}
       {ownedItems.includes("validator_node") && (
         <motion.img
           src={ITEMS.validator_node}
           alt="Validator Node"
           className="absolute w-20 h-20 object-contain z-10 pointer-events-none"
-          style={{ top: "10%", left: "50%", transform: "translateX(-50%)", filter: `drop-shadow(0 0 16px ${stageData.glowColor})` }}
-          animate={{ y: [-8, 8, -8], rotate: [0, 360] }}
-          transition={{ y: { repeat: Infinity, duration: 4, ease: "easeInOut" }, rotate: { repeat: Infinity, duration: 12, ease: "linear" } }}
+          style={{ top: "46%", right: "5%", filter: `drop-shadow(0 0 16px ${stageData.glowColor})` }}
+          animate={{ y: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut", delay: 0.6 }}
         />
       )}
-      {/* Data Center — in background (bottom center, behind character) */}
       {ownedItems.includes("data_center") && (
         <motion.img
           src={ITEMS.data_center}
           alt="Data Center"
-          className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-32 h-32 object-contain z-0 pointer-events-none opacity-80"
-          style={{ filter: `drop-shadow(0 0 20px ${stageData.glowColor})` }}
-          animate={{ opacity: [0.7, 0.9, 0.7] }}
-          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+          className="absolute w-24 h-24 object-contain z-10 pointer-events-none"
+          style={{ top: "66%", right: "6%", filter: `drop-shadow(0 0 20px ${stageData.glowColor})` }}
+          animate={{ y: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 1 }}
         />
       )}
 
