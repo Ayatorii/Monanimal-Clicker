@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
 import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
 
@@ -72,6 +72,7 @@ export default function NetworkOverview() {
   const prevClicksRef = useRef<number>(state.totalClicks);
   const [clicksPerSec, setClicksPerSec] = useState(0);
   const [, forceRender] = useState(0);
+  const [showReset, setShowReset] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -153,6 +154,51 @@ export default function NetworkOverview() {
         </div>
       </div>
 
+      {/* Reset dialog */}
+      <AnimatePresence>
+        {showReset && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowReset(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="bg-[#0E091C] border border-white/10 rounded-2xl p-6 max-w-xs w-full mx-4 flex flex-col items-center gap-5 shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              <span className="text-4xl">💀</span>
+              <p className="text-white text-center text-sm font-semibold leading-relaxed">
+                Too strong? Reset the progress and start the adventure again!
+              </p>
+              <div className="flex gap-3 w-full">
+                <button
+                  onClick={() => setShowReset(false)}
+                  className="flex-1 py-2 rounded-xl border border-white/10 text-white/50 text-sm font-bold hover:bg-white/5 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("monanimal-clicker-save-v2");
+                    window.location.reload();
+                  }}
+                  className="flex-1 py-2 rounded-xl text-sm font-black text-white transition-all hover:brightness-110"
+                  style={{ background: "linear-gradient(135deg, #6E54FF, #FF8EE4)" }}
+                >
+                  OK
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Metric cards */}
       <div className="flex flex-col gap-2 px-3 py-2 flex-1">
         {metrics.map((m) => (
@@ -180,6 +226,15 @@ export default function NetworkOverview() {
         ))}
       </div>
 
+      {/* Reset button */}
+      <div className="px-3 pb-4 mt-auto">
+        <button
+          onClick={() => setShowReset(true)}
+          className="w-full py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest text-white/30 border border-white/5 hover:border-red-500/30 hover:text-red-400/60 transition-all duration-200"
+        >
+          Reset Progress
+        </button>
+      </div>
     </motion.div>
   );
 }

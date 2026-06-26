@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
-import { getCharacterStage, formatNumber } from "@/lib/utils";
+import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
 import { CHARACTERS, ENVIRONMENTS, ITEMS } from "@/assets/index";
 
 interface FloatingClick {
@@ -68,13 +68,32 @@ export default function MonanimalCharacter() {
         </motion.div>
       </AnimatePresence>
 
-      {/* === LEVEL / TITLE BADGE === */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none">
-        <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-5 py-1.5 inline-flex flex-col items-center gap-0.5">
-          <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: stageData.glowColor }}>LEVEL {state.characterLevel}</span>
-          <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{stageData.title}</span>
-        </div>
-      </div>
+      {/* === LEVEL / TITLE BADGE + XP BAR === */}
+      {(() => {
+        const xp = getLevelXpInfo(state.totalCoinsEarned);
+        return (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none">
+            <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-2 inline-flex flex-col items-center gap-1 min-w-[140px]">
+              <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: stageData.glowColor }}>
+                LEVEL {state.characterLevel}
+              </span>
+              <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{stageData.title}</span>
+              {/* XP bar */}
+              <div className="w-full h-1 rounded-full bg-white/10 overflow-hidden mt-0.5">
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ background: stageData.glowColor }}
+                  animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                />
+              </div>
+              <span className="text-[8px] font-mono text-white/30">
+                {formatNumber(xp.currentXp)} / {formatNumber(xp.neededXp)} XP
+              </span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* === PURCHASED ITEM OVERLAYS === */}
       {/* LEFT COLUMN: Smartphone (top), Laptop (middle), GPU (bottom) */}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGameState } from "./useGameState";
+import { calculateCharacterLevel } from "@/lib/utils";
 
 export function useGameLoop() {
   const { state, dispatch } = useGameState();
@@ -10,11 +11,15 @@ export function useGameLoop() {
     const interval = setInterval(() => {
       if (state.coinsPerSecond > 0) {
         const amount = state.coinsPerSecond / (1000 / tickRate);
-        dispatch(prev => ({
-          ...prev,
-          coins: prev.coins + amount,
-          totalCoinsEarned: prev.totalCoinsEarned + amount,
-        }));
+        dispatch(prev => {
+          const newTotal = prev.totalCoinsEarned + amount;
+          return {
+            ...prev,
+            coins: prev.coins + amount,
+            totalCoinsEarned: newTotal,
+            characterLevel: calculateCharacterLevel(newTotal),
+          };
+        });
       }
     }, tickRate);
 

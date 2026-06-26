@@ -32,7 +32,7 @@ export function getLevelXpInfo(xp: number): LevelXpInfo {
   let level = 1;
   let spent = 0;
   while (level < 999) {
-    const cost = 1000 + (level - 1) * 250;
+    const cost = 1000 + (level - 1) * 2000;
     if (xp < spent + cost) {
       const current = Math.floor(xp - spent);
       return { level, currentXp: current, neededXp: cost, pct: current / cost };
