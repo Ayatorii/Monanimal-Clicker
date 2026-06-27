@@ -1,10 +1,10 @@
 // === CHARACTER EVOLUTIONS ===
-import recruitImg from "@assets/recruit_1782395919475.png";
-import builderImg from "@assets/builder_1782395919474.png";
-import engineerImg from "@assets/engineer_1782395992324.png";
-import validatorImg from "@assets/validator_1782395992322.png";
-import roninImg from "@assets/ronin_1782396073691.png";
-import shogunImg from "@assets/shogun_1782396073690.png";
+import recruitImg from "@assets/recruit_1782543308925.png";
+import builderImg from "@assets/builder_1782543308920.png";
+import engineerImg from "@assets/engineer_1782543308921.png";
+import validatorImg from "@assets/validator_1782543308927.png";
+import roninImg from "@assets/ronin_1782543308926.png";
+import shogunImg from "@assets/shogun_1782543308927.png";
 
 // === ENVIRONMENTS ===
 import envWhiteRoom from "@assets/white-room_1782394631156.png";
