@@ -95,66 +95,102 @@ export default function MonanimalCharacter() {
 
       {/* LEFT COLUMN: Smartphone, Laptop, GPU */}
       {ownedItems.includes("smartphone") && (
-        <motion.img
-          src={ITEMS.smartphone}
-          alt="Smartphone"
-          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
-          style={{ top: "18%", left: "20%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+        <motion.div
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[136px] h-[136px]"
+          style={{
+            top: "18%", left: "20%",
+            background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
+            border: "1px solid rgba(255,255,255,0.25)",
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            backdropFilter: "blur(2px)",
+          }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-        />
+        >
+          <img src={ITEMS.smartphone} alt="Smartphone" className="w-[88px] h-[88px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+        </motion.div>
       )}
       {ownedItems.includes("laptop") && (
-        <motion.img
-          src={ITEMS.laptop}
-          alt="Laptop"
-          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
-          style={{ top: "46%", left: "8%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+        <motion.div
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[136px] h-[136px]"
+          style={{
+            top: "46%", left: "8%",
+            background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
+            border: "1px solid rgba(255,255,255,0.25)",
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            backdropFilter: "blur(2px)",
+          }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.4 }}
-        />
+        >
+          <img src={ITEMS.laptop} alt="Laptop" className="w-[88px] h-[88px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+        </motion.div>
       )}
       {ownedItems.includes("gpu") && (
-        <motion.img
-          src={ITEMS.gpu}
-          alt="GPU"
-          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
-          style={{ top: "68%", left: "16%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+        <motion.div
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[136px] h-[136px]"
+          style={{
+            top: "68%", left: "16%",
+            background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
+            border: "1px solid rgba(255,255,255,0.25)",
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            backdropFilter: "blur(2px)",
+          }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.8 }}
-        />
+        >
+          <img src={ITEMS.gpu} alt="GPU" className="w-[88px] h-[88px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+        </motion.div>
       )}
 
       {/* RIGHT COLUMN: AI Agent, Validator Node, Data Center */}
       {ownedItems.includes("ai_agent") && (
-        <motion.img
-          src={ITEMS.ai_agent}
-          alt="AI Agent"
-          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
-          style={{ top: "18%", right: "20%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+        <motion.div
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[136px] h-[136px]"
+          style={{
+            top: "18%", right: "20%",
+            background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
+            border: "1px solid rgba(255,255,255,0.25)",
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            backdropFilter: "blur(2px)",
+          }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut", delay: 0.2 }}
-        />
+        >
+          <img src={ITEMS.ai_agent} alt="AI Agent" className="w-[88px] h-[88px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+        </motion.div>
       )}
       {ownedItems.includes("validator_node") && (
-        <motion.img
-          src={ITEMS.validator_node}
-          alt="Validator Node"
-          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
-          style={{ top: "46%", right: "10%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+        <motion.div
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[136px] h-[136px]"
+          style={{
+            top: "46%", right: "10%",
+            background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
+            border: "1px solid rgba(255,255,255,0.25)",
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            backdropFilter: "blur(2px)",
+          }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut", delay: 0.6 }}
-        />
+        >
+          <img src={ITEMS.validator_node} alt="Validator Node" className="w-[88px] h-[88px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+        </motion.div>
       )}
       {ownedItems.includes("data_center") && (
-        <motion.img
-          src={ITEMS.data_center}
-          alt="Data Center"
-          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
-          style={{ top: "68%", right: "18%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
+        <motion.div
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[136px] h-[136px]"
+          style={{
+            top: "68%", right: "18%",
+            background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
+            border: "1px solid rgba(255,255,255,0.25)",
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            backdropFilter: "blur(2px)",
+          }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 1 }}
-        />
+        >
+          <img src={ITEMS.data_center} alt="Data Center" className="w-[88px] h-[88px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+        </motion.div>
       )}
 
       {/* CLICKABLE CHARACTER IMAGE */}
