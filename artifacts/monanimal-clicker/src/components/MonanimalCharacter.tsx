@@ -209,8 +209,8 @@ export default function MonanimalCharacter() {
                 top: 0,
                 left: click.x,
                 transform: "translateX(-50%)",
-                color: stageData.glowColor,
-                textShadow: `0 0 12px ${stageData.glowColor}`,
+                color: "#ffffff",
+                textShadow: "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000",
               }}
             >
               +{formatNumber(click.amount)}
