@@ -158,7 +158,7 @@ export default function MonanimalCharacter() {
       )}
 
       {/* CLICKABLE CHARACTER IMAGE */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center translate-y-[-5%]">
+      <div className="absolute inset-0 z-20 flex items-center justify-center translate-y-[0%]">
         <motion.div
           className="relative cursor-pointer touch-manipulation"
           onClick={onInteraction}
@@ -166,10 +166,10 @@ export default function MonanimalCharacter() {
           data-testid="character-click-area"
           style={{ filter: `drop-shadow(0 0 24px ${stageData.glowColor}60)` }}
         >
-          {/* idle bobbing wrapper */}
+          {/* idle breathing wrapper */}
           <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+            animate={{ scale: [1, 0.95, 1.03, 1] }}
+            transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", times: [0, 0.4, 0.7, 1] }}
           >
             <AnimatePresence mode="wait">
               <motion.img
