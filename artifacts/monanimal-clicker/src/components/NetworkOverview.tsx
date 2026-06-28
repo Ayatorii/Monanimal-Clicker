@@ -67,48 +67,50 @@ export default function NetworkOverview() {
   const { state } = useGameState();
   const stage = getCharacterStage(state.characterLevel);
 
-  const tpsHistoryRef = useRef<number[]>([]);
   const clicksHistoryRef = useRef<number[]>([]);
-  const prevClicksRef = useRef<number>(state.totalClicks);
-  const [clicksPerSec, setClicksPerSec] = useState(0);
+  const ppcHistoryRef = useRef<number[]>([]);
+  const ppsHistoryRef = useRef<number[]>([]);
   const [, forceRender] = useState(0);
   const [showReset, setShowReset] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const delta = state.totalClicks - prevClicksRef.current;
-      prevClicksRef.current = state.totalClicks;
-      const cps = delta * 2; // interval is 500ms → *2 = per sec
-      setClicksPerSec(cps);
-
       const push = (arr: number[], val: number) => {
         arr.push(val);
         if (arr.length > HISTORY_SIZE) arr.shift();
       };
-      push(tpsHistoryRef.current, cps);
       push(clicksHistoryRef.current, state.totalClicks);
+      push(ppcHistoryRef.current, state.coinsPerClick);
+      push(ppsHistoryRef.current, state.coinsPerSecond);
       forceRender(n => n + 1);
     }, 500);
     return () => clearInterval(interval);
-  }, [state.totalClicks]);
+  }, [state.totalClicks, state.coinsPerClick, state.coinsPerSecond]);
 
   const xpInfo = getLevelXpInfo(state.totalCoinsEarned);
   const rankLabel = stage.title.toUpperCase();
 
   const metrics: Metric[] = [
     {
-      label: "CPS",
-      value: clicksPerSec.toString(),
-      sub: "Clicks / sec",
-      color: "#6E54FF",
-      history: [...tpsHistoryRef.current],
-    },
-    {
-      label: "CLICKS",
+      label: "ALL TIME CLICKS",
       value: formatNumber(state.totalClicks),
       sub: "Total clicks",
       color: "#85E6FF",
       history: [...clicksHistoryRef.current],
+    },
+    {
+      label: "POINTS PER CLICK",
+      value: formatNumber(state.coinsPerClick),
+      sub: "Per click",
+      color: "#6E54FF",
+      history: [...ppcHistoryRef.current],
+    },
+    {
+      label: "POINTS PER SECOND",
+      value: formatNumber(state.coinsPerSecond),
+      sub: "Passive income",
+      color: "#FF8EE4",
+      history: [...ppsHistoryRef.current],
     },
   ];
 
