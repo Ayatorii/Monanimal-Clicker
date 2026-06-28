@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
 import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
@@ -15,6 +15,7 @@ export default function MonanimalCharacter() {
   const { state, handleClick } = useGameState();
   const stageData = getCharacterStage(state.characterLevel);
   const [clicks, setClicks] = useState<FloatingClick[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const onInteraction = (e: React.MouseEvent | React.TouchEvent) => {
     let clientX: number, clientY: number;
@@ -25,9 +26,9 @@ export default function MonanimalCharacter() {
       clientX = (e as React.MouseEvent).clientX;
       clientY = (e as React.MouseEvent).clientY;
     }
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
+    const rect = containerRef.current?.getBoundingClientRect();
+    const x = rect ? clientX - rect.left : clientX;
+    const y = rect ? clientY - rect.top : clientY;
     setClicks(prev => [...prev, { id: Date.now() + Math.random(), x, y, amount: state.coinsPerClick }]);
     handleClick();
   };
@@ -45,7 +46,7 @@ export default function MonanimalCharacter() {
   const bgImg = ENVIRONMENTS[stageData.bgKey];
 
   return (
-    <div className="relative w-full h-full overflow-hidden select-none">
+    <div ref={containerRef} className="relative w-full h-full overflow-hidden select-none">
       {/* ENVIRONMENT BACKGROUND */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -157,29 +158,33 @@ export default function MonanimalCharacter() {
       )}
 
       {/* CLICKABLE CHARACTER IMAGE */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center translate-y-[10%]">
+      <div className="absolute inset-0 z-20 flex items-center justify-center translate-y-[-5%]">
         <motion.div
           className="relative cursor-pointer touch-manipulation"
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.93 }}
           onClick={onInteraction}
           onTouchStart={onInteraction}
           data-testid="character-click-area"
           style={{ filter: `drop-shadow(0 0 24px ${stageData.glowColor}60)` }}
         >
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={stageData.characterKey}
-              src={charImg}
-              alt={stageData.title + " Monanimal"}
-              className="w-[229px] h-[229px] md:w-[317px] md:h-[317px] object-contain"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
-              transition={{ duration: 0.5, ease: "backOut" }}
-              draggable={false}
-            />
-          </AnimatePresence>
+          {/* idle bobbing wrapper */}
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={stageData.characterKey}
+                src={charImg}
+                alt={stageData.title + " Monanimal"}
+                className="w-[229px] h-[229px] md:w-[317px] md:h-[317px] object-contain"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.1 }}
+                transition={{ duration: 0.5, ease: "backOut" }}
+                draggable={false}
+              />
+            </AnimatePresence>
+          </motion.div>
 
           <div
             className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 h-8 rounded-full opacity-40 blur-xl pointer-events-none"
@@ -194,15 +199,16 @@ export default function MonanimalCharacter() {
           {clicks.map(click => (
             <motion.div
               key={click.id}
-              initial={{ opacity: 1, y: 0, x: click.x, scale: 0.8 }}
-              animate={{ opacity: 0, y: -90, scale: 1.4 }}
+              initial={{ opacity: 1, y: click.y, scale: 0.9 }}
+              animate={{ opacity: 0, y: click.y - 80, scale: 1.3 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.9, ease: "easeOut" }}
               onAnimationComplete={() => handleAnimationComplete(click.id)}
               className="absolute font-black text-2xl pointer-events-none"
               style={{
-                top: click.y,
-                left: 0,
+                top: 0,
+                left: click.x,
+                transform: "translateX(-50%)",
                 color: stageData.glowColor,
                 textShadow: `0 0 12px ${stageData.glowColor}`,
               }}
