@@ -173,7 +173,7 @@ export default function MonanimalCharacter() {
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut", delay: 0.6 }}
         >
-          <img src={ITEMS.validator_node} alt="Validator Node" className="w-[105px] h-[105px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+          <img src={ITEMS.validator_node} alt="Validator Node" className="w-[115px] h-[115px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
         </motion.div>
       )}
       {ownedItems.includes("data_center") && (
