@@ -15,20 +15,22 @@ export interface PowerUpgrade {
 }
 
 export const BUILDINGS: BuildingUpgrade[] = [
-  { id: "smartphone", name: "Smartphone", baseCost: 15, cps: 1, icon: "📱" },
-  { id: "laptop", name: "Laptop", baseCost: 100, cps: 2, icon: "💻" },
-  { id: "gpu", name: "GPU", baseCost: 1100, cps: 4, icon: "🎮" },
-  { id: "ai_agent", name: "AI Agent", baseCost: 12000, cps: 20, icon: "🤖" },
-  { id: "validator_node", name: "Validator Node", baseCost: 130000, cps: 100, icon: "⚡" },
-  { id: "data_center", name: "Data Center", baseCost: 1400000, cps: 500, icon: "🏢" },
-  { id: "monad_chain", name: "Monad Chain", baseCost: 20000000, cps: 4000, icon: "🔗" },
+  { id: "smartphone",     name: "Smartphone",     baseCost: 100,    cps: 1,    icon: "📱" },
+  { id: "laptop",         name: "Laptop",         baseCost: 300,    cps: 5,    icon: "💻" },
+  { id: "gpu",            name: "GPU",            baseCost: 1000,   cps: 15,   icon: "🎮" },
+  { id: "ai_agent",       name: "AI Agent",       baseCost: 6000,   cps: 45,   icon: "🤖" },
+  { id: "validator_node", name: "Validator Node", baseCost: 15000,  cps: 100,  icon: "⚡" },
+  { id: "data_center",    name: "Data Center",    baseCost: 35000,  cps: 400,  icon: "🏢" },
+  { id: "monad_chain",    name: "Monad Chain",    baseCost: 300000, cps: 1000, icon: "🔗" },
 ];
 
 export const POWER_UPGRADES: PowerUpgrade[] = [
-  { id: "click_training", name: "Click Training", baseCost: 50, cpc: 1, icon: "💪" },
-  { id: "click_katana", name: "Click Katana", baseCost: 500, cpc: 5, icon: "🗡️" },
-  { id: "click_hyperbeam", name: "Hyperbeam", baseCost: 8000, cpc: 20, icon: "✨" },
-  { id: "click_genesis", name: "Genesis Strike", baseCost: 200000, cpc: 200, icon: "🌌" },
+  { id: "click_training",  name: "Pulse Core",    baseCost: 10,    cpc: 1,   icon: "⚡" },
+  { id: "click_katana",    name: "Sync Core",     baseCost: 400,   cpc: 5,   icon: "🔷" },
+  { id: "click_hyperbeam", name: "Parallel Core", baseCost: 1000,  cpc: 25,  icon: "🌀" },
+  { id: "click_genesis",   name: "Hyper Core",    baseCost: 3500,  cpc: 50,  icon: "🔮" },
+  { id: "validator_core",  name: "Validator Core",baseCost: 10000, cpc: 100, icon: "💎" },
+  { id: "genesis_core",    name: "Genesis Core",  baseCost: 30000, cpc: 200, icon: "🌌" },
 ];
 
 export interface Achievement {
