@@ -98,7 +98,7 @@ export default function MonanimalCharacter() {
         <motion.img
           src={ITEMS.smartphone}
           alt="Smartphone"
-          className="absolute w-[97px] h-[97px] object-contain z-10 pointer-events-none"
+          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
           style={{ top: "18%", left: "20%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
@@ -108,7 +108,7 @@ export default function MonanimalCharacter() {
         <motion.img
           src={ITEMS.laptop}
           alt="Laptop"
-          className="absolute w-[97px] h-[97px] object-contain z-10 pointer-events-none"
+          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
           style={{ top: "46%", left: "8%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.4 }}
@@ -118,7 +118,7 @@ export default function MonanimalCharacter() {
         <motion.img
           src={ITEMS.gpu}
           alt="GPU"
-          className="absolute w-[97px] h-[97px] object-contain z-10 pointer-events-none"
+          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
           style={{ top: "68%", left: "16%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.8 }}
@@ -130,7 +130,7 @@ export default function MonanimalCharacter() {
         <motion.img
           src={ITEMS.ai_agent}
           alt="AI Agent"
-          className="absolute w-[97px] h-[97px] object-contain z-10 pointer-events-none"
+          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
           style={{ top: "18%", right: "20%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut", delay: 0.2 }}
@@ -140,7 +140,7 @@ export default function MonanimalCharacter() {
         <motion.img
           src={ITEMS.validator_node}
           alt="Validator Node"
-          className="absolute w-[97px] h-[97px] object-contain z-10 pointer-events-none"
+          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
           style={{ top: "46%", right: "10%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut", delay: 0.6 }}
@@ -150,7 +150,7 @@ export default function MonanimalCharacter() {
         <motion.img
           src={ITEMS.data_center}
           alt="Data Center"
-          className="absolute w-[97px] h-[97px] object-contain z-10 pointer-events-none"
+          className="absolute w-[112px] h-[112px] object-contain z-10 pointer-events-none"
           style={{ top: "68%", right: "18%", filter: `drop-shadow(0 0 10px ${stageData.glowColor})` }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 1 }}
@@ -176,7 +176,7 @@ export default function MonanimalCharacter() {
                 key={stageData.characterKey}
                 src={charImg}
                 alt={stageData.title + " Monanimal"}
-                className="w-[229px] h-[229px] md:w-[317px] md:h-[317px] object-contain"
+                className="w-[257px] h-[257px] md:w-[355px] md:h-[355px] object-contain"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.1 }}
