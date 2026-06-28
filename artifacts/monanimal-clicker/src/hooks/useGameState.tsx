@@ -99,7 +99,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [recalculateStats]);
 
   const calculateUpgradeCost = (baseCost: number, owned: number) => {
-    return Math.floor(baseCost * Math.pow(2.15, owned));
+    return Math.floor(baseCost * Math.pow(2, owned));
   };
 
   const MAX_UPGRADE_LEVEL = 100;
