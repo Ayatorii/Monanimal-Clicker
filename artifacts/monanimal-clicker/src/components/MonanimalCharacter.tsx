@@ -259,11 +259,11 @@ export default function MonanimalCharacter() {
       <div className="absolute bottom-0 left-0 right-0 z-20 flex items-center justify-center gap-1 pb-2 pointer-events-none">
         {[
           { key: "recruit",  label: "Recruit",   min: 1 },
-          { key: "builder",  label: "Builder",   min: 15 },
-          { key: "engineer", label: "Engineer",  min: 40 },
-          { key: "validator",label: "Validator", min: 60 },
-          { key: "explorer", label: "Explorer",  min: 100 },
-          { key: "founder",  label: "Founder",   min: 250 },
+          { key: "builder",  label: "Builder",   min: 10 },
+          { key: "engineer", label: "Engineer",  min: 25 },
+          { key: "validator",label: "Validator", min: 50 },
+          { key: "explorer", label: "Explorer",  min: 75 },
+          { key: "founder",  label: "Founder",   min: 100 },
         ].map((s) => {
           const isActive = stageData.characterKey === s.key;
           const isUnlocked = state.characterLevel >= s.min;
