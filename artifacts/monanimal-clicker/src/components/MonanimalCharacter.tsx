@@ -96,7 +96,7 @@ export default function MonanimalCharacter() {
       {/* LEFT COLUMN: Smartphone, Laptop, GPU */}
       {ownedItems.includes("smartphone") && (
         <motion.div
-          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[124px] h-[124px]"
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[118px] h-[118px]"
           style={{
             top: "18%", left: "20%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
@@ -112,7 +112,7 @@ export default function MonanimalCharacter() {
       )}
       {ownedItems.includes("laptop") && (
         <motion.div
-          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[124px] h-[124px]"
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[118px] h-[118px]"
           style={{
             top: "46%", left: "8%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
@@ -128,7 +128,7 @@ export default function MonanimalCharacter() {
       )}
       {ownedItems.includes("gpu") && (
         <motion.div
-          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[124px] h-[124px]"
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[118px] h-[118px]"
           style={{
             top: "68%", left: "16%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
@@ -146,7 +146,7 @@ export default function MonanimalCharacter() {
       {/* RIGHT COLUMN: AI Agent, Validator Node, Data Center */}
       {ownedItems.includes("ai_agent") && (
         <motion.div
-          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[124px] h-[124px]"
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[118px] h-[118px]"
           style={{
             top: "18%", right: "20%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
@@ -162,7 +162,7 @@ export default function MonanimalCharacter() {
       )}
       {ownedItems.includes("validator_node") && (
         <motion.div
-          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[124px] h-[124px]"
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[118px] h-[118px]"
           style={{
             top: "46%", right: "10%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
@@ -178,7 +178,7 @@ export default function MonanimalCharacter() {
       )}
       {ownedItems.includes("data_center") && (
         <motion.div
-          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[124px] h-[124px]"
+          className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-[118px] h-[118px]"
           style={{
             top: "68%", right: "18%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
