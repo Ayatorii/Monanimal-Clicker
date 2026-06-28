@@ -8,6 +8,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { ITEMS } from "@/assets/index";
 
+const MAX_UPGRADE_LEVEL = 100;
+
 export default function UpgradeShop() {
   const { state, buyBuilding, buyPower, calculateUpgradeCost } = useGameState();
 
@@ -28,26 +30,23 @@ export default function UpgradeShop() {
             <div className="flex flex-col gap-3 pb-24 md:pb-4">
               {BUILDINGS.map(item => {
                 const owned = state.upgrades[item.id] || 0;
+                const isMaxed = owned >= MAX_UPGRADE_LEVEL;
                 const cost = calculateUpgradeCost(item.baseCost, owned);
-                const canAfford = state.coins >= cost;
+                const canAfford = !isMaxed && state.coins >= cost;
 
                 return (
-                  <Card 
-                    key={item.id} 
+                  <Card
+                    key={item.id}
                     className={cn(
-                      "cursor-pointer transition-all hover-elevate",
-                      !canAfford ? "opacity-60 grayscale-[0.5]" : "hover:border-primary/50"
+                      "transition-all hover-elevate",
+                      isMaxed ? "opacity-50 cursor-not-allowed border-primary/30" : canAfford ? "cursor-pointer hover:border-primary/50" : "cursor-pointer opacity-60 grayscale-[0.5]"
                     )}
-                    onClick={() => canAfford && buyBuilding(item.id)}
+                    onClick={() => !isMaxed && canAfford && buyBuilding(item.id)}
                   >
                     <CardContent className="p-3 flex items-center gap-3">
                       <div className="w-12 h-12 bg-muted/50 rounded-md border border-border flex items-center justify-center overflow-hidden flex-shrink-0">
                         {item.id in ITEMS ? (
-                          <img
-                            src={ITEMS[item.id as keyof typeof ITEMS]}
-                            alt={item.name}
-                            className="w-10 h-10 object-contain"
-                          />
+                          <img src={ITEMS[item.id as keyof typeof ITEMS]} alt={item.name} className="w-10 h-10 object-contain" />
                         ) : (
                           <span className="text-2xl">{item.icon}</span>
                         )}
@@ -55,11 +54,14 @@ export default function UpgradeShop() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <h4 className="font-bold truncate pr-2">{item.name}</h4>
-                          <Badge variant={owned > 0 ? "default" : "outline"} className="font-mono">{owned}</Badge>
+                          {isMaxed
+                            ? <Badge className="font-mono bg-primary/20 text-primary border border-primary/40">MAX</Badge>
+                            : <Badge variant={owned > 0 ? "default" : "outline"} className="font-mono">{owned}</Badge>
+                          }
                         </div>
                         <p className="text-xs text-muted-foreground font-mono mt-1">+{formatNumber(item.cps)} PPS</p>
-                        <p className={cn("text-sm font-bold font-mono mt-1", canAfford ? "text-accent" : "text-destructive")}>
-                          Cost: {formatNumber(cost)}
+                        <p className={cn("text-sm font-bold font-mono mt-1", isMaxed ? "text-primary/50" : canAfford ? "text-accent" : "text-destructive")}>
+                          {isMaxed ? "Max level reached" : `Cost: ${formatNumber(cost)}`}
                         </p>
                       </div>
                     </CardContent>
@@ -75,26 +77,23 @@ export default function UpgradeShop() {
             <div className="flex flex-col gap-3 pb-24 md:pb-4">
               {POWER_UPGRADES.map(item => {
                 const owned = state.upgrades[item.id] || 0;
+                const isMaxed = owned >= MAX_UPGRADE_LEVEL;
                 const cost = calculateUpgradeCost(item.baseCost, owned);
-                const canAfford = state.coins >= cost;
+                const canAfford = !isMaxed && state.coins >= cost;
 
                 return (
-                  <Card 
-                    key={item.id} 
+                  <Card
+                    key={item.id}
                     className={cn(
-                      "cursor-pointer transition-all hover-elevate",
-                      !canAfford ? "opacity-60 grayscale-[0.5]" : "hover:border-primary/50"
+                      "transition-all hover-elevate",
+                      isMaxed ? "opacity-50 cursor-not-allowed border-primary/30" : canAfford ? "cursor-pointer hover:border-primary/50" : "cursor-pointer opacity-60 grayscale-[0.5]"
                     )}
-                    onClick={() => canAfford && buyPower(item.id)}
+                    onClick={() => !isMaxed && canAfford && buyPower(item.id)}
                   >
                     <CardContent className="p-3 flex items-center gap-3">
                       <div className="w-12 h-12 bg-muted/50 rounded-md border border-border flex items-center justify-center overflow-hidden flex-shrink-0">
                         {item.id in ITEMS ? (
-                          <img
-                            src={ITEMS[item.id as keyof typeof ITEMS]}
-                            alt={item.name}
-                            className="w-10 h-10 object-contain"
-                          />
+                          <img src={ITEMS[item.id as keyof typeof ITEMS]} alt={item.name} className="w-10 h-10 object-contain" />
                         ) : (
                           <span className="text-2xl">{item.icon}</span>
                         )}
@@ -102,11 +101,14 @@ export default function UpgradeShop() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <h4 className="font-bold truncate pr-2">{item.name}</h4>
-                          <Badge variant={owned > 0 ? "secondary" : "outline"} className="font-mono">{owned}</Badge>
+                          {isMaxed
+                            ? <Badge className="font-mono bg-primary/20 text-primary border border-primary/40">MAX</Badge>
+                            : <Badge variant={owned > 0 ? "secondary" : "outline"} className="font-mono">{owned}</Badge>
+                          }
                         </div>
                         <p className="text-xs text-muted-foreground font-mono mt-1">+{formatNumber(item.cpc)} PPC</p>
-                        <p className={cn("text-sm font-bold font-mono mt-1", canAfford ? "text-accent" : "text-destructive")}>
-                          Cost: {formatNumber(cost)}
+                        <p className={cn("text-sm font-bold font-mono mt-1", isMaxed ? "text-primary/50" : canAfford ? "text-accent" : "text-destructive")}>
+                          {isMaxed ? "Max level reached" : `Cost: ${formatNumber(cost)}`}
                         </p>
                       </div>
                     </CardContent>

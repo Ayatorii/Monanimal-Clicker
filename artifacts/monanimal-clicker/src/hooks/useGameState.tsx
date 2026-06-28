@@ -102,11 +102,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
     return Math.floor(baseCost * Math.pow(1.15, owned));
   };
 
+  const MAX_UPGRADE_LEVEL = 100;
+
   const buyBuilding = useCallback((id: string) => {
     dispatch(prev => {
       const b = BUILDINGS.find(x => x.id === id);
       if (!b) return prev;
       const owned = prev.upgrades[id] || 0;
+      if (owned >= MAX_UPGRADE_LEVEL) return prev;
       const cost = calculateUpgradeCost(b.baseCost, owned);
       if (prev.coins < cost) return prev;
       return recalculateStats({
@@ -122,6 +125,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const p = POWER_UPGRADES.find(x => x.id === id);
       if (!p) return prev;
       const owned = prev.upgrades[id] || 0;
+      if (owned >= MAX_UPGRADE_LEVEL) return prev;
       const cost = calculateUpgradeCost(p.baseCost, owned);
       if (prev.coins < cost) return prev;
       return recalculateStats({
