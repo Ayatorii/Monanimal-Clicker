@@ -123,7 +123,7 @@ export default function MonanimalCharacter() {
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.4 }}
         >
-          <img src={ITEMS.laptop} alt="Laptop" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+          <img src={ITEMS.laptop} alt="Laptop" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})`, transform: "translateX(-5px) translateY(3px)" }} />
         </motion.div>
       )}
       {ownedItems.includes("gpu") && (
