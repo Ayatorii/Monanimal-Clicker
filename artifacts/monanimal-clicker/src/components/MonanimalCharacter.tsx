@@ -36,7 +36,6 @@ export default function MonanimalCharacter() {
     setClicks(prev => prev.filter(c => c.id !== id));
   };
 
-  // Which items are owned (quantity > 0)
   const ownedItems = Object.entries(state.upgrades)
     .filter(([, qty]) => (qty as number) > 0)
     .map(([id]) => id)
@@ -47,7 +46,7 @@ export default function MonanimalCharacter() {
 
   return (
     <div className="relative w-full h-full overflow-hidden select-none">
-      {/* === ENVIRONMENT BACKGROUND === */}
+      {/* ENVIRONMENT BACKGROUND */}
       <AnimatePresence mode="wait">
         <motion.div
           key={stageData.bgKey}
@@ -63,12 +62,11 @@ export default function MonanimalCharacter() {
             className="w-full h-full object-cover"
             draggable={false}
           />
-          {/* Dark overlay so UI is readable */}
           <div className="absolute inset-0 bg-black/30" />
         </motion.div>
       </AnimatePresence>
 
-      {/* === LEVEL / TITLE BADGE + XP BAR === */}
+      {/* LEVEL / TITLE BADGE + XP BAR */}
       {(() => {
         const xp = getLevelXpInfo(state.totalCoinsEarned);
         return (
@@ -78,7 +76,6 @@ export default function MonanimalCharacter() {
                 LEVEL {state.characterLevel}
               </span>
               <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{stageData.title}</span>
-              {/* XP bar */}
               <div className="w-full h-1 rounded-full bg-white/10 overflow-hidden mt-0.5">
                 <motion.div
                   className="h-full rounded-full"
@@ -95,8 +92,7 @@ export default function MonanimalCharacter() {
         );
       })()}
 
-      {/* === PURCHASED ITEM OVERLAYS === */}
-      {/* LEFT COLUMN: Smartphone (top), Laptop (middle), GPU (bottom) */}
+      {/* LEFT COLUMN: Smartphone, Laptop, GPU */}
       {ownedItems.includes("smartphone") && (
         <motion.img
           src={ITEMS.smartphone}
@@ -128,7 +124,7 @@ export default function MonanimalCharacter() {
         />
       )}
 
-      {/* RIGHT COLUMN: AI Agent (top), Validator Node (middle), Data Center (bottom) */}
+      {/* RIGHT COLUMN: AI Agent, Validator Node, Data Center */}
       {ownedItems.includes("ai_agent") && (
         <motion.img
           src={ITEMS.ai_agent}
@@ -160,7 +156,7 @@ export default function MonanimalCharacter() {
         />
       )}
 
-      {/* === CLICKABLE CHARACTER IMAGE === */}
+      {/* CLICKABLE CHARACTER IMAGE */}
       <div className="absolute inset-0 z-20 flex items-center justify-center">
         <motion.div
           className="relative cursor-pointer touch-manipulation"
@@ -185,7 +181,6 @@ export default function MonanimalCharacter() {
             />
           </AnimatePresence>
 
-          {/* Glow ring under character */}
           <div
             className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 h-8 rounded-full opacity-40 blur-xl pointer-events-none"
             style={{ background: stageData.glowColor }}
@@ -193,7 +188,7 @@ export default function MonanimalCharacter() {
         </motion.div>
       </div>
 
-      {/* === FLOATING +N CLICK NUMBERS === */}
+      {/* FLOATING +N CLICK NUMBERS */}
       <div className="absolute inset-0 z-30 pointer-events-none">
         <AnimatePresence>
           {clicks.map(click => (
@@ -218,16 +213,16 @@ export default function MonanimalCharacter() {
         </AnimatePresence>
       </div>
 
-      {/* === EVOLUTION TIMELINE (bottom strip) === */}
+      {/* EVOLUTION TIMELINE (bottom strip) */}
       <div className="absolute bottom-0 left-0 right-0 z-20 flex items-center justify-center gap-1 pb-2 pointer-events-none">
         {[
-          { key: "recruit", label: "Recruit", min: 1 },
-          { key: "builder", label: "Builder", min: 10 },
-          { key: "engineer", label: "Engineer", min: 25 },
-          { key: "validator", label: "Validator", min: 50 },
-          { key: "ronin", label: "Ronin", min: 100 },
-          { key: "shogun", label: "Shogun", min: 250 },
-        ].map((s, i) => {
+          { key: "recruit",  label: "Recruit",   min: 1 },
+          { key: "builder",  label: "Builder",   min: 15 },
+          { key: "engineer", label: "Engineer",  min: 40 },
+          { key: "validator",label: "Validator", min: 60 },
+          { key: "explorer", label: "Explorer",  min: 100 },
+          { key: "founder",  label: "Founder",   min: 250 },
+        ].map((s) => {
           const isActive = stageData.characterKey === s.key;
           const isUnlocked = state.characterLevel >= s.min;
           return (

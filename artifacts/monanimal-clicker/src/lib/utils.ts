@@ -24,8 +24,8 @@ export interface LevelXpInfo {
 
 /**
  * Level 1 → 2 costs 1 000 XP.
- * Each subsequent level costs +250 XP more.
- * Level N → N+1 costs: 1000 + (N-1) * 250
+ * Each subsequent level costs +2000 XP more.
+ * Level N → N+1 costs: 1000 + (N-1) * 2000
  * XP = totalCoinsEarned (1 coin = 1 XP)
  */
 export function getLevelXpInfo(xp: number): LevelXpInfo {
@@ -58,11 +58,11 @@ export interface CharacterStage {
 
 const CHARACTER_STAGES: CharacterStage[] = [
   { stage: 1, title: "Recruit",   minLevel: 1,   bgKey: "whiteRoom",       glowColor: "#94a3b8", characterKey: "recruit" },
-  { stage: 2, title: "Builder",   minLevel: 10,  bgKey: "builderGarage",   glowColor: "#3b82f6", characterKey: "builder" },
-  { stage: 3, title: "Engineer",  minLevel: 25,  bgKey: "validatorTemple", glowColor: "#06b6d4", characterKey: "engineer" },
-  { stage: 4, title: "Validator", minLevel: 50,  bgKey: "monadCity",       glowColor: "#6E54FF", characterKey: "validator" },
-  { stage: 5, title: "Ronin",     minLevel: 100, bgKey: "hyperlaneNexus",  glowColor: "#FF8EE4", characterKey: "ronin" },
-  { stage: 6, title: "Shogun",    minLevel: 250, bgKey: "genesisCitadel",  glowColor: "#FFAE45", characterKey: "shogun" },
+  { stage: 2, title: "Builder",   minLevel: 15,  bgKey: "builderGarage",   glowColor: "#3b82f6", characterKey: "builder" },
+  { stage: 3, title: "Engineer",  minLevel: 40,  bgKey: "validatorTemple", glowColor: "#06b6d4", characterKey: "engineer" },
+  { stage: 4, title: "Validator", minLevel: 60,  bgKey: "monadCity",       glowColor: "#6E54FF", characterKey: "validator" },
+  { stage: 5, title: "Explorer",  minLevel: 100, bgKey: "hyperlaneNexus",  glowColor: "#FF8EE4", characterKey: "explorer" },
+  { stage: 6, title: "Founder",   minLevel: 250, bgKey: "genesisCitadel",  glowColor: "#FFAE45", characterKey: "founder" },
 ];
 
 export function getCharacterStage(level: number): CharacterStage {

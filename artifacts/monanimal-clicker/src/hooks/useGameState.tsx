@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
-import { BUILDINGS, POWER_UPGRADES, EQUIPMENT, ACHIEVEMENTS } from "@/lib/gameData";
+import { BUILDINGS, POWER_UPGRADES, ACHIEVEMENTS } from "@/lib/gameData";
 import { calculateCharacterLevel } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
@@ -11,7 +11,6 @@ export interface GameState {
   characterLevel: number;
   totalClicks: number;
   upgrades: Record<string, number>;
-  equipment: Record<string, boolean>;
   achievements: string[];
   lastSaveTime: number;
   darkMode: boolean;
@@ -26,7 +25,6 @@ const DEFAULT_STATE: GameState = {
   characterLevel: 1,
   totalClicks: 0,
   upgrades: {},
-  equipment: {},
   achievements: [],
   lastSaveTime: Date.now(),
   darkMode: true,
@@ -39,7 +37,6 @@ interface GameContextType {
   handleClick: () => void;
   buyBuilding: (id: string) => void;
   buyPower: (id: string) => void;
-  equipItem: (id: string) => void;
   calculateUpgradeCost: (baseCost: number, owned: number) => number;
 }
 
@@ -58,7 +55,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        return { ...DEFAULT_STATE, ...parsed };
+        const { equipment, ...rest } = parsed;
+        return { ...DEFAULT_STATE, ...rest };
       } catch (e) {
         return DEFAULT_STATE;
       }
@@ -69,7 +67,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const recalculateStats = useCallback((currentState: GameState) => {
     let baseCps = 0;
     let baseCpc = 1;
-    let multiplier = 1;
 
     BUILDINGS.forEach(b => {
       const owned = currentState.upgrades[b.id] || 0;
@@ -81,16 +78,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       baseCpc += p.cpc * owned;
     });
 
-    EQUIPMENT.forEach(e => {
-      if (currentState.equipment[e.id]) {
-        multiplier += e.multiplier;
-      }
-    });
-
     return {
       ...currentState,
-      coinsPerSecond: baseCps * multiplier,
-      coinsPerClick: baseCpc * multiplier,
+      coinsPerSecond: baseCps,
+      coinsPerClick: baseCpc,
       characterLevel: calculateCharacterLevel(currentState.totalCoinsEarned),
     };
   }, []);
@@ -141,19 +132,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   }, [recalculateStats]);
 
-  const equipItem = useCallback((id: string) => {
-    dispatch(prev => {
-      const item = EQUIPMENT.find(x => x.id === id);
-      if (!item) return prev;
-      const newEquipment = { ...prev.equipment };
-      EQUIPMENT.filter(x => x.category === item.category).forEach(x => {
-        newEquipment[x.id] = false;
-      });
-      newEquipment[id] = true;
-      return recalculateStats({ ...prev, equipment: newEquipment });
-    });
-  }, [recalculateStats]);
-
   // Achievement checker
   useEffect(() => {
     let changed = false;
@@ -181,7 +159,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   return (
     <GameContext.Provider value={{
-      state, dispatch, handleClick, buyBuilding, buyPower, equipItem, calculateUpgradeCost,
+      state, dispatch, handleClick, buyBuilding, buyPower, calculateUpgradeCost,
     }}>
       {children}
     </GameContext.Provider>
