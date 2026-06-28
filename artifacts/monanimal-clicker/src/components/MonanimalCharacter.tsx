@@ -168,8 +168,8 @@ export default function MonanimalCharacter() {
         >
           {/* idle breathing wrapper */}
           <motion.div
-            animate={{ scale: [1, 0.95, 1.03, 1] }}
-            transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", times: [0, 0.4, 0.7, 1] }}
+            animate={{ scale: [1, 0.97, 1.04, 1] }}
+            transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", times: [0, 0.4, 0.7, 1] }}
           >
             <AnimatePresence mode="wait">
               <motion.img
