@@ -157,7 +157,7 @@ export default function MonanimalCharacter() {
       )}
 
       {/* CLICKABLE CHARACTER IMAGE */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center">
+      <div className="absolute inset-0 z-20 flex items-center justify-center translate-y-[10%]">
         <motion.div
           className="relative cursor-pointer touch-manipulation"
           whileHover={{ scale: 1.04 }}
@@ -172,7 +172,7 @@ export default function MonanimalCharacter() {
               key={stageData.characterKey}
               src={charImg}
               alt={stageData.title + " Monanimal"}
-              className="w-52 h-52 md:w-72 md:h-72 object-contain"
+              className="w-[229px] h-[229px] md:w-[317px] md:h-[317px] object-contain"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.1 }}
