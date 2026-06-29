@@ -39,7 +39,7 @@ export default function UpgradeShop() {
                     key={item.id}
                     className={cn(
                       "transition-all hover-elevate",
-                      isMaxed ? "opacity-50 cursor-not-allowed border-primary/30" : canAfford ? "cursor-pointer hover:border-primary/50" : "cursor-pointer opacity-60 grayscale-[0.5]"
+                      isMaxed ? "opacity-50 cursor-not-allowed border-primary/30" : canAfford ? "cursor-pointer hover:border-primary/50" : "cursor-pointer opacity-70 grayscale-[0.3]"
                     )}
                     onClick={() => !isMaxed && canAfford && buyBuilding(item.id)}
                   >
@@ -86,7 +86,7 @@ export default function UpgradeShop() {
                     key={item.id}
                     className={cn(
                       "transition-all hover-elevate",
-                      isMaxed ? "opacity-50 cursor-not-allowed border-primary/30" : canAfford ? "cursor-pointer hover:border-primary/50" : "cursor-pointer opacity-60 grayscale-[0.5]"
+                      isMaxed ? "opacity-50 cursor-not-allowed border-primary/30" : canAfford ? "cursor-pointer hover:border-primary/50" : "cursor-pointer opacity-70 grayscale-[0.3]"
                     )}
                     onClick={() => !isMaxed && canAfford && buyPower(item.id)}
                   >
