@@ -27,18 +27,22 @@ export interface LevelXpInfo {
  * From level 2 onward: cost(N) = cost(N-1) * 1.1 + 3500
  * XP = totalCoinsEarned (1 coin = 1 XP)
  */
+function roundUp100(n: number): number {
+  return Math.ceil(n / 100) * 100;
+}
+
 export function getLevelXpInfo(xp: number): LevelXpInfo {
   let level = 1;
   let spent = 0;
-  let cost = 1100; // level 1→2
+  let cost = roundUp100(1100); // level 1→2 = 1100
   while (level < 999) {
     if (xp < spent + cost) {
       const current = Math.floor(xp - spent);
-      return { level, currentXp: current, neededXp: Math.ceil(cost), pct: current / cost };
+      return { level, currentXp: current, neededXp: cost, pct: current / cost };
     }
     spent += cost;
     level++;
-    cost = cost * 1.1 + 3500;
+    cost = roundUp100(cost * 1.1 + 3500);
   }
   return { level: 999, currentXp: 0, neededXp: 1, pct: 1 };
 }
