@@ -59,6 +59,16 @@ export default function MonanimalCharacter() {
   const charImg = CHARACTERS[activeStage.characterKey];
   const bgImg = ENVIRONMENTS[activeStage.bgKey];
 
+  const CHARACTER_Y_OFFSETS: Record<string, number> = {
+    recruit:   0,
+    builder:   0,
+    engineer:  0,
+    validator: 15,
+    explorer:  10,
+    founder:   5,
+  };
+  const charYOffset = CHARACTER_Y_OFFSETS[activeStage.characterKey] ?? 0;
+
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden select-none">
       {/* ENVIRONMENT BACKGROUND — true crossfade */}
@@ -223,7 +233,7 @@ export default function MonanimalCharacter() {
       )}
 
       {/* CLICKABLE CHARACTER IMAGE */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center translate-y-[0%]">
+      <div className="absolute inset-0 z-20 flex items-center justify-center" style={{ paddingTop: charYOffset }}>
         <motion.div
           className="relative cursor-pointer touch-manipulation"
           onClick={onInteraction}
