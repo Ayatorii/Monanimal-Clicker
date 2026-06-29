@@ -15,8 +15,8 @@ export default function UpgradeShop() {
 
   return (
     <div className="flex flex-col h-full bg-card border-l border-border w-full md:w-80 lg:w-96">
-      <div className="p-3 md:p-4 border-b border-border">
-        <h2 className="text-base md:text-xl font-bold font-mono tracking-tight uppercase text-primary">Terminal / Upgrades</h2>
+      <div className="p-3 md:p-4 border-b border-border flex items-center justify-center">
+        <h2 className="text-base md:text-xl font-bold font-mono tracking-tight uppercase text-primary">Upgrades</h2>
       </div>
 
       <Tabs defaultValue="buildings" className="flex flex-col flex-1 overflow-hidden">
