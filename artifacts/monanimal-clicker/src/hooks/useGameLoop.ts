@@ -52,7 +52,7 @@ export function useOfflineProgress(): OfflineProgressData | null {
     const lastSave = state.lastSaveTime || now;
     const offlineSecs = (now - lastSave) / 1000;
     if (offlineSecs > 60 && state.coinsPerSecond > 0) {
-      const maxOfflineSecs = 12 * 60 * 60;
+      const maxOfflineSecs = 3 * 60 * 60;
       const effectiveSecs = Math.min(offlineSecs, maxOfflineSecs);
       const earned = state.coinsPerSecond * effectiveSecs * 0.5;
       if (earned > 0) return { secs: effectiveSecs, earned };
