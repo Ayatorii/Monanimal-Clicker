@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
 import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
@@ -15,7 +15,18 @@ export default function MonanimalCharacter() {
   const { state, handleClick } = useGameState();
   const stageData = getCharacterStage(state.characterLevel);
   const [clicks, setClicks] = useState<FloatingClick[]>([]);
+  const [rankFlash, setRankFlash] = useState(false);
+  const prevStageRef = useRef(stageData.stage);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (stageData.stage !== prevStageRef.current) {
+      prevStageRef.current = stageData.stage;
+      setRankFlash(true);
+      const t = setTimeout(() => setRankFlash(false), 900);
+      return () => clearTimeout(t);
+    }
+  }, [stageData.stage]);
 
   const onInteraction = (e: React.MouseEvent | React.TouchEvent) => {
     let clientX: number, clientY: number;
@@ -47,14 +58,14 @@ export default function MonanimalCharacter() {
 
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden select-none">
-      {/* ENVIRONMENT BACKGROUND */}
-      <AnimatePresence mode="wait">
+      {/* ENVIRONMENT BACKGROUND — true crossfade */}
+      <AnimatePresence mode="sync">
         <motion.div
           key={stageData.bgKey}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 1.6, ease: "easeInOut" }}
           className="absolute inset-0 z-0"
         >
           <img
@@ -65,6 +76,21 @@ export default function MonanimalCharacter() {
           />
           <div className="absolute inset-0 bg-black/30" />
         </motion.div>
+      </AnimatePresence>
+
+      {/* RANK-UP FLASH */}
+      <AnimatePresence>
+        {rankFlash && (
+          <motion.div
+            key="rank-flash"
+            className="absolute inset-0 z-10 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.7, 0] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            style={{ background: `radial-gradient(ellipse at center, ${stageData.glowColor}55 0%, transparent 70%)` }}
+          />
+        )}
       </AnimatePresence>
 
       {/* LEVEL / TITLE BADGE + XP BAR */}
