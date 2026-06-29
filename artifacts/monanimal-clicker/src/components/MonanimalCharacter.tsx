@@ -162,7 +162,7 @@ export default function MonanimalCharacter() {
         <motion.div
           className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-10 h-10 md:w-[118px] md:h-[118px]"
           style={{
-            top: "18%", left: isMobile ? "2%" : "20%",
+            top: "18%", left: isMobile ? "14%" : "20%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
             boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
@@ -178,7 +178,7 @@ export default function MonanimalCharacter() {
         <motion.div
           className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-10 h-10 md:w-[118px] md:h-[118px]"
           style={{
-            top: "46%", left: isMobile ? "2%" : "8%",
+            top: "46%", left: "8%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
             boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
@@ -187,14 +187,14 @@ export default function MonanimalCharacter() {
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.4 }}
         >
-          <img src={ITEMS.laptop} alt="Laptop" className="w-8 h-8 md:w-[100px] md:h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: "translateX(-5px) translateY(3px)" }} />
+          <img src={ITEMS.laptop} alt="Laptop" className="w-8 h-8 md:w-[100px] md:h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: isMobile ? undefined : "translateX(-5px) translateY(3px)" }} />
         </motion.div>
       )}
       {ownedItems.includes("gpu") && (
         <motion.div
           className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-10 h-10 md:w-[118px] md:h-[118px]"
           style={{
-            top: "68%", left: isMobile ? "2%" : "16%",
+            top: "68%", left: "16%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
             boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
@@ -212,7 +212,7 @@ export default function MonanimalCharacter() {
         <motion.div
           className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-10 h-10 md:w-[118px] md:h-[118px]"
           style={{
-            top: "18%", right: isMobile ? "2%" : "20%",
+            top: "18%", right: isMobile ? "14%" : "20%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
             boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
@@ -221,14 +221,14 @@ export default function MonanimalCharacter() {
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut", delay: 0.2 }}
         >
-          <img src={ITEMS.ai_agent} alt="AI Agent" className="w-8 h-8 md:w-[100px] md:h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: "translateY(14px)" }} />
+          <img src={ITEMS.ai_agent} alt="AI Agent" className="w-8 h-8 md:w-[100px] md:h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: isMobile ? undefined : "translateY(14px)" }} />
         </motion.div>
       )}
       {ownedItems.includes("validator_node") && (
         <motion.div
           className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-10 h-10 md:w-[118px] md:h-[118px]"
           style={{
-            top: "46%", right: isMobile ? "2%" : "10%",
+            top: "46%", right: "10%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
             boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
@@ -244,7 +244,7 @@ export default function MonanimalCharacter() {
         <motion.div
           className="absolute z-10 pointer-events-none flex items-center justify-center rounded-full w-10 h-10 md:w-[118px] md:h-[118px]"
           style={{
-            top: "68%", right: isMobile ? "2%" : "18%",
+            top: "68%", right: isMobile ? "14%" : "18%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
             boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
