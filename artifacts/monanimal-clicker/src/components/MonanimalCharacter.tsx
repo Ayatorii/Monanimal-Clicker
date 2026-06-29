@@ -109,25 +109,49 @@ export default function MonanimalCharacter() {
       {(() => {
         const xp = getLevelXpInfo(state.totalCoinsEarned);
         return (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none">
-            <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl px-3 py-1.5 md:px-5 md:py-2 inline-flex flex-col items-center gap-1 min-w-[110px] md:min-w-[140px]">
-              <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: activeStage.glowColor }}>
-                LEVEL {state.characterLevel}
-              </span>
-              <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{activeStage.title}</span>
-              <div className="w-full h-1 rounded-full bg-white/10 overflow-hidden mt-0.5">
-                <motion.div
-                  className="h-full rounded-full"
-                  style={{ background: activeStage.glowColor }}
-                  animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                />
+          <>
+            {/* Mobile: full-width rectangular strip at top */}
+            <div className="md:hidden absolute top-0 left-0 right-0 z-20 pointer-events-none">
+              <div className="bg-black/70 backdrop-blur-sm border-b border-white/10 px-4 py-2 flex flex-row items-center gap-3 w-full">
+                <span className="text-xs font-bold tracking-[0.2em] uppercase whitespace-nowrap flex-shrink-0" style={{ color: activeStage.glowColor }}>
+                  LVL {state.characterLevel}
+                </span>
+                <span className="text-[10px] text-white/50 uppercase font-mono whitespace-nowrap flex-shrink-0">{activeStage.title}</span>
+                <div className="flex-1 h-1.5 rounded-none bg-white/10 overflow-hidden">
+                  <motion.div
+                    className="h-full"
+                    style={{ background: activeStage.glowColor }}
+                    animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  />
+                </div>
+                <span className="text-[9px] font-mono text-white/60 whitespace-nowrap flex-shrink-0">
+                  {formatNumber(xp.currentXp)}/{formatNumber(xp.neededXp)}
+                </span>
               </div>
-              <span className="text-[8px] font-mono text-white/80">
-                {formatNumber(xp.currentXp)} / {formatNumber(xp.neededXp)} XP
-              </span>
             </div>
-          </div>
+
+            {/* Desktop: floating pill (unchanged) */}
+            <div className="hidden md:block absolute top-4 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none">
+              <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-2 inline-flex flex-col items-center gap-1 min-w-[140px]">
+                <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: activeStage.glowColor }}>
+                  LEVEL {state.characterLevel}
+                </span>
+                <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{activeStage.title}</span>
+                <div className="w-full h-1 rounded-full bg-white/10 overflow-hidden mt-0.5">
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: activeStage.glowColor }}
+                    animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  />
+                </div>
+                <span className="text-[8px] font-mono text-white/80">
+                  {formatNumber(xp.currentXp)} / {formatNumber(xp.neededXp)} XP
+                </span>
+              </div>
+            </div>
+          </>
         );
       })()}
 
