@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
-import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
+import { getCharacterStage, formatNumber } from "@/lib/utils";
 
 const HISTORY_SIZE = 30;
 
@@ -87,7 +87,6 @@ export default function NetworkOverview() {
     return () => clearInterval(interval);
   }, [state.totalClicks, state.coinsPerClick, state.coinsPerSecond]);
 
-  const xpInfo = getLevelXpInfo(state.totalCoinsEarned);
   const rankLabel = stage.title.toUpperCase();
 
   const metrics: Metric[] = [
@@ -143,17 +142,7 @@ export default function NetworkOverview() {
         >
           {rankLabel}
         </motion.span>
-        <div className="flex items-center gap-1.5 mt-0.5">
-          <div className="flex-1 h-1 rounded-full bg-white/10 overflow-hidden">
-            <motion.div
-              className="h-full rounded-full"
-              style={{ background: stage.glowColor }}
-              animate={{ width: `${Math.min(xpInfo.pct * 100, 100)}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            />
-          </div>
-          <span className="text-[9px] font-mono text-white/30">LV {state.characterLevel}</span>
-        </div>
+        <span className="text-[9px] font-mono text-white/30 mt-0.5">LV {state.characterLevel}</span>
       </div>
 
       {/* Reset dialog */}
