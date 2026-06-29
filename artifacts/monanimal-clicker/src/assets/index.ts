@@ -7,12 +7,12 @@ import explorerImg from "@assets/explorer_1782656525810.png";
 import founderImg from "@assets/founder_1782656426732.png";
 
 // === ENVIRONMENTS ===
-import envWhiteRoom from "@assets/white-room_1782394631156.png";
-import envBuilderGarage from "@assets/builder-garage_1782394767078.png";
-import envValidatorTemple from "@assets/validator-temple_1782394665646.png";
-import envMonadCity from "@assets/monad-city_1782394698609.png";
-import envHyperlaneNexus from "@assets/hyperlane-nexus_1782394698608.png";
-import envGenesisCitadel from "@assets/genesis-citadel_1782394767086.png";
+import envWhiteRoom from "@assets/recruit-room_1782744704993.png";
+import envBuilderGarage from "@assets/builder-room_1782748161677.png";
+import envValidatorTemple from "@assets/engineer-room_1782744803602.png";
+import envMonadCity from "@assets/validator-room_1782748229216.png";
+import envHyperlaneNexus from "@assets/explorer-room_1782748211400.png";
+import envGenesisCitadel from "@assets/founder-room_1782748221442.png";
 
 // === UPGRADE ITEMS ===
 import itemSmartphone from "@assets/smartphone_1782653674000.png";
