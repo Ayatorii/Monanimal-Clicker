@@ -142,7 +142,6 @@ export default function NetworkOverview() {
         >
           {rankLabel}
         </motion.span>
-        <span className="text-[9px] font-mono text-white/30 mt-0.5">LV {state.characterLevel}</span>
       </div>
 
       {/* Reset dialog */}
