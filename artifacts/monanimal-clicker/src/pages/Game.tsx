@@ -5,7 +5,6 @@ import TopBar from "@/components/TopBar";
 import MonanimalCharacter from "@/components/MonanimalCharacter";
 import UpgradeShop from "@/components/UpgradeShop";
 import AchievementsModal from "@/components/AchievementsModal";
-import OfflineProgress from "@/components/OfflineProgress";
 import NetworkOverview from "@/components/NetworkOverview";
 
 function GameInner() {
@@ -23,7 +22,6 @@ function GameInner() {
 
   return (
     <div className="h-[100dvh] w-full flex flex-col bg-background text-foreground overflow-hidden font-sans relative">
-      <OfflineProgress />
       <AchievementsModal open={showAchievements} onOpenChange={setShowAchievements} />
 
       <div className="relative z-20">

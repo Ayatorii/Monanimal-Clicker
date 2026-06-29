@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGameState } from "./useGameState";
 import { calculateCharacterLevel } from "@/lib/utils";
 
@@ -38,39 +38,4 @@ export function useGameLoop() {
 
     return () => clearInterval(interval);
   }, [dispatch]);
-}
-
-export interface OfflineProgressData {
-  secs: number;
-  earned: number;
-}
-
-export function useOfflineProgress(): OfflineProgressData | null {
-  const { state, dispatch } = useGameState();
-  const [result] = useState<OfflineProgressData | null>(() => {
-    const now = Date.now();
-    const lastSave = state.lastSaveTime || now;
-    const offlineSecs = (now - lastSave) / 1000;
-    if (offlineSecs > 60 && state.coinsPerSecond > 0) {
-      const maxOfflineSecs = 3 * 60 * 60;
-      const effectiveSecs = Math.min(offlineSecs, maxOfflineSecs);
-      const earned = state.coinsPerSecond * effectiveSecs * 0.5;
-      if (earned > 0) return { secs: effectiveSecs, earned };
-    }
-    return null;
-  });
-
-  useEffect(() => {
-    if (result && result.earned > 0) {
-      dispatch(prev => ({
-        ...prev,
-        coins: prev.coins + result.earned,
-        totalCoinsEarned: prev.totalCoinsEarned + result.earned,
-        lastSaveTime: Date.now(),
-      }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run once on mount
-
-  return result;
 }
