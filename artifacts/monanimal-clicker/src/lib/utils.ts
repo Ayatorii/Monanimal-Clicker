@@ -23,22 +23,22 @@ export interface LevelXpInfo {
 }
 
 /**
- * Level 1 → 2 costs 1 000 XP.
- * Each subsequent level costs +2000 XP more.
- * Level N → N+1 costs: 1000 + (N-1) * 2000
+ * Level 1 → 2 costs 1 000 + 10% = 1 100 XP.
+ * From level 2 onward: cost(N) = cost(N-1) * 1.1 + 3500
  * XP = totalCoinsEarned (1 coin = 1 XP)
  */
 export function getLevelXpInfo(xp: number): LevelXpInfo {
   let level = 1;
   let spent = 0;
+  let cost = 1100; // level 1→2
   while (level < 999) {
-    const cost = 1000 + (level - 1) * 2000;
     if (xp < spent + cost) {
       const current = Math.floor(xp - spent);
-      return { level, currentXp: current, neededXp: cost, pct: current / cost };
+      return { level, currentXp: current, neededXp: Math.ceil(cost), pct: current / cost };
     }
     spent += cost;
     level++;
+    cost = cost * 1.1 + 3500;
   }
   return { level: 999, currentXp: 0, neededXp: 1, pct: 1 };
 }
