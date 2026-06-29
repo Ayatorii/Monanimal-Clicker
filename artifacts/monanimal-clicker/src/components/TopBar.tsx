@@ -94,17 +94,12 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
               onClick={() => setShowSettings(false)}
             />
             <motion.div
-              className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card border-t border-border rounded-t-2xl overflow-hidden"
-              initial={{ y: "100%" }}
+              className="fixed top-0 left-0 right-0 z-50 md:hidden bg-card border-b border-border rounded-b-2xl overflow-hidden"
+              initial={{ y: "-100%" }}
               animate={{ y: 0 }}
-              exit={{ y: "100%" }}
+              exit={{ y: "-100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              {/* Handle */}
-              <div className="flex justify-center pt-3 pb-1">
-                <div className="w-10 h-1 rounded-full bg-white/20" />
-              </div>
-
               {/* Header */}
               <div className="flex items-center justify-between px-5 py-3 border-b border-border">
                 <span className="text-sm font-black uppercase tracking-widest text-primary">Settings</span>
@@ -114,7 +109,7 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
               </div>
 
               {/* Items */}
-              <div className="flex flex-col px-5 py-3 pb-10 gap-1">
+              <div className="flex flex-col px-5 py-3 pb-5 gap-1">
                 {/* Achievements */}
                 <button
                   onClick={() => { setShowSettings(false); onShowAchievements(); }}
