@@ -231,25 +231,20 @@ export default function MonanimalCharacter() {
           data-testid="character-click-area"
           style={{ filter: `drop-shadow(0 0 24px ${activeStage.glowColor}60)` }}
         >
-          {/* idle breathing wrapper */}
-          <motion.div
-            animate={{ scale: [1, 0.97, 1.04, 1] }}
-            transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", times: [0, 0.4, 0.7, 1] }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={activeStage.characterKey}
-                src={charImg}
-                alt={activeStage.title + " Monanimal"}
-                className="w-[257px] h-[257px] md:w-[355px] md:h-[355px] object-contain"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
-                transition={{ duration: 0.5, ease: "backOut" }}
-                draggable={false}
-              />
-            </AnimatePresence>
-          </motion.div>
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={activeStage.characterKey}
+              src={charImg}
+              alt={activeStage.title + " Monanimal"}
+              className="w-[257px] h-[257px] md:w-[355px] md:h-[355px] object-contain"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              whileTap={{ scale: 1.05 }}
+              transition={{ duration: 0.5, ease: "backOut" }}
+              draggable={false}
+            />
+          </AnimatePresence>
 
           <div
             className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 h-8 rounded-full opacity-40 blur-xl pointer-events-none"
