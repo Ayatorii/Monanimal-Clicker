@@ -29,7 +29,7 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
         <div className="flex-1 flex flex-col items-center justify-center">
           <motion.div
             key={Math.floor(state.coins / 100)}
-            className="text-3xl md:text-5xl font-black font-mono tracking-tighter text-foreground drop-shadow-md"
+            className="text-2xl md:text-3xl lg:text-5xl font-black font-mono tracking-tighter text-foreground drop-shadow-md"
           >
             {formatNumber(Math.floor(state.coins))}
           </motion.div>
