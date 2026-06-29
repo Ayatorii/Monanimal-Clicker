@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
-import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
+import { getCharacterStage, formatNumber, getLevelXpInfo, CHARACTER_STAGES } from "@/lib/utils";
 import { CHARACTERS, ENVIRONMENTS, ITEMS } from "@/assets/index";
 
 interface FloatingClick {
@@ -16,8 +16,11 @@ export default function MonanimalCharacter() {
   const stageData = getCharacterStage(state.characterLevel);
   const [clicks, setClicks] = useState<FloatingClick[]>([]);
   const [rankFlash, setRankFlash] = useState(false);
+  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
   const prevStageRef = useRef(stageData.stage);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const activeStage = previewIdx !== null ? CHARACTER_STAGES[previewIdx] : stageData;
 
   useEffect(() => {
     if (stageData.stage !== prevStageRef.current) {
@@ -53,15 +56,15 @@ export default function MonanimalCharacter() {
     .map(([id]) => id)
     .filter(id => id in ITEMS);
 
-  const charImg = CHARACTERS[stageData.characterKey];
-  const bgImg = ENVIRONMENTS[stageData.bgKey];
+  const charImg = CHARACTERS[activeStage.characterKey];
+  const bgImg = ENVIRONMENTS[activeStage.bgKey];
 
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden select-none">
       {/* ENVIRONMENT BACKGROUND — true crossfade */}
       <AnimatePresence mode="sync">
         <motion.div
-          key={stageData.bgKey}
+          key={activeStage.bgKey}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -70,7 +73,7 @@ export default function MonanimalCharacter() {
         >
           <img
             src={bgImg}
-            alt={stageData.title + " environment"}
+            alt={activeStage.title + " environment"}
             className="w-full h-full object-cover"
             draggable={false}
           />
@@ -99,14 +102,14 @@ export default function MonanimalCharacter() {
         return (
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none">
             <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-2 inline-flex flex-col items-center gap-1 min-w-[140px]">
-              <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: stageData.glowColor }}>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: activeStage.glowColor }}>
                 LEVEL {state.characterLevel}
               </span>
-              <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{stageData.title}</span>
+              <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{activeStage.title}</span>
               <div className="w-full h-1 rounded-full bg-white/10 overflow-hidden mt-0.5">
                 <motion.div
                   className="h-full rounded-full"
-                  style={{ background: stageData.glowColor }}
+                  style={{ background: activeStage.glowColor }}
                   animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 />
@@ -127,13 +130,13 @@ export default function MonanimalCharacter() {
             top: "18%", left: "20%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
-            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
             backdropFilter: "blur(2px)",
           }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
         >
-          <img src={ITEMS.smartphone} alt="Smartphone" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+          <img src={ITEMS.smartphone} alt="Smartphone" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})` }} />
         </motion.div>
       )}
       {ownedItems.includes("laptop") && (
@@ -143,13 +146,13 @@ export default function MonanimalCharacter() {
             top: "46%", left: "8%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
-            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
             backdropFilter: "blur(2px)",
           }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.4 }}
         >
-          <img src={ITEMS.laptop} alt="Laptop" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})`, transform: "translateX(-5px) translateY(3px)" }} />
+          <img src={ITEMS.laptop} alt="Laptop" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: "translateX(-5px) translateY(3px)" }} />
         </motion.div>
       )}
       {ownedItems.includes("gpu") && (
@@ -159,13 +162,13 @@ export default function MonanimalCharacter() {
             top: "68%", left: "16%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
-            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
             backdropFilter: "blur(2px)",
           }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.8 }}
         >
-          <img src={ITEMS.gpu} alt="GPU" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+          <img src={ITEMS.gpu} alt="GPU" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})` }} />
         </motion.div>
       )}
 
@@ -177,13 +180,13 @@ export default function MonanimalCharacter() {
             top: "18%", right: "20%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
-            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
             backdropFilter: "blur(2px)",
           }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut", delay: 0.2 }}
         >
-          <img src={ITEMS.ai_agent} alt="AI Agent" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})`, transform: "translateY(14px)" }} />
+          <img src={ITEMS.ai_agent} alt="AI Agent" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: "translateY(14px)" }} />
         </motion.div>
       )}
       {ownedItems.includes("validator_node") && (
@@ -193,13 +196,13 @@ export default function MonanimalCharacter() {
             top: "46%", right: "10%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
-            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
             backdropFilter: "blur(2px)",
           }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut", delay: 0.6 }}
         >
-          <img src={ITEMS.validator_node} alt="Validator Node" className="w-[115px] h-[115px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+          <img src={ITEMS.validator_node} alt="Validator Node" className="w-[115px] h-[115px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})` }} />
         </motion.div>
       )}
       {ownedItems.includes("data_center") && (
@@ -209,13 +212,13 @@ export default function MonanimalCharacter() {
             top: "68%", right: "18%",
             background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 60%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(255,255,255,0.25)",
-            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${stageData.glowColor}30`,
+            boxShadow: `0 4px 24px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px 2px ${activeStage.glowColor}30`,
             backdropFilter: "blur(2px)",
           }}
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 1 }}
         >
-          <img src={ITEMS.data_center} alt="Data Center" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${stageData.glowColor})` }} />
+          <img src={ITEMS.data_center} alt="Data Center" className="w-[100px] h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})` }} />
         </motion.div>
       )}
 
@@ -226,7 +229,7 @@ export default function MonanimalCharacter() {
           onClick={onInteraction}
           onTouchStart={onInteraction}
           data-testid="character-click-area"
-          style={{ filter: `drop-shadow(0 0 24px ${stageData.glowColor}60)` }}
+          style={{ filter: `drop-shadow(0 0 24px ${activeStage.glowColor}60)` }}
         >
           {/* idle breathing wrapper */}
           <motion.div
@@ -235,9 +238,9 @@ export default function MonanimalCharacter() {
           >
             <AnimatePresence mode="wait">
               <motion.img
-                key={stageData.characterKey}
+                key={activeStage.characterKey}
                 src={charImg}
-                alt={stageData.title + " Monanimal"}
+                alt={activeStage.title + " Monanimal"}
                 className="w-[257px] h-[257px] md:w-[355px] md:h-[355px] object-contain"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -250,7 +253,7 @@ export default function MonanimalCharacter() {
 
           <div
             className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 h-8 rounded-full opacity-40 blur-xl pointer-events-none"
-            style={{ background: stageData.glowColor }}
+            style={{ background: activeStage.glowColor }}
           />
         </motion.div>
       </div>
@@ -279,6 +282,32 @@ export default function MonanimalCharacter() {
             </motion.div>
           ))}
         </AnimatePresence>
+      </div>
+
+      {/* [TEMP] LOCATION SWITCHER */}
+      <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
+        <button
+          onClick={() => setPreviewIdx(i => {
+            const cur = i !== null ? i : stageData.stage - 1;
+            return cur === 0 ? CHARACTER_STAGES.length - 1 : cur - 1;
+          })}
+          className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-lg transition-all hover:scale-110 active:scale-95"
+          style={{ background: "rgba(0,0,0,0.5)", border: `1px solid ${activeStage.glowColor}60` }}
+        >‹</button>
+        <div
+          className="px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase"
+          style={{ background: "rgba(0,0,0,0.5)", color: activeStage.glowColor, border: `1px solid ${activeStage.glowColor}60` }}
+        >
+          {activeStage.title}
+        </div>
+        <button
+          onClick={() => setPreviewIdx(i => {
+            const cur = i !== null ? i : stageData.stage - 1;
+            return cur === CHARACTER_STAGES.length - 1 ? 0 : cur + 1;
+          })}
+          className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-lg transition-all hover:scale-110 active:scale-95"
+          style={{ background: "rgba(0,0,0,0.5)", border: `1px solid ${activeStage.glowColor}60` }}
+        >›</button>
       </div>
 
       {/* EVOLUTION TIMELINE (bottom strip) */}

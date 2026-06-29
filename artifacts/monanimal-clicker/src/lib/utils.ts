@@ -60,7 +60,7 @@ export interface CharacterStage {
   characterKey: keyof typeof CHARACTERS;
 }
 
-const CHARACTER_STAGES: CharacterStage[] = [
+export const CHARACTER_STAGES: CharacterStage[] = [
   { stage: 1, title: "Recruit",   minLevel: 1,   bgKey: "whiteRoom",       glowColor: "#94a3b8", characterKey: "recruit" },
   { stage: 2, title: "Builder",   minLevel: 10,  bgKey: "builderGarage",   glowColor: "#3b82f6", characterKey: "builder" },
   { stage: 3, title: "Engineer",  minLevel: 25,  bgKey: "validatorTemple", glowColor: "#06b6d4", characterKey: "engineer" },
