@@ -245,7 +245,7 @@ export default function MonanimalCharacter() {
               key={activeStage.characterKey}
               src={charImg}
               alt={activeStage.title + " Monanimal"}
-              className="w-[257px] h-[257px] md:w-[355px] md:h-[355px] object-contain"
+              className="w-[175px] h-[175px] md:w-[355px] md:h-[355px] object-contain"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.1 }}
