@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
-import { getCharacterStage, formatNumber, getLevelXpInfo, CHARACTER_STAGES } from "@/lib/utils";
+import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
 import { CHARACTERS, ENVIRONMENTS, ITEMS } from "@/assets/index";
 
 interface FloatingClick {
@@ -16,11 +16,10 @@ export default function MonanimalCharacter() {
   const stageData = getCharacterStage(state.characterLevel);
   const [clicks, setClicks] = useState<FloatingClick[]>([]);
   const [rankFlash, setRankFlash] = useState(false);
-  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
   const prevStageRef = useRef(stageData.stage);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const activeStage = previewIdx !== null ? CHARACTER_STAGES[previewIdx] : stageData;
+  const activeStage = stageData;
 
   useEffect(() => {
     if (stageData.stage !== prevStageRef.current) {
@@ -287,32 +286,6 @@ export default function MonanimalCharacter() {
             </motion.div>
           ))}
         </AnimatePresence>
-      </div>
-
-      {/* [TEMP] LOCATION SWITCHER */}
-      <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
-        <button
-          onClick={() => setPreviewIdx(i => {
-            const cur = i !== null ? i : stageData.stage - 1;
-            return cur === 0 ? CHARACTER_STAGES.length - 1 : cur - 1;
-          })}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-lg transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(0,0,0,0.5)", border: `1px solid ${activeStage.glowColor}60` }}
-        >‹</button>
-        <div
-          className="px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase"
-          style={{ background: "rgba(0,0,0,0.5)", color: activeStage.glowColor, border: `1px solid ${activeStage.glowColor}60` }}
-        >
-          {activeStage.title}
-        </div>
-        <button
-          onClick={() => setPreviewIdx(i => {
-            const cur = i !== null ? i : stageData.stage - 1;
-            return cur === CHARACTER_STAGES.length - 1 ? 0 : cur + 1;
-          })}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-lg transition-all hover:scale-110 active:scale-95"
-          style={{ background: "rgba(0,0,0,0.5)", border: `1px solid ${activeStage.glowColor}60` }}
-        >›</button>
       </div>
 
       {/* EVOLUTION TIMELINE (bottom strip) */}
