@@ -19,9 +19,35 @@ export default function MonanimalCharacter() {
   const [clicks, setClicks] = useState<FloatingClick[]>([]);
   const [rankFlash, setRankFlash] = useState(false);
   const [popupAch, setPopupAch] = useState<{ id: string; name: string; icon: string } | null>(null);
+  const [comboMultiplier, setComboMultiplier] = useState(1);
   const prevStageRef = useRef(stageData.stage);
   const containerRef = useRef<HTMLDivElement>(null);
   const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const comboStartRef = useRef<number | null>(null);
+  const lastClickRef = useRef<number>(0);
+  const comboResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const COMBO_RESET_MS = 2000;
+
+  const COMBO_LEVELS = [
+    { threshold: 20, multiplier: 1.6, color: "#FFAE45", label: "x1.6" },
+    { threshold: 10, multiplier: 1.4, color: "#6E54FF", label: "x1.4" },
+    { threshold: 5,  multiplier: 1.2, color: "#3b82f6", label: "x1.2" },
+  ];
+
+  const getComboLevel = (durationSec: number) =>
+    COMBO_LEVELS.find(c => durationSec >= c.threshold) ?? null;
+
+  const currentComboLevel = comboMultiplier > 1
+    ? COMBO_LEVELS.find(c => c.multiplier === comboMultiplier) ?? null
+    : null;
+
+  // Cleanup combo timer on unmount
+  useEffect(() => {
+    return () => {
+      if (comboResetTimerRef.current) clearTimeout(comboResetTimerRef.current);
+    };
+  }, []);
 
   // Show popup when new achievement unlocks (mobile + desktop)
   useEffect(() => {
@@ -64,8 +90,31 @@ export default function MonanimalCharacter() {
     const rect = containerRef.current?.getBoundingClientRect();
     const x = rect ? clientX - rect.left : clientX;
     const y = rect ? clientY - rect.top : clientY;
-    setClicks(prev => [...prev, { id: Date.now() + Math.random(), x, y, amount: state.coinsPerClick }]);
-    handleClick();
+
+    // Combo tracking
+    const now = Date.now();
+    if (now - lastClickRef.current > COMBO_RESET_MS) {
+      comboStartRef.current = now;
+    }
+    lastClickRef.current = now;
+
+    const comboDurationSec = comboStartRef.current !== null
+      ? (now - comboStartRef.current) / 1000
+      : 0;
+    const level = getComboLevel(comboDurationSec);
+    const mult = level ? level.multiplier : 1;
+    setComboMultiplier(mult);
+
+    // Schedule combo reset if user stops clicking
+    if (comboResetTimerRef.current) clearTimeout(comboResetTimerRef.current);
+    comboResetTimerRef.current = setTimeout(() => {
+      comboStartRef.current = null;
+      setComboMultiplier(1);
+    }, COMBO_RESET_MS);
+
+    const earned = Math.ceil(state.coinsPerClick * mult);
+    setClicks(prev => [...prev, { id: Date.now() + Math.random(), x, y, amount: earned }]);
+    handleClick(mult);
   };
 
   const handleAnimationComplete = (id: number) => {
@@ -366,6 +415,43 @@ export default function MonanimalCharacter() {
           />
         </motion.div>
       </div>
+
+      {/* COMBO MULTIPLIER INDICATOR */}
+      <AnimatePresence>
+        {currentComboLevel && (
+          <motion.div
+            key={currentComboLevel.label}
+            className="absolute z-25 left-1/2 pointer-events-none"
+            style={{ bottom: isMobile ? "60px" : "72px", transform: "translateX(-50%)" }}
+            initial={{ opacity: 0, scale: 0.7, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.7, y: 10 }}
+            transition={{ duration: 0.25, ease: "backOut" }}
+          >
+            <div
+              className="flex items-center gap-2 rounded-full px-4 py-1.5 backdrop-blur-md border"
+              style={{
+                background: `${currentComboLevel.color}18`,
+                borderColor: `${currentComboLevel.color}60`,
+                boxShadow: `0 0 20px 4px ${currentComboLevel.color}30`,
+              }}
+            >
+              <span
+                className="font-black text-lg md:text-xl tracking-tight leading-none"
+                style={{
+                  color: currentComboLevel.color,
+                  textShadow: `0 0 12px ${currentComboLevel.color}`,
+                }}
+              >
+                {currentComboLevel.label}
+              </span>
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/70 leading-none">
+                COMBO
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* FLOATING +N CLICK NUMBERS */}
       <div className="absolute inset-0 z-30 pointer-events-none">

@@ -34,7 +34,7 @@ const DEFAULT_STATE: GameState = {
 interface GameContextType {
   state: GameState;
   dispatch: React.Dispatch<React.SetStateAction<GameState>>;
-  handleClick: () => void;
+  handleClick: (multiplier?: number) => void;
   buyBuilding: (id: string) => void;
   buyPower: (id: string) => void;
   calculateUpgradeCost: (baseCost: number, owned: number) => number;
@@ -126,12 +126,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const handleClick = useCallback(() => {
+  const handleClick = useCallback((multiplier = 1) => {
     dispatch(prev => {
+      const earned = Math.ceil(prev.coinsPerClick * multiplier);
       const newState = {
         ...prev,
-        coins: prev.coins + prev.coinsPerClick,
-        totalCoinsEarned: prev.totalCoinsEarned + prev.coinsPerClick,
+        coins: prev.coins + earned,
+        totalCoinsEarned: prev.totalCoinsEarned + earned,
         totalClicks: prev.totalClicks + 1,
       };
       return recalculateStats(newState);
