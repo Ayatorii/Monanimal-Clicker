@@ -175,7 +175,7 @@ export default function MonanimalCharacter() {
             src={bgImgMobile}
             alt={activeStage.title + " environment"}
             className="md:hidden w-full h-full object-cover"
-            style={{ objectPosition: activeStage.bgPosition ?? "center center" }}
+            style={activeStage.bgTransformMobile ? { transform: activeStage.bgTransformMobile } : undefined}
             draggable={false}
           />
           {/* Desktop image */}
@@ -183,7 +183,7 @@ export default function MonanimalCharacter() {
             src={bgImgPC}
             alt={activeStage.title + " environment"}
             className="hidden md:block w-full h-full object-cover"
-            style={{ objectPosition: activeStage.bgPosition ?? "center center" }}
+            style={activeStage.bgTransformPC ? { transform: activeStage.bgTransformPC } : undefined}
             draggable={false}
           />
           <div className="absolute inset-0 bg-black/30" />
