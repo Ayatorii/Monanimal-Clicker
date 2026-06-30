@@ -35,7 +35,7 @@ function GameInner() {
           <MonanimalCharacter />
         </div>
 
-        <div className="h-[45vh] md:h-full md:w-80 lg:w-96 flex-shrink-0 z-20 shadow-[-10px_0_20px_-10px_rgba(0,0,0,0.2)]">
+        <div className="h-16 md:h-full md:w-80 lg:w-96 flex-shrink-0 z-20 shadow-[-10px_0_20px_-10px_rgba(0,0,0,0.2)]">
           <UpgradeShop />
         </div>
       </div>
