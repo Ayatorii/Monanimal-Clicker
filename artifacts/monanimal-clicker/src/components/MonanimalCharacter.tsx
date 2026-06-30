@@ -138,12 +138,12 @@ export default function MonanimalCharacter() {
   const bgImgMobile = ENVIRONMENTS_MOBILE[activeStage.bgKey];
 
   const CHARACTER_Y_OFFSETS: Record<string, number> = {
-    recruit:   0,
-    builder:   0,
-    engineer:  0,
-    validator: 15,
-    explorer:  10,
-    founder:   5,
+    recruit:   10,
+    builder:   10,
+    engineer:  10,
+    validator: 25,
+    explorer:  20,
+    founder:   15,
   };
   const charYOffset = CHARACTER_Y_OFFSETS[activeStage.characterKey] ?? 0;
 
