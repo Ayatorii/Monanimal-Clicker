@@ -283,19 +283,16 @@ export default function MonanimalCharacter() {
               )}
             </AnimatePresence>
 
-            {/* Desktop: wide rectangular panel */}
-            <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-[320px]">
-              <div className="bg-black/75 backdrop-blur-sm border-x border-b border-white/10 px-6 py-3 flex flex-col gap-2">
-                {/* Level + Rank */}
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-black tracking-[0.15em] uppercase" style={{ color: activeStage.glowColor }}>
-                    LEVEL {state.characterLevel}
+            {/* Desktop: full-width strip (same style as mobile) */}
+            <div className="hidden md:block absolute top-0 left-0 right-0 z-20 pointer-events-none">
+              <div className="bg-black/70 backdrop-blur-sm border-b border-white/10 px-5 pt-2 pb-1.5 flex flex-col gap-1.5 w-full">
+                {/* XP row */}
+                <div className="flex flex-row items-center gap-3">
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase whitespace-nowrap flex-shrink-0" style={{ color: activeStage.glowColor }}>
+                    LVL {state.characterLevel}
                   </span>
-                  <span className="text-[10px] text-white/50 tracking-widest uppercase font-mono">{activeStage.title}</span>
-                </div>
-                {/* XP bar */}
-                <div className="flex flex-col gap-0.5">
-                  <div className="w-full h-1.5 bg-white/10 overflow-hidden">
+                  <span className="text-[10px] text-white/50 uppercase font-mono whitespace-nowrap flex-shrink-0">{activeStage.title}</span>
+                  <div className="flex-1 h-1.5 bg-white/10 overflow-hidden">
                     <motion.div
                       className="h-full"
                       style={{ background: activeStage.glowColor }}
@@ -303,26 +300,24 @@ export default function MonanimalCharacter() {
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     />
                   </div>
-                  <span className="text-[9px] font-mono text-white/50 text-right">
-                    {formatNumber(xp.currentXp)} / {formatNumber(xp.neededXp)} XP
+                  <span className="text-[9px] font-mono text-white/60 whitespace-nowrap flex-shrink-0">
+                    {formatNumber(xp.currentXp)}/{formatNumber(xp.neededXp)}
                   </span>
                 </div>
-                {/* Energy bar */}
-                <div className="flex flex-col gap-0.5">
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-3 h-3 flex-shrink-0" style={{ color: "#FFAE45" }} />
-                    <div className="flex-1 h-1.5 bg-white/10 overflow-hidden">
-                      <motion.div
-                        className="h-full"
-                        style={{ background: "#FFAE45" }}
-                        animate={{ width: `${Math.min(((state.energy ?? 1000) / (state.maxEnergy ?? 1000)) * 100, 100)}%` }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                      />
-                    </div>
-                    <span className="text-[9px] font-mono whitespace-nowrap" style={{ color: "#FFAE45" }}>
-                      {Math.floor(state.energy ?? 1000)}/{state.maxEnergy ?? 1000}
-                    </span>
+                {/* Energy row */}
+                <div className="flex flex-row items-center gap-2">
+                  <Zap className="w-3 h-3 flex-shrink-0" style={{ color: "#FFAE45" }} />
+                  <div className="flex-1 h-1.5 bg-white/10 overflow-hidden">
+                    <motion.div
+                      className="h-full"
+                      style={{ background: "#FFAE45" }}
+                      animate={{ width: `${Math.min(((state.energy ?? 1000) / (state.maxEnergy ?? 1000)) * 100, 100)}%` }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    />
                   </div>
+                  <span className="text-[9px] font-mono whitespace-nowrap flex-shrink-0" style={{ color: "#FFAE45" }}>
+                    {Math.floor(state.energy ?? 1000)}/{state.maxEnergy ?? 1000}
+                  </span>
                 </div>
               </div>
             </div>
