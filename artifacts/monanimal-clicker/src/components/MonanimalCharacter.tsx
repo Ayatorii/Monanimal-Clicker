@@ -265,8 +265,6 @@ export default function MonanimalCharacter() {
           onTouchStart={onInteraction}
           data-testid="character-click-area"
           style={{ filter: `drop-shadow(0 0 24px ${activeStage.glowColor}60)` }}
-          animate={{ y: [0, -18, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           whileTap={{ scale: 1.05 }}
         >
           <AnimatePresence mode="wait">
@@ -284,11 +282,9 @@ export default function MonanimalCharacter() {
             />
           </AnimatePresence>
 
-          <motion.div
-            className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 rounded-full blur-xl pointer-events-none"
-            style={{ background: activeStage.glowColor }}
-            animate={{ scaleX: [1, 0.7, 1], opacity: [0.4, 0.15, 0.4], height: ["2rem", "0.9rem", "2rem"] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          <div
+            className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 h-8 rounded-full blur-xl pointer-events-none"
+            style={{ background: activeStage.glowColor, opacity: 0.3 }}
           />
         </motion.div>
       </div>
