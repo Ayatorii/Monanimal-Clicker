@@ -15,6 +15,7 @@ export interface GameState {
   lastSaveTime: number;
   darkMode: boolean;
   soundEnabled: boolean;
+  maxComboDuration: number;
 }
 
 const DEFAULT_STATE: GameState = {
@@ -29,6 +30,7 @@ const DEFAULT_STATE: GameState = {
   lastSaveTime: Date.now(),
   darkMode: true,
   soundEnabled: true,
+  maxComboDuration: 0,
 };
 
 interface GameContextType {
@@ -43,6 +45,7 @@ interface GameContextType {
   clearUnseenAchievements: () => void;
   latestUnlocked: { id: string; name: string; icon: string } | null;
   dismissLatestUnlocked: () => void;
+  updateMaxComboDuration: (seconds: number) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -200,6 +203,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setUnseenAchievements([]);
   }, []);
 
+  const updateMaxComboDuration = useCallback((seconds: number) => {
+    dispatch(prev => {
+      if (seconds > (prev.maxComboDuration ?? 0)) {
+        return { ...prev, maxComboDuration: seconds };
+      }
+      return prev;
+    });
+  }, []);
+
   const dismissLatestUnlocked = useCallback(() => {
     setLatestUnlocked(null);
   }, []);
@@ -227,13 +239,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (changed) {
       dispatch(prev => ({ ...prev, achievements: newAchievements }));
     }
-  }, [state.coins, state.totalClicks, state.characterLevel, state.coinsPerSecond, state.upgrades]);
+  }, [state.coins, state.totalClicks, state.characterLevel, state.coinsPerSecond, state.upgrades, state.maxComboDuration]);
 
   return (
     <GameContext.Provider value={{
       state, dispatch, handleClick, buyBuilding, buyPower, calculateUpgradeCost, resetGame,
       unseenAchievements, clearUnseenAchievements,
       latestUnlocked, dismissLatestUnlocked,
+      updateMaxComboDuration,
     }}>
       {children}
     </GameContext.Provider>

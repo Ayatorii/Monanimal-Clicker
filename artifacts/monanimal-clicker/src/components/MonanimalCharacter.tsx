@@ -14,7 +14,7 @@ interface FloatingClick {
 }
 
 export default function MonanimalCharacter() {
-  const { state, handleClick, latestUnlocked, dismissLatestUnlocked } = useGameState();
+  const { state, handleClick, latestUnlocked, dismissLatestUnlocked, updateMaxComboDuration } = useGameState();
   const isMobile = useIsMobile();
   const stageData = getCharacterStage(state.characterLevel);
   const [clicks, setClicks] = useState<FloatingClick[]>([]);
@@ -109,6 +109,10 @@ export default function MonanimalCharacter() {
     // Schedule combo reset if user stops clicking
     if (comboResetTimerRef.current) clearTimeout(comboResetTimerRef.current);
     comboResetTimerRef.current = setTimeout(() => {
+      if (comboStartRef.current !== null) {
+        const finalDuration = (Date.now() - comboStartRef.current) / 1000;
+        updateMaxComboDuration(finalDuration);
+      }
       comboStartRef.current = null;
       setComboMultiplier(1);
     }, COMBO_RESET_MS);

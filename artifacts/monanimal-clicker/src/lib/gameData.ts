@@ -59,4 +59,6 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: "speed_runner", name: "Speed Runner", description: "Reach 100 points per second", icon: "🏃", check: (s) => s.coinsPerSecond >= 100 },
   { id: "turbo_producer", name: "Turbo Producer", description: "Reach 1,000 points per second", icon: "🚀", check: (s) => s.coinsPerSecond >= 1000 },
   { id: "mega_producer", name: "Mega Producer", description: "Reach 10,000 points per second", icon: "🏭", check: (s) => s.coinsPerSecond >= 10000 },
+  { id: "iron_fingers", name: "Iron Fingers", description: "Click for 1 minute without stopping", icon: "🔁", check: (s) => (s.maxComboDuration ?? 0) >= 60 },
+  { id: "machine", name: "Machine", description: "Click for 5 minutes without stopping", icon: "🤖", check: (s) => (s.maxComboDuration ?? 0) >= 300 },
 ];
