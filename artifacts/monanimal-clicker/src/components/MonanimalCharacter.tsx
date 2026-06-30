@@ -10,6 +10,7 @@ interface FloatingClick {
   x: number;
   y: number;
   amount: number;
+  color: string;
 }
 
 export default function MonanimalCharacter() {
@@ -113,7 +114,8 @@ export default function MonanimalCharacter() {
     }, COMBO_RESET_MS);
 
     const earned = Math.ceil(state.coinsPerClick * mult);
-    setClicks(prev => [...prev, { id: Date.now() + Math.random(), x, y, amount: earned }]);
+    const clickColor = level ? level.color : "#ffffff";
+    setClicks(prev => [...prev, { id: Date.now() + Math.random(), x, y, amount: earned, color: clickColor }]);
     handleClick(mult);
   };
 
@@ -416,42 +418,44 @@ export default function MonanimalCharacter() {
         </motion.div>
       </div>
 
-      {/* COMBO MULTIPLIER INDICATOR */}
-      <AnimatePresence>
-        {currentComboLevel && (
-          <motion.div
-            key={currentComboLevel.label}
-            className="absolute z-25 left-1/2 pointer-events-none"
-            style={{ bottom: isMobile ? "60px" : "72px", transform: "translateX(-50%)" }}
-            initial={{ opacity: 0, scale: 0.7, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.7, y: 10 }}
-            transition={{ duration: 0.25, ease: "backOut" }}
-          >
-            <div
-              className="flex items-center gap-2 rounded-full px-4 py-1.5 backdrop-blur-md border"
-              style={{
-                background: `${currentComboLevel.color}18`,
-                borderColor: `${currentComboLevel.color}60`,
-                boxShadow: `0 0 20px 4px ${currentComboLevel.color}30`,
-              }}
+      {/* COMBO MULTIPLIER INDICATOR — above character */}
+      <div className="absolute inset-0 z-25 pointer-events-none flex items-center justify-center">
+        <AnimatePresence>
+          {currentComboLevel && (
+            <motion.div
+              key={currentComboLevel.label}
+              className="absolute"
+              style={{ top: isMobile ? "22%" : "18%" }}
+              initial={{ opacity: 0, scale: 0.7, y: -8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.7, y: -8 }}
+              transition={{ duration: 0.25, ease: "backOut" }}
             >
-              <span
-                className="font-black text-lg md:text-xl tracking-tight leading-none"
+              <div
+                className="flex items-center gap-2 rounded-full px-4 py-1.5 backdrop-blur-md border"
                 style={{
-                  color: currentComboLevel.color,
-                  textShadow: `0 0 12px ${currentComboLevel.color}`,
+                  background: `${currentComboLevel.color}18`,
+                  borderColor: `${currentComboLevel.color}60`,
+                  boxShadow: `0 0 20px 4px ${currentComboLevel.color}30`,
                 }}
               >
-                {currentComboLevel.label}
-              </span>
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/70 leading-none">
-                COMBO
-              </span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <span
+                  className="font-black text-lg md:text-xl tracking-tight leading-none"
+                  style={{
+                    color: currentComboLevel.color,
+                    textShadow: `0 0 12px ${currentComboLevel.color}`,
+                  }}
+                >
+                  {currentComboLevel.label}
+                </span>
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/70 leading-none">
+                  COMBO
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* FLOATING +N CLICK NUMBERS */}
       <div className="absolute inset-0 z-30 pointer-events-none">
@@ -469,8 +473,10 @@ export default function MonanimalCharacter() {
                 top: 0,
                 left: click.x,
                 transform: "translateX(-50%)",
-                color: "#ffffff",
-                textShadow: "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000",
+                color: click.color,
+                textShadow: click.color === "#ffffff"
+                  ? "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000"
+                  : `0 0 10px ${click.color}, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000`,
               }}
             >
               +{formatNumber(click.amount)}
