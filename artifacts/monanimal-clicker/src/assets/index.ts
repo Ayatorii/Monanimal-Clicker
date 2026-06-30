@@ -7,7 +7,7 @@ import explorerImg from "@assets/explorer_1782656525810.png";
 import founderImg from "@assets/founder_1782656426732.png";
 
 // === ENVIRONMENTS ===
-import envWhiteRoom from "@assets/recruit-room_1782744704993.png";
+import envWhiteRoom from "@assets/1recruit-room_1782847132646.png";
 import envBuilderGarage from "@assets/builder-room_1782748161677.png";
 import envValidatorTemple from "@assets/engineer-room_1782744803602.png";
 import envMonadCity from "@assets/validator-room_1782748229216.png";
