@@ -3,15 +3,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
 import { formatNumber } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Volume2, VolumeX, Trophy, Settings, X } from "lucide-react";
+import { Moon, Sun, Volume2, VolumeX, Trophy, Settings, X, RotateCcw } from "lucide-react";
 
 interface TopBarProps {
   onShowAchievements: () => void;
 }
 
 export default function TopBar({ onShowAchievements }: TopBarProps) {
-  const { state, dispatch } = useGameState();
+  const { state, dispatch, resetGame } = useGameState();
   const [showSettings, setShowSettings] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
+
+  const handleReset = () => {
+    if (confirmReset) {
+      resetGame();
+      setConfirmReset(false);
+      setShowSettings(false);
+    } else {
+      setConfirmReset(true);
+    }
+  };
 
   return (
     <>
@@ -66,6 +77,46 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
             >
               <Trophy className="h-4 w-4 md:h-5 md:w-5" />
             </Button>
+            <AnimatePresence mode="wait">
+              {confirmReset ? (
+                <motion.div
+                  key="confirm"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="flex items-center gap-1"
+                >
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="h-8 text-xs font-bold px-2"
+                    onClick={handleReset}
+                  >
+                    Confirm
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 text-xs px-2 text-muted-foreground"
+                    onClick={() => setConfirmReset(false)}
+                  >
+                    Cancel
+                  </Button>
+                </motion.div>
+              ) : (
+                <motion.div key="reset" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                    onClick={handleReset}
+                    title="Reset Progress"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Right: mobile gear button */}
@@ -146,7 +197,7 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
                 {/* Sound */}
                 <button
                   onClick={() => dispatch(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }))}
-                  className="flex items-center justify-between w-full py-3"
+                  className="flex items-center justify-between w-full py-3 border-b border-border/50"
                 >
                   <div className="flex items-center gap-3">
                     {state.soundEnabled
@@ -161,6 +212,52 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
                     <div className="w-4 h-4 rounded-full bg-white shadow" />
                   </div>
                 </button>
+
+                {/* Reset Progress */}
+                <AnimatePresence mode="wait">
+                  {confirmReset ? (
+                    <motion.div
+                      key="confirm-mobile"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="py-3 flex flex-col gap-2">
+                        <p className="text-xs text-muted-foreground">All progress will be permanently deleted.</p>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={handleReset}
+                            className="flex-1 py-2 rounded-lg bg-destructive text-destructive-foreground text-sm font-bold"
+                          >
+                            Yes, Reset
+                          </button>
+                          <button
+                            onClick={() => setConfirmReset(false)}
+                            className="flex-1 py-2 rounded-lg bg-muted text-muted-foreground text-sm font-medium"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.button
+                      key="reset-mobile"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setConfirmReset(true)}
+                      className="flex items-center justify-between w-full py-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <RotateCcw className="h-5 w-5 text-destructive" />
+                        <span className="text-sm font-bold text-destructive">Reset Progress</span>
+                      </div>
+                      <span className="text-muted-foreground text-xs">›</span>
+                    </motion.button>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </>

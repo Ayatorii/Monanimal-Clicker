@@ -38,6 +38,7 @@ interface GameContextType {
   buyBuilding: (id: string) => void;
   buyPower: (id: string) => void;
   calculateUpgradeCost: (baseCost: number, owned: number) => number;
+  resetGame: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -151,6 +152,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(timer);
   }, [state]);
 
+  const resetGame = useCallback(() => {
+    localStorage.removeItem("monanimal-clicker-save-v2");
+    dispatch({ ...DEFAULT_STATE, lastSaveTime: Date.now() });
+  }, []);
+
   // Achievement checker
   useEffect(() => {
     let changed = false;
@@ -178,7 +184,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   return (
     <GameContext.Provider value={{
-      state, dispatch, handleClick, buyBuilding, buyPower, calculateUpgradeCost,
+      state, dispatch, handleClick, buyBuilding, buyPower, calculateUpgradeCost, resetGame,
     }}>
       {children}
     </GameContext.Provider>
