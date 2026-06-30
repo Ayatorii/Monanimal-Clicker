@@ -32,7 +32,7 @@ export default function MonanimalCharacter() {
 
   const COMBO_LEVELS = [
     { threshold: 20, multiplier: 1.6, color: "#FFAE45", label: "x1.6" },
-    { threshold: 10, multiplier: 1.4, color: "#6E54FF", label: "x1.4" },
+    { threshold: 10, multiplier: 1.4, color: "#FF8EE4", label: "x1.4" },
     { threshold: 5,  multiplier: 1.2, color: "#3b82f6", label: "x1.2" },
   ];
 
