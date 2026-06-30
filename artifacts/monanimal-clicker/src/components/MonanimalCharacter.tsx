@@ -221,7 +221,7 @@ export default function MonanimalCharacter() {
           animate={{ y: [0, -6, 0] }}
           transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut", delay: 0.2 }}
         >
-          <img src={ITEMS.ai_agent} alt="AI Agent" className="w-8 h-8 md:w-[100px] md:h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: isMobile ? undefined : "translateY(14px)" }} />
+          <img src={ITEMS.ai_agent} alt="AI Agent" className="w-8 h-8 md:w-[100px] md:h-[100px] object-contain" style={{ filter: `drop-shadow(0 0 8px ${activeStage.glowColor})`, transform: isMobile ? "translateY(5px)" : "translateY(14px)" }} />
         </motion.div>
       )}
       {ownedItems.includes("validator_node") && (
