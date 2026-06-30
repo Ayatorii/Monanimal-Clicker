@@ -89,46 +89,6 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
                 <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-red-500 border border-background" />
               )}
             </div>
-            <AnimatePresence mode="wait">
-              {confirmReset ? (
-                <motion.div
-                  key="confirm"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className="flex items-center gap-1"
-                >
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="h-8 text-xs font-bold px-2"
-                    onClick={handleReset}
-                  >
-                    Confirm
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 text-xs px-2 text-muted-foreground"
-                    onClick={() => setConfirmReset(false)}
-                  >
-                    Cancel
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div key="reset" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                    onClick={handleReset}
-                    title="Reset Progress"
-                  >
-                    <RotateCcw className="h-4 w-4" />
-                  </Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Right: mobile gear button */}
