@@ -141,9 +141,9 @@ export default function MonanimalCharacter() {
     recruit:   90,
     builder:   90,
     engineer:  90,
-    validator: 105,
-    explorer:  100,
-    founder:   95,
+    validator: 90,
+    explorer:  90,
+    founder:   90,
   };
   const charYOffset = CHARACTER_Y_OFFSETS[activeStage.characterKey] ?? 0;
 

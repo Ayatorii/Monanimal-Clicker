@@ -69,7 +69,11 @@ export const CHARACTER_STAGES: CharacterStage[] = [
   { stage: 6, title: "Founder",   minLevel: 100, bgKey: "genesisCitadel",  glowColor: "#FFAE45", characterKey: "founder" },
 ];
 
+// PREVIEW_STAGE: 0 = disabled, 1–6 = force a specific stage for screenshots
+export let PREVIEW_STAGE = 0;
+
 export function getCharacterStage(level: number): CharacterStage {
+  if (PREVIEW_STAGE > 0) return CHARACTER_STAGES[PREVIEW_STAGE - 1];
   let stage = CHARACTER_STAGES[0];
   for (const s of CHARACTER_STAGES) {
     if (level >= s.minLevel) stage = s;
