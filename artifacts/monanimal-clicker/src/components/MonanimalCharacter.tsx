@@ -29,13 +29,17 @@ export default function MonanimalCharacter() {
       setPopupAch(latestUnlocked);
       dismissLatestUnlocked();
       if (popupTimerRef.current) clearTimeout(popupTimerRef.current);
-      popupTimerRef.current = setTimeout(() => setPopupAch(null), 3500);
+      popupTimerRef.current = setTimeout(() => setPopupAch(null), 3000);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latestUnlocked]);
+
+  // Clear timer only on unmount
+  useEffect(() => {
     return () => {
       if (popupTimerRef.current) clearTimeout(popupTimerRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [latestUnlocked]);
+  }, []);
 
   const activeStage = stageData;
 
