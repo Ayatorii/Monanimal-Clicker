@@ -136,6 +136,21 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   }, [recalculateStats]);
 
+  // Auto-save to localStorage (debounced, max once per 2s)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem("monanimal-clicker-save-v2", JSON.stringify({
+          ...state,
+          lastSaveTime: Date.now(),
+        }));
+      } catch (e) {
+        // storage quota exceeded — silently ignore
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [state]);
+
   // Achievement checker
   useEffect(() => {
     let changed = false;
