@@ -261,12 +261,13 @@ export default function MonanimalCharacter() {
               )}
             </AnimatePresence>
 
-            {/* Desktop: achievement popup — top-right of character area */}
+            {/* Desktop: achievement popup — top-right of character area, below strip */}
             <AnimatePresence>
               {popupAch && (
                 <motion.div
                   key={"desk-" + popupAch.id}
-                  className="hidden md:flex absolute top-4 right-4 z-30 pointer-events-none items-center gap-3"
+                  className="hidden md:flex absolute right-4 z-30 pointer-events-none items-center gap-3"
+                  style={{ top: "68px" }}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
