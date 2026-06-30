@@ -143,9 +143,6 @@ export default function UpgradeShop() {
           <span className={cn("text-[10px] font-bold uppercase tracking-wider", openSheet === "buildings" ? "text-primary" : "text-muted-foreground")}>
             Infrastructure
           </span>
-          {totalBuildings > 0 && (
-            <span className="text-[9px] text-primary font-mono font-bold">{totalBuildings} owned</span>
-          )}
         </button>
 
         <div className="w-px bg-border my-3" />
@@ -165,9 +162,6 @@ export default function UpgradeShop() {
           <span className={cn("text-[10px] font-bold uppercase tracking-wider", openSheet === "power" ? "text-accent" : "text-muted-foreground")}>
             Click Power
           </span>
-          {totalPower > 0 && (
-            <span className="text-[9px] text-accent font-mono font-bold">{totalPower} owned</span>
-          )}
         </button>
       </div>
 
