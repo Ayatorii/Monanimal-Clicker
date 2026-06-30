@@ -145,6 +145,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         coins: prev.coins + earned,
         totalCoinsEarned: prev.totalCoinsEarned + earned,
         totalClicks: prev.totalClicks + 1,
+        energy: Math.max(0, (prev.energy ?? 1000) - 1),
       };
       return recalculateStats(newState);
     });
