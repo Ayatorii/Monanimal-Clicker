@@ -138,12 +138,12 @@ export default function MonanimalCharacter() {
   const bgImgMobile = ENVIRONMENTS_MOBILE[activeStage.bgKey];
 
   const CHARACTER_Y_OFFSETS: Record<string, number> = {
-    recruit:   10,
-    builder:   10,
-    engineer:  10,
-    validator: 25,
-    explorer:  20,
-    founder:   15,
+    recruit:   90,
+    builder:   90,
+    engineer:  90,
+    validator: 105,
+    explorer:  100,
+    founder:   95,
   };
   const charYOffset = CHARACTER_Y_OFFSETS[activeStage.characterKey] ?? 0;
 
@@ -438,7 +438,7 @@ export default function MonanimalCharacter() {
       )}
 
       {/* CLICKABLE CHARACTER IMAGE */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center" style={{ paddingTop: isMobile ? charYOffset + 80 : charYOffset }}>
+      <div className="absolute inset-0 z-20 flex items-center justify-center" style={{ paddingTop: charYOffset }}>
         <motion.div
           className="relative cursor-pointer touch-manipulation"
           onClick={onInteraction}
