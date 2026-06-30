@@ -438,7 +438,7 @@ export default function MonanimalCharacter() {
       )}
 
       {/* CLICKABLE CHARACTER IMAGE */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center" style={{ paddingTop: isMobile ? charYOffset + 40 : charYOffset }}>
+      <div className="absolute inset-0 z-20 flex items-center justify-center" style={{ paddingTop: isMobile ? charYOffset + 80 : charYOffset }}>
         <motion.div
           className="relative cursor-pointer touch-manipulation"
           onClick={onInteraction}
