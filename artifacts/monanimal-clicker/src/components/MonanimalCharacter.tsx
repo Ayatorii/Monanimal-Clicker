@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Zap } from "lucide-react";
 import { useGameState } from "@/hooks/useGameState";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
@@ -200,22 +201,40 @@ export default function MonanimalCharacter() {
           <>
             {/* Mobile: full-width rectangular strip at top */}
             <div className="md:hidden absolute top-0 left-0 right-0 z-20 pointer-events-none">
-              <div className="bg-black/70 backdrop-blur-sm border-b border-white/10 px-4 py-2 flex flex-row items-center gap-3 w-full">
-                <span className="text-xs font-bold tracking-[0.2em] uppercase whitespace-nowrap flex-shrink-0" style={{ color: activeStage.glowColor }}>
-                  LVL {state.characterLevel}
-                </span>
-                <span className="text-[10px] text-white/50 uppercase font-mono whitespace-nowrap flex-shrink-0">{activeStage.title}</span>
-                <div className="flex-1 h-1.5 rounded-none bg-white/10 overflow-hidden">
-                  <motion.div
-                    className="h-full"
-                    style={{ background: activeStage.glowColor }}
-                    animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                  />
+              <div className="bg-black/70 backdrop-blur-sm border-b border-white/10 px-4 pt-2 pb-1.5 flex flex-col gap-1.5 w-full">
+                {/* XP row */}
+                <div className="flex flex-row items-center gap-3">
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase whitespace-nowrap flex-shrink-0" style={{ color: activeStage.glowColor }}>
+                    LVL {state.characterLevel}
+                  </span>
+                  <span className="text-[10px] text-white/50 uppercase font-mono whitespace-nowrap flex-shrink-0">{activeStage.title}</span>
+                  <div className="flex-1 h-1.5 bg-white/10 overflow-hidden">
+                    <motion.div
+                      className="h-full"
+                      style={{ background: activeStage.glowColor }}
+                      animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    />
+                  </div>
+                  <span className="text-[9px] font-mono text-white/60 whitespace-nowrap flex-shrink-0">
+                    {formatNumber(xp.currentXp)}/{formatNumber(xp.neededXp)}
+                  </span>
                 </div>
-                <span className="text-[9px] font-mono text-white/60 whitespace-nowrap flex-shrink-0">
-                  {formatNumber(xp.currentXp)}/{formatNumber(xp.neededXp)}
-                </span>
+                {/* Energy row */}
+                <div className="flex flex-row items-center gap-2">
+                  <Zap className="w-3 h-3 flex-shrink-0" style={{ color: "#FFAE45" }} />
+                  <div className="flex-1 h-1.5 bg-white/10 overflow-hidden">
+                    <motion.div
+                      className="h-full"
+                      style={{ background: "#FFAE45" }}
+                      animate={{ width: `${Math.min(((state.energy ?? 1000) / (state.maxEnergy ?? 1000)) * 100, 100)}%` }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    />
+                  </div>
+                  <span className="text-[9px] font-mono whitespace-nowrap flex-shrink-0" style={{ color: "#FFAE45" }}>
+                    {Math.floor(state.energy ?? 1000)}/{state.maxEnergy ?? 1000}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -225,7 +244,7 @@ export default function MonanimalCharacter() {
                 <motion.div
                   key={"mob-" + popupAch.id}
                   className="md:hidden absolute left-3 right-3 z-30 pointer-events-none"
-                  style={{ top: "44px" }}
+                  style={{ top: "62px" }}
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
@@ -264,16 +283,17 @@ export default function MonanimalCharacter() {
               )}
             </AnimatePresence>
 
-            {/* Desktop: floating pill (unchanged) */}
+            {/* Desktop: rectangular badge */}
             <div className="hidden md:block absolute top-4 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none">
-              <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-2 inline-flex flex-col items-center gap-1 min-w-[140px]">
+              <div className="bg-black/60 backdrop-blur-sm border border-white/10 px-5 py-2 inline-flex flex-col items-center gap-1 min-w-[180px]">
                 <span className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: activeStage.glowColor }}>
                   LEVEL {state.characterLevel}
                 </span>
                 <span className="text-[10px] text-white/60 tracking-widest uppercase font-mono">{activeStage.title}</span>
-                <div className="w-full h-1 rounded-full bg-white/10 overflow-hidden mt-0.5">
+                {/* XP bar */}
+                <div className="w-full h-1 bg-white/10 overflow-hidden mt-0.5">
                   <motion.div
-                    className="h-full rounded-full"
+                    className="h-full"
                     style={{ background: activeStage.glowColor }}
                     animate={{ width: `${Math.min(xp.pct * 100, 100)}%` }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
@@ -282,6 +302,21 @@ export default function MonanimalCharacter() {
                 <span className="text-[8px] font-mono text-white/80">
                   {formatNumber(xp.currentXp)} / {formatNumber(xp.neededXp)} XP
                 </span>
+                {/* Energy bar */}
+                <div className="w-full flex items-center gap-1.5 mt-0.5">
+                  <Zap className="w-3 h-3 flex-shrink-0" style={{ color: "#FFAE45" }} />
+                  <div className="flex-1 h-1 bg-white/10 overflow-hidden">
+                    <motion.div
+                      className="h-full"
+                      style={{ background: "#FFAE45" }}
+                      animate={{ width: `${Math.min(((state.energy ?? 1000) / (state.maxEnergy ?? 1000)) * 100, 100)}%` }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    />
+                  </div>
+                  <span className="text-[8px] font-mono whitespace-nowrap" style={{ color: "#FFAE45" }}>
+                    {Math.floor(state.energy ?? 1000)}/{state.maxEnergy ?? 1000}
+                  </span>
+                </div>
               </div>
             </div>
           </>

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useGameState } from "./useGameState";
-import { calculateCharacterLevel } from "@/lib/utils";
+import { calculateCharacterLevel, getCharacterStage } from "@/lib/utils";
 
 export function useGameLoop() {
   const { state, dispatch } = useGameState();
@@ -25,6 +25,24 @@ export function useGameLoop() {
 
     return () => clearInterval(interval);
   }, [state.coinsPerSecond, dispatch]);
+
+  // Energy regen — 1 per second base, +1 per rank (Builder=2, Engineer=3, etc.)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(prev => {
+        const maxEnergy = prev.maxEnergy ?? 1000;
+        const currentEnergy = prev.energy ?? maxEnergy;
+        if (currentEnergy >= maxEnergy) return prev;
+        const stage = getCharacterStage(prev.characterLevel);
+        const regenRate = stage.stage; // stage 1=Recruit(+1), stage 2=Builder(+2)…
+        return {
+          ...prev,
+          energy: Math.min(currentEnergy + regenRate, maxEnergy),
+        };
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [dispatch]);
 
   // Auto save
   useEffect(() => {

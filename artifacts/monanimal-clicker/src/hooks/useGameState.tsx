@@ -16,6 +16,8 @@ export interface GameState {
   darkMode: boolean;
   soundEnabled: boolean;
   maxComboDuration: number;
+  energy: number;
+  maxEnergy: number;
 }
 
 const DEFAULT_STATE: GameState = {
@@ -31,6 +33,8 @@ const DEFAULT_STATE: GameState = {
   darkMode: true,
   soundEnabled: true,
   maxComboDuration: 0,
+  energy: 1000,
+  maxEnergy: 1000,
 };
 
 interface GameContextType {
@@ -121,11 +125,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
       baseCpc += p.cpc * owned;
     });
 
+    const newLevel = calculateCharacterLevel(currentState.totalCoinsEarned);
+    const newMaxEnergy = 1000 + (newLevel - 1) * 100;
     return {
       ...currentState,
       coinsPerSecond: baseCps,
       coinsPerClick: baseCpc,
-      characterLevel: calculateCharacterLevel(currentState.totalCoinsEarned),
+      characterLevel: newLevel,
+      maxEnergy: newMaxEnergy,
+      energy: Math.min(currentState.energy ?? 1000, newMaxEnergy),
     };
   }, []);
 
