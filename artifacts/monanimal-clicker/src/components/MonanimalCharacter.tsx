@@ -198,11 +198,11 @@ export default function MonanimalCharacter() {
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
                 >
-                  <div className="flex items-center gap-3 bg-black/80 backdrop-blur-md border border-red-500/60 rounded-2xl px-4 py-3 shadow-xl min-w-[200px] max-w-[260px]">
-                    <span className="text-3xl leading-none flex-shrink-0">{popupAch.icon}</span>
+                  <div className="flex items-center gap-4 bg-black/85 backdrop-blur-md border border-red-500/70 rounded-2xl px-5 py-4 shadow-2xl min-w-[260px] max-w-[340px]">
+                    <span className="text-4xl leading-none flex-shrink-0">{popupAch.icon}</span>
                     <div className="flex flex-col min-w-0">
-                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-red-400 leading-none">Achievement Unlocked</span>
-                      <span className="text-sm font-bold text-white truncate leading-snug mt-1">{popupAch.name}</span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.22em] text-red-400 leading-none">Achievement Unlocked</span>
+                      <span className="text-base font-bold text-white truncate leading-snug mt-1.5">{popupAch.name}</span>
                     </div>
                   </div>
                 </motion.div>
