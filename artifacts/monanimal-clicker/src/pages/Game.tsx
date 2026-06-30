@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useGameState, GameProvider } from "@/hooks/useGameState";
 import { useGameLoop } from "@/hooks/useGameLoop";
+import { usePreloadImages } from "@/hooks/usePreloadImages";
 import TopBar from "@/components/TopBar";
 import MonanimalCharacter from "@/components/MonanimalCharacter";
 import UpgradeShop from "@/components/UpgradeShop";
@@ -9,6 +10,7 @@ import NetworkOverview from "@/components/NetworkOverview";
 
 function GameInner() {
   useGameLoop();
+  usePreloadImages();
   const { state } = useGameState();
   const [showAchievements, setShowAchievements] = useState(false);
 

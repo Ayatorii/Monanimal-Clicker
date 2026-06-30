@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import { BUILDINGS, POWER_UPGRADES, ACHIEVEMENTS } from "@/lib/gameData";
-import { calculateCharacterLevel, formatNumber } from "@/lib/utils";
+import { calculateCharacterLevel, formatNumber, getCharacterStage } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
 export interface GameState {
@@ -83,12 +83,19 @@ export function GameProvider({ children }: { children: ReactNode }) {
         );
         const offlineCoins = Math.floor(cps * elapsedSec);
 
+        // Offline energy regen
+        const stage = getCharacterStage(loadedState.characterLevel ?? 1);
+        const regenRate = stage.stage;
+        const maxEnergy = loadedState.maxEnergy ?? 1000;
+        const currentEnergy = loadedState.energy ?? maxEnergy;
+        const offlineEnergy = Math.min(currentEnergy + regenRate * elapsedSec, maxEnergy);
+
         if (offlineCoins > 0) {
           offlineEarnedRef.current = offlineCoins;
-          return { ...loadedState, coins: loadedState.coins + offlineCoins };
+          return { ...loadedState, coins: loadedState.coins + offlineCoins, energy: offlineEnergy };
         }
 
-        return loadedState;
+        return { ...loadedState, energy: offlineEnergy };
       } catch (e) {
         return DEFAULT_STATE;
       }
