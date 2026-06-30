@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import { BUILDINGS, POWER_UPGRADES, ACHIEVEMENTS } from "@/lib/gameData";
-import { calculateCharacterLevel } from "@/lib/utils";
+import { calculateCharacterLevel, formatNumber } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
 export interface GameState {
@@ -49,21 +49,55 @@ export function useGameState() {
   return context;
 }
 
+const OFFLINE_CAP_SECONDS = 6 * 60 * 60; // 6 hours
+
 export function GameProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+
+  const offlineEarnedRef = React.useRef<number>(0);
+
   const [state, dispatch] = useState<GameState>(() => {
     const saved = localStorage.getItem("monanimal-clicker-save-v2");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         const { equipment, ...rest } = parsed;
-        return { ...DEFAULT_STATE, ...rest };
+        const loadedState: GameState = { ...DEFAULT_STATE, ...rest };
+
+        // Offline progress: only add to coins, not totalCoinsEarned (no level-up)
+        const cps: number = loadedState.coinsPerSecond ?? 0;
+        const lastSave: number = loadedState.lastSaveTime ?? Date.now();
+        const elapsedSec = Math.min(
+          (Date.now() - lastSave) / 1000,
+          OFFLINE_CAP_SECONDS
+        );
+        const offlineCoins = Math.floor(cps * elapsedSec);
+
+        if (offlineCoins > 0) {
+          offlineEarnedRef.current = offlineCoins;
+          return { ...loadedState, coins: loadedState.coins + offlineCoins };
+        }
+
+        return loadedState;
       } catch (e) {
         return DEFAULT_STATE;
       }
     }
     return DEFAULT_STATE;
   });
+
+  // Show offline earnings toast once after mount
+  React.useEffect(() => {
+    if (offlineEarnedRef.current > 0) {
+      toast({
+        title: "Welcome back!",
+        description: `You earned ${formatNumber(offlineEarnedRef.current)} points while away.`,
+        duration: 4000,
+      });
+      offlineEarnedRef.current = 0;
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const recalculateStats = useCallback((currentState: GameState) => {
     let baseCps = 0;
