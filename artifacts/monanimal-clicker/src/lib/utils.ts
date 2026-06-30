@@ -58,13 +58,14 @@ export interface CharacterStage {
   bgKey: keyof typeof ENVIRONMENTS_PC;
   glowColor: string;
   characterKey: keyof typeof CHARACTERS;
+  bgPosition?: string;
 }
 
 export const CHARACTER_STAGES: CharacterStage[] = [
   { stage: 1, title: "Recruit",   minLevel: 1,   bgKey: "whiteRoom",       glowColor: "#94a3b8", characterKey: "recruit" },
   { stage: 2, title: "Builder",   minLevel: 10,  bgKey: "builderGarage",   glowColor: "#3b82f6", characterKey: "builder" },
   { stage: 3, title: "Engineer",  minLevel: 25,  bgKey: "validatorTemple", glowColor: "#06b6d4", characterKey: "engineer" },
-  { stage: 4, title: "Validator", minLevel: 50,  bgKey: "monadCity",       glowColor: "#6E54FF", characterKey: "validator" },
+  { stage: 4, title: "Validator", minLevel: 50,  bgKey: "monadCity",       glowColor: "#6E54FF", characterKey: "validator", bgPosition: "center 80%" },
   { stage: 5, title: "Explorer",  minLevel: 75,  bgKey: "hyperlaneNexus",  glowColor: "#FF8EE4", characterKey: "explorer" },
   { stage: 6, title: "Founder",   minLevel: 100, bgKey: "genesisCitadel",  glowColor: "#FFAE45", characterKey: "founder" },
 ];
