@@ -6,13 +6,21 @@ import validatorImg from "@assets/validator_1782656730870.png";
 import explorerImg from "@assets/explorer_1782656525810.png";
 import founderImg from "@assets/founder_1782656426732.png";
 
-// === ENVIRONMENTS ===
-import envWhiteRoom from "@assets/1recruit-room_1782847132646.png";
-import envBuilderGarage from "@assets/builder-room_1782748161677.png";
-import envValidatorTemple from "@assets/engineer-room_1782744803602.png";
-import envMonadCity from "@assets/validator-room_1782748229216.png";
-import envHyperlaneNexus from "@assets/explorer-room_1782748211400.png";
-import envGenesisCitadel from "@assets/founder-room_1782748221442.png";
+// === ENVIRONMENTS — PC ===
+import envRecruitPC from "@assets/1-recruit-room-PC.png";
+import envBuilderPC from "@assets/2-builder-room-PC.png";
+import envEngineerPC from "@assets/3-engineer-room-PC.png";
+import envValidatorPC from "@assets/4-validator-room-PC.png";
+import envExplorerPC from "@assets/5-explorer-room-PC.png";
+import envFounderPC from "@assets/6-founder-room-PC.png";
+
+// === ENVIRONMENTS — Mobile ===
+import envRecruitMobile from "@assets/1-recruit-room-mobile.png";
+import envBuilderMobile from "@assets/2-builder-room-mobile.png";
+import envEngineerMobile from "@assets/3-engineer-room-mobile.png";
+import envValidatorMobile from "@assets/4-validator-room-mobile.png";
+import envExplorerMobile from "@assets/5-explorer-room-mobile.png";
+import envFounderMobile from "@assets/6-founder-room-mobile.png";
 
 // === UPGRADE ITEMS ===
 import itemSmartphone from "@assets/smartphone_1782653674000.png";
@@ -31,13 +39,22 @@ export const CHARACTERS = {
   founder: founderImg,
 } as const;
 
-export const ENVIRONMENTS = {
-  whiteRoom: envWhiteRoom,
-  builderGarage: envBuilderGarage,
-  validatorTemple: envValidatorTemple,
-  monadCity: envMonadCity,
-  hyperlaneNexus: envHyperlaneNexus,
-  genesisCitadel: envGenesisCitadel,
+export const ENVIRONMENTS_PC = {
+  whiteRoom: envRecruitPC,
+  builderGarage: envBuilderPC,
+  validatorTemple: envEngineerPC,
+  monadCity: envValidatorPC,
+  hyperlaneNexus: envExplorerPC,
+  genesisCitadel: envFounderPC,
+} as const;
+
+export const ENVIRONMENTS_MOBILE = {
+  whiteRoom: envRecruitMobile,
+  builderGarage: envBuilderMobile,
+  validatorTemple: envEngineerMobile,
+  monadCity: envValidatorMobile,
+  hyperlaneNexus: envExplorerMobile,
+  genesisCitadel: envFounderMobile,
 } as const;
 
 export const ITEMS = {

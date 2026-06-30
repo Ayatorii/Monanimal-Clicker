@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { CHARACTERS, ENVIRONMENTS } from "@/assets/index"
+import { CHARACTERS, ENVIRONMENTS_PC } from "@/assets/index"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -55,7 +55,7 @@ export interface CharacterStage {
   stage: number;
   title: string;
   minLevel: number;
-  bgKey: keyof typeof ENVIRONMENTS;
+  bgKey: keyof typeof ENVIRONMENTS_PC;
   glowColor: string;
   characterKey: keyof typeof CHARACTERS;
 }

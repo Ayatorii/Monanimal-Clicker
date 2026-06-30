@@ -4,7 +4,7 @@ import { Zap } from "lucide-react";
 import { useGameState } from "@/hooks/useGameState";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getCharacterStage, formatNumber, getLevelXpInfo } from "@/lib/utils";
-import { CHARACTERS, ENVIRONMENTS, ITEMS } from "@/assets/index";
+import { CHARACTERS, ENVIRONMENTS_PC, ENVIRONMENTS_MOBILE, ITEMS } from "@/assets/index";
 
 interface FloatingClick {
   id: number;
@@ -134,7 +134,8 @@ export default function MonanimalCharacter() {
     .filter(id => id in ITEMS);
 
   const charImg = CHARACTERS[activeStage.characterKey];
-  const bgImg = ENVIRONMENTS[activeStage.bgKey];
+  const bgImgPC = ENVIRONMENTS_PC[activeStage.bgKey];
+  const bgImgMobile = ENVIRONMENTS_MOBILE[activeStage.bgKey];
 
   const CHARACTER_Y_OFFSETS: Record<string, number> = {
     recruit:   0,
@@ -169,10 +170,18 @@ export default function MonanimalCharacter() {
           transition={{ duration: 1.6, ease: "easeInOut" }}
           className="absolute inset-0 z-0"
         >
+          {/* Mobile image */}
           <img
-            src={bgImg}
+            src={bgImgMobile}
             alt={activeStage.title + " environment"}
-            className="w-full h-full object-cover"
+            className="md:hidden w-full h-full object-cover"
+            draggable={false}
+          />
+          {/* Desktop image */}
+          <img
+            src={bgImgPC}
+            alt={activeStage.title + " environment"}
+            className="hidden md:block w-full h-full object-cover"
             draggable={false}
           />
           <div className="absolute inset-0 bg-black/30" />
