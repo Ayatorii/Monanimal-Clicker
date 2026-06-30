@@ -10,9 +10,11 @@ interface TopBarProps {
 }
 
 export default function TopBar({ onShowAchievements }: TopBarProps) {
-  const { state, dispatch, resetGame } = useGameState();
+  const { state, dispatch, resetGame, unseenAchievements } = useGameState();
   const [showSettings, setShowSettings] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+
+  const hasUnseen = unseenAchievements.length > 0;
 
   const handleReset = () => {
     if (confirmReset) {
@@ -22,6 +24,11 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
     } else {
       setConfirmReset(true);
     }
+  };
+
+  const handleOpenAchievements = () => {
+    setShowSettings(false);
+    onShowAchievements();
   };
 
   return (
@@ -69,14 +76,19 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
             >
               {state.darkMode ? <Sun className="h-4 w-4 md:h-5 md:w-5" /> : <Moon className="h-4 w-4 md:h-5 md:w-5" />}
             </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={onShowAchievements}
-              className="rounded-full shadow-sm hover:border-primary hover:text-primary transition-colors h-8 w-8 md:h-10 md:w-10"
-            >
-              <Trophy className="h-4 w-4 md:h-5 md:w-5" />
-            </Button>
+            <div className="relative">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={onShowAchievements}
+                className="rounded-full shadow-sm hover:border-primary hover:text-primary transition-colors h-8 w-8 md:h-10 md:w-10"
+              >
+                <Trophy className="h-4 w-4 md:h-5 md:w-5" />
+              </Button>
+              {hasUnseen && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-red-500 border border-background" />
+              )}
+            </div>
             <AnimatePresence mode="wait">
               {confirmReset ? (
                 <motion.div
@@ -121,14 +133,19 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
 
           {/* Right: mobile gear button */}
           <div className="flex md:hidden items-center px-4 flex-shrink-0">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-              onClick={() => setShowSettings(true)}
-            >
-              <Settings className="h-4 w-4" />
-            </Button>
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                onClick={() => setShowSettings(true)}
+              >
+                <Settings className="h-4 w-4" />
+              </Button>
+              {hasUnseen && (
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-red-500 border border-background pointer-events-none" />
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -163,12 +180,15 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
               <div className="flex flex-col px-5 py-3 pb-5 gap-1">
                 {/* Achievements */}
                 <button
-                  onClick={() => { setShowSettings(false); onShowAchievements(); }}
+                  onClick={handleOpenAchievements}
                   className="flex items-center justify-between w-full py-3 border-b border-border/50"
                 >
                   <div className="flex items-center gap-3">
                     <Trophy className="h-5 w-5 text-primary" />
                     <span className="text-sm font-bold text-foreground">Achievements</span>
+                    {hasUnseen && (
+                      <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
+                    )}
                   </div>
                   <span className="text-muted-foreground text-xs">›</span>
                 </button>

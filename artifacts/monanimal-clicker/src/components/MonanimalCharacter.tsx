@@ -13,13 +13,29 @@ interface FloatingClick {
 }
 
 export default function MonanimalCharacter() {
-  const { state, handleClick } = useGameState();
+  const { state, handleClick, latestUnlocked, dismissLatestUnlocked } = useGameState();
   const isMobile = useIsMobile();
   const stageData = getCharacterStage(state.characterLevel);
   const [clicks, setClicks] = useState<FloatingClick[]>([]);
   const [rankFlash, setRankFlash] = useState(false);
+  const [popupAch, setPopupAch] = useState<{ id: string; name: string; icon: string } | null>(null);
   const prevStageRef = useRef(stageData.stage);
   const containerRef = useRef<HTMLDivElement>(null);
+  const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Show mobile popup when new achievement unlocks
+  useEffect(() => {
+    if (latestUnlocked && isMobile) {
+      setPopupAch(latestUnlocked);
+      dismissLatestUnlocked();
+      if (popupTimerRef.current) clearTimeout(popupTimerRef.current);
+      popupTimerRef.current = setTimeout(() => setPopupAch(null), 3500);
+    }
+    return () => {
+      if (popupTimerRef.current) clearTimeout(popupTimerRef.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latestUnlocked]);
 
   const activeStage = stageData;
 
@@ -143,6 +159,29 @@ export default function MonanimalCharacter() {
                 </span>
               </div>
             </div>
+
+            {/* Mobile: achievement popup — appears below XP bar */}
+            <AnimatePresence>
+              {popupAch && (
+                <motion.div
+                  key={popupAch.id}
+                  className="md:hidden absolute left-3 right-3 z-30 pointer-events-none"
+                  style={{ top: "44px" }}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <div className="flex items-center gap-2 bg-black/80 backdrop-blur-md border border-red-500/60 rounded-xl px-3 py-2 shadow-lg">
+                    <span className="text-2xl leading-none">{popupAch.icon}</span>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-red-400 leading-none">Achievement Unlocked</span>
+                      <span className="text-xs font-bold text-white truncate leading-snug mt-0.5">{popupAch.name}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Desktop: floating pill (unchanged) */}
             <div className="hidden md:block absolute top-4 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none">

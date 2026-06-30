@@ -39,6 +39,10 @@ interface GameContextType {
   buyPower: (id: string) => void;
   calculateUpgradeCost: (baseCost: number, owned: number) => number;
   resetGame: () => void;
+  unseenAchievements: string[];
+  clearUnseenAchievements: () => void;
+  latestUnlocked: { id: string; name: string; icon: string } | null;
+  dismissLatestUnlocked: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -49,7 +53,7 @@ export function useGameState() {
   return context;
 }
 
-const OFFLINE_CAP_SECONDS = 6 * 60 * 60; // 6 hours
+const OFFLINE_CAP_SECONDS = 6 * 60 * 60;
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
@@ -64,7 +68,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
         const { equipment, ...rest } = parsed;
         const loadedState: GameState = { ...DEFAULT_STATE, ...rest };
 
-        // Offline progress: only add to coins, not totalCoinsEarned (no level-up)
         const cps: number = loadedState.coinsPerSecond ?? 0;
         const lastSave: number = loadedState.lastSaveTime ?? Date.now();
         const elapsedSec = Math.min(
@@ -86,7 +89,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
     return DEFAULT_STATE;
   });
 
-  // Show offline earnings toast once after mount
+  const [unseenAchievements, setUnseenAchievements] = useState<string[]>([]);
+  const [latestUnlocked, setLatestUnlocked] = useState<{ id: string; name: string; icon: string } | null>(null);
+
   React.useEffect(() => {
     if (offlineEarnedRef.current > 0) {
       toast({
@@ -171,7 +176,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   }, [recalculateStats]);
 
-  // Auto-save to localStorage (debounced, max once per 2s)
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
@@ -191,24 +195,32 @@ export function GameProvider({ children }: { children: ReactNode }) {
     dispatch({ ...DEFAULT_STATE, lastSaveTime: Date.now() });
   }, []);
 
+  const clearUnseenAchievements = useCallback(() => {
+    setUnseenAchievements([]);
+  }, []);
+
+  const dismissLatestUnlocked = useCallback(() => {
+    setLatestUnlocked(null);
+  }, []);
+
   // Achievement checker
   useEffect(() => {
     let changed = false;
     const newAchievements = [...state.achievements];
-    const newlyUnlocked: string[] = [];
+    const newlyUnlockedIds: string[] = [];
 
     ACHIEVEMENTS.forEach(a => {
       if (!newAchievements.includes(a.id) && a.check(state)) {
         newAchievements.push(a.id);
-        newlyUnlocked.push(a.name);
+        newlyUnlockedIds.push(a.id);
         changed = true;
       }
     });
 
-    if (newlyUnlocked.length > 0) {
-      newlyUnlocked.forEach(name => {
-        toast({ title: "Achievement Unlocked!", description: name, duration: 3000 });
-      });
+    if (newlyUnlockedIds.length > 0) {
+      setUnseenAchievements(prev => [...prev, ...newlyUnlockedIds]);
+      const last = ACHIEVEMENTS.find(a => a.id === newlyUnlockedIds[newlyUnlockedIds.length - 1]);
+      if (last) setLatestUnlocked({ id: last.id, name: last.name, icon: last.icon });
     }
 
     if (changed) {
@@ -219,6 +231,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   return (
     <GameContext.Provider value={{
       state, dispatch, handleClick, buyBuilding, buyPower, calculateUpgradeCost, resetGame,
+      unseenAchievements, clearUnseenAchievements,
+      latestUnlocked, dismissLatestUnlocked,
     }}>
       {children}
     </GameContext.Provider>
