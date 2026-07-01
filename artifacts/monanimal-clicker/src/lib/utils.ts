@@ -72,7 +72,7 @@ export const CHARACTER_STAGES: CharacterStage[] = [
 ];
 
 // PREVIEW_STAGE: 0 = disabled, 1–6 = force a specific stage for screenshots
-export let PREVIEW_STAGE = 4;
+export let PREVIEW_STAGE = 0;
 
 export function getCharacterStage(level: number): CharacterStage {
   if (PREVIEW_STAGE > 0) return CHARACTER_STAGES[PREVIEW_STAGE - 1];
