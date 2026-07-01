@@ -59,6 +59,7 @@ function UpgradeCard({
               src={ITEMS[item.id as keyof typeof ITEMS]}
               alt={item.name}
               className="w-full h-full object-contain object-center"
+              style={item.id === "ai_agent" ? { transform: "translateY(12%) scale(1.15)" } : undefined}
             />
           ) : (
             <span className="text-xl md:text-2xl">{item.icon}</span>
