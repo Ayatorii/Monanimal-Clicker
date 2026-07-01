@@ -83,6 +83,7 @@ export default function MonanimalCharacter() {
   const onInteraction = (e: React.MouseEvent | React.TouchEvent) => {
     let clientX: number, clientY: number;
     if ("touches" in e) {
+      e.preventDefault(); // prevent synthetic click firing after touchstart (would double-count)
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
     } else {
@@ -472,7 +473,7 @@ export default function MonanimalCharacter() {
       </div>
 
       {/* COMBO MULTIPLIER INDICATOR — above character */}
-      <div className="absolute inset-0 z-25 pointer-events-none flex items-center justify-center">
+      <div className="absolute inset-0 z-[25] pointer-events-none flex items-center justify-center">
         <AnimatePresence>
           {currentComboLevel && (
             <motion.div

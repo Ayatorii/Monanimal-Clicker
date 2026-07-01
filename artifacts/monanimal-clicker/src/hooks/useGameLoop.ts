@@ -10,14 +10,19 @@ export function useGameLoop() {
     const tickRate = 100; // 100ms
     const interval = setInterval(() => {
       if (state.coinsPerSecond > 0) {
-        const amount = state.coinsPerSecond / (1000 / tickRate);
+        const amount = Math.floor(state.coinsPerSecond / (1000 / tickRate));
+        if (amount <= 0) return;
         dispatch(prev => {
           const newTotal = prev.totalCoinsEarned + amount;
+          const newLevel = calculateCharacterLevel(newTotal);
+          const newMaxEnergy = 1000 + (newLevel - 1) * 100;
           return {
             ...prev,
             coins: prev.coins + amount,
             totalCoinsEarned: newTotal,
-            characterLevel: calculateCharacterLevel(newTotal),
+            characterLevel: newLevel,
+            maxEnergy: newMaxEnergy,
+            energy: Math.min(prev.energy ?? 1000, newMaxEnergy),
           };
         });
       }

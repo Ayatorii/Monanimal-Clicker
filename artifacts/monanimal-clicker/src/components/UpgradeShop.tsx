@@ -137,7 +137,7 @@ export default function UpgradeShop() {
           onClick={() => setOpenSheet(prev => prev === "buildings" ? null : "buildings")}
         >
           {openSheet === "buildings" && (
-            <motion.div layoutId="tab-indicator" className="absolute top-0 left-2 right-2 h-0.5 bg-primary rounded-full" />
+            <motion.div layoutId="tab-indicator-buildings" className="absolute top-0 left-2 right-2 h-0.5 bg-primary rounded-full" />
           )}
           <Server className={cn("h-5 w-5", openSheet === "buildings" ? "text-primary" : "text-muted-foreground")} />
           <span className={cn("text-[10px] font-bold uppercase tracking-wider", openSheet === "buildings" ? "text-primary" : "text-muted-foreground")}>
@@ -156,7 +156,7 @@ export default function UpgradeShop() {
           onClick={() => setOpenSheet(prev => prev === "power" ? null : "power")}
         >
           {openSheet === "power" && (
-            <motion.div layoutId="tab-indicator" className="absolute top-0 left-2 right-2 h-0.5 bg-accent rounded-full" />
+            <motion.div layoutId="tab-indicator-power" className="absolute top-0 left-2 right-2 h-0.5 bg-accent rounded-full" />
           )}
           <Zap className={cn("h-5 w-5", openSheet === "power" ? "text-accent" : "text-muted-foreground")} />
           <span className={cn("text-[10px] font-bold uppercase tracking-wider", openSheet === "power" ? "text-accent" : "text-muted-foreground")}>
