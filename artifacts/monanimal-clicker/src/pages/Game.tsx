@@ -15,12 +15,8 @@ function GameInner() {
   const [showAchievements, setShowAchievements] = useState(false);
 
   React.useEffect(() => {
-    if (state.darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [state.darkMode]);
+    document.documentElement.classList.add("dark");
+  }, []);
 
   return (
     <div className="h-[100dvh] w-full flex flex-col bg-background text-foreground overflow-hidden font-sans relative">

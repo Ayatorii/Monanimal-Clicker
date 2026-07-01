@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useGameState } from "@/hooks/useGameState";
 import { formatNumber } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Volume2, VolumeX, Trophy, Settings, X, RotateCcw } from "lucide-react";
+import { Volume2, VolumeX, Trophy, Settings, X, RotateCcw } from "lucide-react";
 
 interface TopBarProps {
   onShowAchievements: () => void;
@@ -63,14 +63,6 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
 
           {/* Right: desktop controls */}
           <div className="hidden md:flex items-center gap-1 md:gap-2 px-4 flex-shrink-0 justify-end md:w-80 lg:w-96">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-              onClick={() => dispatch(prev => ({ ...prev, darkMode: !prev.darkMode }))}
-            >
-              {state.darkMode ? <Sun className="h-4 w-4 md:h-5 md:w-5" /> : <Moon className="h-4 w-4 md:h-5 md:w-5" />}
-            </Button>
             <div className="relative">
               <Button
                 variant="outline"
@@ -146,27 +138,6 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
                     )}
                   </div>
                   <span className="text-muted-foreground text-xs">›</span>
-                </button>
-
-                {/* Theme */}
-                <button
-                  onClick={() => dispatch(prev => ({ ...prev, darkMode: !prev.darkMode }))}
-                  className="flex items-center justify-between w-full py-3 border-b border-border/50"
-                >
-                  <div className="flex items-center gap-3">
-                    {state.darkMode
-                      ? <Sun className="h-5 w-5 text-yellow-400" />
-                      : <Moon className="h-5 w-5 text-primary" />}
-                    <span className="text-sm font-bold text-foreground">
-                      {state.darkMode ? "Light Mode" : "Dark Mode"}
-                    </span>
-                  </div>
-                  <div
-                    className="w-10 h-5 rounded-full flex items-center transition-colors duration-200"
-                    style={{ background: state.darkMode ? "#6E54FF" : "rgba(255,255,255,0.15)", justifyContent: state.darkMode ? "flex-end" : "flex-start", padding: "2px" }}
-                  >
-                    <div className="w-4 h-4 rounded-full bg-white shadow" />
-                  </div>
                 </button>
 
                 {/* Sound */}
