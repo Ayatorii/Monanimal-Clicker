@@ -197,8 +197,8 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
                       className="flex items-center justify-between w-full py-3"
                     >
                       <div className="flex items-center gap-3">
-                        <RotateCcw className="h-5 w-5 text-destructive" />
-                        <span className="text-sm font-bold text-destructive">Reset Progress</span>
+                        <RotateCcw className="h-5 w-5" style={{ color: "#E60000" }} />
+                        <span className="text-sm font-bold" style={{ color: "#E60000" }}>Reset Progress</span>
                       </div>
                       <span className="text-muted-foreground text-xs">›</span>
                     </motion.button>
