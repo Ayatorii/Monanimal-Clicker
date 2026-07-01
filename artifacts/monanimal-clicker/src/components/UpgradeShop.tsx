@@ -58,7 +58,7 @@ function UpgradeCard({
             <img
               src={ITEMS[item.id as keyof typeof ITEMS]}
               alt={item.name}
-              className="w-8 h-8 md:w-10 md:h-10 object-contain"
+              className="w-full h-full object-contain object-center"
             />
           ) : (
             <span className="text-xl md:text-2xl">{item.icon}</span>
