@@ -40,9 +40,12 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold shadow-[0_0_15px_rgba(110,84,255,0.5)]">
               M
             </div>
-            <h1 className="font-black text-lg md:text-xl tracking-tighter uppercase hidden sm:block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Monanimal
-            </h1>
+            <div className="hidden sm:flex flex-col leading-none">
+              <h1 className="font-black text-lg md:text-xl tracking-tighter uppercase bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Monanimal
+              </h1>
+              <span className="text-[9px] font-mono text-white/40 tracking-widest">ALPHA 1.0.0</span>
+            </div>
           </div>
 
           {/* Center: coins */}
@@ -60,14 +63,6 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
 
           {/* Right: desktop controls */}
           <div className="hidden md:flex items-center gap-1 md:gap-2 px-4 flex-shrink-0 justify-end md:w-80 lg:w-96">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-              onClick={() => dispatch(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }))}
-            >
-              {state.soundEnabled ? <Volume2 className="h-4 w-4 md:h-5 md:w-5" /> : <VolumeX className="h-4 w-4 md:h-5 md:w-5" />}
-            </Button>
             <Button
               variant="ghost"
               size="icon"
