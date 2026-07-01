@@ -95,7 +95,7 @@ export default function UpgradeShop() {
   const totalBuildings = BUILDINGS.reduce((s, b) => s + (state.upgrades[b.id] || 0), 0);
   const totalPower = POWER_UPGRADES.reduce((s, p) => s + (state.upgrades[p.id] || 0), 0);
 
-  const sheetTitle = openSheet === "buildings" ? "Infrastructure" : "Click Power";
+  const sheetTitle = openSheet === "buildings" ? "Gadget" : "Click Power";
   const sheetIcon = openSheet === "buildings"
     ? <Server className="h-4 w-4 text-primary" />
     : <Zap className="h-4 w-4 text-accent" />;
@@ -141,7 +141,7 @@ export default function UpgradeShop() {
           )}
           <Server className={cn("h-5 w-5", openSheet === "buildings" ? "text-primary" : "text-muted-foreground")} />
           <span className={cn("text-[10px] font-bold uppercase tracking-wider", openSheet === "buildings" ? "text-primary" : "text-muted-foreground")}>
-            Infrastructure
+            Gadget
           </span>
         </button>
 
@@ -222,7 +222,7 @@ export default function UpgradeShop() {
 
         <Tabs defaultValue="buildings" className="flex flex-col flex-1 overflow-hidden">
           <TabsList className="grid w-full grid-cols-2 p-1 m-1.5 md:p-2 md:m-2 bg-muted rounded-md h-auto">
-            <TabsTrigger value="buildings" className="py-1.5 md:py-2 text-xs md:text-sm font-bold uppercase tracking-wider">Infrastructure</TabsTrigger>
+            <TabsTrigger value="buildings" className="py-1.5 md:py-2 text-xs md:text-sm font-bold uppercase tracking-wider">Gadget</TabsTrigger>
             <TabsTrigger value="power" className="py-1.5 md:py-2 text-xs md:text-sm font-bold uppercase tracking-wider">Click Power</TabsTrigger>
           </TabsList>
 
