@@ -479,10 +479,10 @@ export default function MonanimalCharacter() {
             <motion.div
               key={currentComboLevel.label}
               className="absolute"
-              style={{ top: isMobile ? "22%" : "18%" }}
-              initial={{ opacity: 0, scale: 0.7, y: -8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.7, y: -8 }}
+              style={{ top: isMobile ? "calc(22% - 5px)" : "calc(18% - 5px)" }}
+              initial={{ opacity: 0, scale: 0.77, y: -8 }}
+              animate={{ opacity: 1, scale: 1.1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.77, y: -8 }}
               transition={{ duration: 0.25, ease: "backOut" }}
             >
               <div
@@ -494,7 +494,7 @@ export default function MonanimalCharacter() {
                 }}
               >
                 <span
-                  className="font-black text-lg md:text-xl tracking-tight leading-none"
+                  className="font-black text-[20px] md:text-[22px] tracking-tight leading-none"
                   style={{
                     color: currentComboLevel.color,
                     textShadow: `0 0 12px ${currentComboLevel.color}`,
@@ -502,7 +502,7 @@ export default function MonanimalCharacter() {
                 >
                   {currentComboLevel.label}
                 </span>
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/70 leading-none">
+                <span className="text-[11px] md:text-[13px] font-bold uppercase tracking-widest text-white/70 leading-none">
                   COMBO
                 </span>
               </div>
