@@ -239,6 +239,10 @@ export default function TopBar({ onShowAchievements }: TopBarProps) {
                   )}
                 </AnimatePresence>
               </div>
+
+              <p className="text-center text-[10px] text-muted-foreground/50 font-mono pt-2">
+                ALPHA 1.0.0
+              </p>
             </motion.div>
           </>
         )}
