@@ -146,6 +146,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const handleClick = useCallback((multiplier = 1) => {
     dispatch(prev => {
+      if ((prev.energy ?? 0) <= 0) return prev;
       const earned = Math.ceil(prev.coinsPerClick * multiplier);
       const newState = {
         ...prev,

@@ -80,6 +80,8 @@ export default function MonanimalCharacter() {
     }
   }, [stageData.stage]);
 
+  const noEnergy = (state.energy ?? 0) <= 0;
+
   const onInteraction = (e: React.MouseEvent | React.TouchEvent) => {
     let clientX: number, clientY: number;
     if ("touches" in e) {
@@ -90,6 +92,9 @@ export default function MonanimalCharacter() {
       clientX = (e as React.MouseEvent).clientX;
       clientY = (e as React.MouseEvent).clientY;
     }
+
+    if (noEnergy) return;
+
     const rect = containerRef.current?.getBoundingClientRect();
     const x = rect ? clientX - rect.left : clientX;
     const y = rect ? clientY - rect.top : clientY;
@@ -443,12 +448,17 @@ export default function MonanimalCharacter() {
       {/* CLICKABLE CHARACTER IMAGE */}
       <div className="absolute inset-0 z-20 flex items-center justify-center" style={{ paddingTop: charYOffset }}>
         <motion.div
-          className="relative cursor-pointer touch-manipulation"
+          className={`relative touch-manipulation ${noEnergy ? "cursor-not-allowed" : "cursor-pointer"}`}
           onClick={onInteraction}
           onTouchStart={onInteraction}
           data-testid="character-click-area"
-          style={{ filter: `drop-shadow(0 0 24px ${activeStage.glowColor}60)` }}
-          whileTap={{ scale: 1.05 }}
+          style={{
+            filter: noEnergy
+              ? "drop-shadow(0 0 8px #555) grayscale(0.6) brightness(0.6)"
+              : `drop-shadow(0 0 24px ${activeStage.glowColor}60)`,
+            transition: "filter 0.3s ease",
+          }}
+          whileTap={noEnergy ? {} : { scale: 1.05 }}
         >
           <AnimatePresence mode="wait">
             <motion.img
