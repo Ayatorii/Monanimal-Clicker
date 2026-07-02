@@ -13,7 +13,7 @@ import {
   getCharacterStage,
 } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-function getOrCreatePlayerId() {
+export function getOrCreatePlayerId() {
   let id = localStorage.getItem("monanimal-player-id");
   if (!id) {
     id = crypto.randomUUID();
@@ -22,7 +22,7 @@ function getOrCreatePlayerId() {
   return id;
 }
 
-function getOrCreateRecoveryCode() {
+export function getOrCreateRecoveryCode() {
   let code = localStorage.getItem("monanimal-recovery-code");
   if (!code) {
     code = Math.random().toString(36).slice(2, 10).toUpperCase();

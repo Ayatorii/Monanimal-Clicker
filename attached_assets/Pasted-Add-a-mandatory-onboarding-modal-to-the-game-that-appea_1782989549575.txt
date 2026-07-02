@@ -1,0 +1,30 @@
+Add a mandatory onboarding modal to the game that appears before gameplay starts, so players can save/restore their progress across domains using a recovery code.
+
+Context: The project already has a backend (Express + Drizzle + Postgres) with these working endpoints:
+- POST /api/players — body: { id, recoveryCode, state } — creates or updates a player's save
+- GET /api/players/:id — returns { id, recoveryCode, state } or 404
+- GET /api/players/recover/:code — returns { id, recoveryCode, state } or 404 by recovery code
+
+In artifacts/monanimal-clicker/src/hooks/useGameState.tsx there are already two exported helper functions:
+- getOrCreatePlayerId() — reads/creates "monanimal-player-id" in localStorage
+- getOrCreateRecoveryCode() — reads/creates "monanimal-recovery-code" in localStorage
+
+There's also an existing useEffect that auto-saves game state to POST /api/players every 2 seconds (debounced), and a useEffect that loads progress from GET /api/players/:id on mount.
+
+Requirements:
+
+1. Create a new component `OnboardingModal.tsx` in artifacts/monanimal-clicker/src/components/. It should:
+   - Render as a centered modal overlay (dark backdrop, blocks interaction with anything behind it), matching the existing dark UI style of the app (see TopBar.tsx / AchievementsModal.tsx for style reference).
+   - Have three internal states/screens:
+     a) "choose" screen: shows a short English explanation, and two buttons — "Generate Code" and "I already have a code".
+     b) "generated" screen (after clicking Generate Code): generates a new player via getOrCreatePlayerId() + getOrCreateRecoveryCode() (only if not already set), then displays the recovery code in a copyable text box, a "Copy Code" button (use navigator.clipboard.writeText), and text above it saying "Save this code to not lose your progress." Below that, a "Continue" button.
+     c) "restore" screen (after clicking "I already have a code"): shows a text input for the code and a "Submit" button. On submit, call GET /api/players/recover/:code (uppercase-trim the input). If found (200), store the returned id and recoveryCode into localStorage keys "monanimal-player-id" and "monanimal-recovery-code", and store the returned state into localStorage key "monanimal-clicker-save-v2" (JSON.stringify), then reload the page (window.location.reload()). If not found (404), show an inline error message "Code not found, please check and try again" without closing the modal.
+   - When the "generated" screen's Continue button is clicked, also reload the page (window.location.reload()) so the rest of the app picks up the new player id cleanly.
+
+2. Wire this modal into artifacts/monanimal-clicker/src/pages/Game.tsx: before rendering <GameProvider><GameInner /></GameProvider>, check if localStorage.getItem("monanimal-player-id") exists. If it does NOT exist, render ONLY <OnboardingModal /> (full screen, nothing else — don't mount GameProvider yet). If it DOES exist, render the game as normal.
+
+3. Make sure this doesn't break the existing typecheck (pnpm --filter @workspace/monanimal-clicker run typecheck) or the existing save/load logic in useGameState.tsx.
+
+4. Keep all UI text in English, consistent with the rest of the app (see "ALPHA 1.0.0", "Points", "Settings" style — bold, uppercase tracking-wide labels, rounded-xl cards, primary/accent gradient colors).
+
+Do not modify the backend/API — it already works. Only touch the frontend (artifacts/monanimal-clicker).

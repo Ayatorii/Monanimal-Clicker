@@ -78,6 +78,7 @@ export default function MonanimalCharacter() {
       const t = setTimeout(() => setRankFlash(false), 900);
       return () => clearTimeout(t);
     }
+    return undefined;
   }, [stageData.stage]);
 
   const noEnergy = (state.energyLocked ?? false) || (state.energy ?? 0) <= 0;
