@@ -18,6 +18,7 @@ export interface GameState {
   maxComboDuration: number;
   energy: number;
   maxEnergy: number;
+  energyLocked: boolean;
 }
 
 const DEFAULT_STATE: GameState = {
@@ -35,6 +36,7 @@ const DEFAULT_STATE: GameState = {
   maxComboDuration: 0,
   energy: 1000,
   maxEnergy: 1000,
+  energyLocked: false,
 };
 
 interface GameContextType {
@@ -89,13 +91,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
         const maxEnergy = loadedState.maxEnergy ?? 1000;
         const currentEnergy = loadedState.energy ?? maxEnergy;
         const offlineEnergy = Math.min(currentEnergy + regenRate * elapsedSec, maxEnergy);
+        const offlineEnergyLocked = (loadedState.energyLocked ?? false) && offlineEnergy < 5;
 
         if (offlineCoins > 0) {
           offlineEarnedRef.current = offlineCoins;
-          return { ...loadedState, coins: loadedState.coins + offlineCoins, energy: offlineEnergy };
+          return { ...loadedState, coins: loadedState.coins + offlineCoins, energy: offlineEnergy, energyLocked: offlineEnergyLocked };
         }
 
-        return { ...loadedState, energy: offlineEnergy };
+        return { ...loadedState, energy: offlineEnergy, energyLocked: offlineEnergyLocked };
       } catch (e) {
         return DEFAULT_STATE;
       }
@@ -146,14 +149,20 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const handleClick = useCallback((multiplier = 1) => {
     dispatch(prev => {
-      if ((prev.energy ?? 0) <= 0) return prev;
+      const energy = prev.energy ?? 0;
+      const locked = prev.energyLocked ?? false;
+      if (locked || energy <= 0) {
+        return energy <= 0 ? { ...prev, energyLocked: true } : prev;
+      }
       const earned = Math.ceil(prev.coinsPerClick * multiplier);
+      const newEnergy = Math.max(0, energy - 1);
       const newState = {
         ...prev,
         coins: prev.coins + earned,
         totalCoinsEarned: prev.totalCoinsEarned + earned,
         totalClicks: prev.totalClicks + 1,
-        energy: Math.max(0, (prev.energy ?? 1000) - 1),
+        energy: newEnergy,
+        energyLocked: newEnergy <= 0,
       };
       return recalculateStats(newState);
     });

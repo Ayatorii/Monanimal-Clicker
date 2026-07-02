@@ -80,7 +80,7 @@ export default function MonanimalCharacter() {
     }
   }, [stageData.stage]);
 
-  const noEnergy = (state.energy ?? 0) <= 0;
+  const noEnergy = (state.energyLocked ?? false) || (state.energy ?? 0) <= 0;
 
   const onInteraction = (e: React.MouseEvent | React.TouchEvent) => {
     let clientX: number, clientY: number;

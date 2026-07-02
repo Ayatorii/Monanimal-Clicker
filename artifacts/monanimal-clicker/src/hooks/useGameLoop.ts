@@ -32,6 +32,7 @@ export function useGameLoop() {
   }, [state.coinsPerSecond, dispatch]);
 
   // Energy regen — 1 per second base, +1 per rank (Builder=2, Engineer=3, etc.)
+  // Unlock clicks once energy reaches 5 after being depleted.
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(prev => {
@@ -39,10 +40,14 @@ export function useGameLoop() {
         const currentEnergy = prev.energy ?? maxEnergy;
         if (currentEnergy >= maxEnergy) return prev;
         const stage = getCharacterStage(prev.characterLevel);
-        const regenRate = stage.stage; // stage 1=Recruit(+1), stage 2=Builder(+2)…
+        const regenRate = stage.stage;
+        const newEnergy = Math.min(currentEnergy + regenRate, maxEnergy);
+        const wasLocked = prev.energyLocked ?? false;
+        const stillLocked = wasLocked && newEnergy < 5;
         return {
           ...prev,
-          energy: Math.min(currentEnergy + regenRate, maxEnergy),
+          energy: newEnergy,
+          energyLocked: stillLocked,
         };
       });
     }, 1000);
