@@ -1,8 +1,35 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from "react";
 import { BUILDINGS, POWER_UPGRADES, ACHIEVEMENTS } from "@/lib/gameData";
-import { calculateCharacterLevel, formatNumber, getCharacterStage } from "@/lib/utils";
+import {
+  calculateCharacterLevel,
+  formatNumber,
+  getCharacterStage,
+} from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+function getOrCreatePlayerId() {
+  let id = localStorage.getItem("monanimal-player-id");
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("monanimal-player-id", id);
+  }
+  return id;
+}
 
+function getOrCreateRecoveryCode() {
+  let code = localStorage.getItem("monanimal-recovery-code");
+  if (!code) {
+    code = Math.random().toString(36).slice(2, 10).toUpperCase();
+    localStorage.setItem("monanimal-recovery-code", code);
+  }
+  return code;
+}
 export interface GameState {
   coins: number;
   totalCoinsEarned: number;
@@ -58,7 +85,8 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export function useGameState() {
   const context = useContext(GameContext);
-  if (!context) throw new Error("useGameState must be used within GameProvider");
+  if (!context)
+    throw new Error("useGameState must be used within GameProvider");
   return context;
 }
 
@@ -81,7 +109,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         const lastSave: number = loadedState.lastSaveTime ?? Date.now();
         const elapsedSec = Math.min(
           (Date.now() - lastSave) / 1000,
-          OFFLINE_CAP_SECONDS
+          OFFLINE_CAP_SECONDS,
         );
         const offlineCoins = Math.floor(cps * elapsedSec);
 
@@ -90,15 +118,28 @@ export function GameProvider({ children }: { children: ReactNode }) {
         const regenRate = stage.stage;
         const maxEnergy = loadedState.maxEnergy ?? 1000;
         const currentEnergy = loadedState.energy ?? maxEnergy;
-        const offlineEnergy = Math.min(currentEnergy + regenRate * elapsedSec, maxEnergy);
-        const offlineEnergyLocked = (loadedState.energyLocked ?? false) && offlineEnergy < 5;
+        const offlineEnergy = Math.min(
+          currentEnergy + regenRate * elapsedSec,
+          maxEnergy,
+        );
+        const offlineEnergyLocked =
+          (loadedState.energyLocked ?? false) && offlineEnergy < 5;
 
         if (offlineCoins > 0) {
           offlineEarnedRef.current = offlineCoins;
-          return { ...loadedState, coins: loadedState.coins + offlineCoins, energy: offlineEnergy, energyLocked: offlineEnergyLocked };
+          return {
+            ...loadedState,
+            coins: loadedState.coins + offlineCoins,
+            energy: offlineEnergy,
+            energyLocked: offlineEnergyLocked,
+          };
         }
 
-        return { ...loadedState, energy: offlineEnergy, energyLocked: offlineEnergyLocked };
+        return {
+          ...loadedState,
+          energy: offlineEnergy,
+          energyLocked: offlineEnergyLocked,
+        };
       } catch (e) {
         return DEFAULT_STATE;
       }
@@ -107,8 +148,31 @@ export function GameProvider({ children }: { children: ReactNode }) {
   });
 
   const [unseenAchievements, setUnseenAchievements] = useState<string[]>([]);
-  const [latestUnlocked, setLatestUnlocked] = useState<{ id: string; name: string; icon: string } | null>(null);
-
+  const [latestUnlocked, setLatestUnlocked] = useState<{
+    id: string;
+    name: string;
+    icon: string;
+  } | null>(null);
+  useEffect(() => {
+    const playerId = getOrCreatePlayerId();
+    fetch(`/api/players/${playerId}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((player) => {
+        if (!player || !player.state) return;
+        const serverState = player.state as GameState;
+        dispatch((prev) => {
+          const serverTime = serverState.lastSaveTime ?? 0;
+          const localTime = prev.lastSaveTime ?? 0;
+          return serverTime > localTime
+            ? { ...DEFAULT_STATE, ...serverState }
+            : prev;
+        });
+      })
+      .catch(() => {
+        // сервер недоступен — играем с тем, что есть в localStorage
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   React.useEffect(() => {
     if (offlineEarnedRef.current > 0) {
       toast({
@@ -118,19 +182,19 @@ export function GameProvider({ children }: { children: ReactNode }) {
       });
       offlineEarnedRef.current = 0;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const recalculateStats = useCallback((currentState: GameState) => {
     let baseCps = 0;
     let baseCpc = 1;
 
-    BUILDINGS.forEach(b => {
+    BUILDINGS.forEach((b) => {
       const owned = currentState.upgrades[b.id] || 0;
       baseCps += b.cps * owned;
     });
 
-    POWER_UPGRADES.forEach(p => {
+    POWER_UPGRADES.forEach((p) => {
       const owned = currentState.upgrades[p.id] || 0;
       baseCpc += p.cpc * owned;
     });
@@ -147,26 +211,29 @@ export function GameProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const handleClick = useCallback((multiplier = 1) => {
-    dispatch(prev => {
-      const energy = prev.energy ?? 0;
-      const locked = prev.energyLocked ?? false;
-      if (locked || energy <= 0) {
-        return energy <= 0 ? { ...prev, energyLocked: true } : prev;
-      }
-      const earned = Math.ceil(prev.coinsPerClick * multiplier);
-      const newEnergy = Math.max(0, energy - 1);
-      const newState = {
-        ...prev,
-        coins: prev.coins + earned,
-        totalCoinsEarned: prev.totalCoinsEarned + earned,
-        totalClicks: prev.totalClicks + 1,
-        energy: newEnergy,
-        energyLocked: newEnergy <= 0,
-      };
-      return recalculateStats(newState);
-    });
-  }, [recalculateStats]);
+  const handleClick = useCallback(
+    (multiplier = 1) => {
+      dispatch((prev) => {
+        const energy = prev.energy ?? 0;
+        const locked = prev.energyLocked ?? false;
+        if (locked || energy <= 0) {
+          return energy <= 0 ? { ...prev, energyLocked: true } : prev;
+        }
+        const earned = Math.ceil(prev.coinsPerClick * multiplier);
+        const newEnergy = Math.max(0, energy - 1);
+        const newState = {
+          ...prev,
+          coins: prev.coins + earned,
+          totalCoinsEarned: prev.totalCoinsEarned + earned,
+          totalClicks: prev.totalClicks + 1,
+          energy: newEnergy,
+          energyLocked: newEnergy <= 0,
+        };
+        return recalculateStats(newState);
+      });
+    },
+    [recalculateStats],
+  );
 
   const calculateUpgradeCost = (baseCost: number, owned: number) => {
     return Math.floor(baseCost * Math.pow(2, owned));
@@ -174,48 +241,70 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const MAX_UPGRADE_LEVEL = 100;
 
-  const buyBuilding = useCallback((id: string) => {
-    dispatch(prev => {
-      const b = BUILDINGS.find(x => x.id === id);
-      if (!b) return prev;
-      const owned = prev.upgrades[id] || 0;
-      if (owned >= MAX_UPGRADE_LEVEL) return prev;
-      const cost = calculateUpgradeCost(b.baseCost, owned);
-      if (prev.coins < cost) return prev;
-      return recalculateStats({
-        ...prev,
-        coins: prev.coins - cost,
-        upgrades: { ...prev.upgrades, [id]: owned + 1 },
+  const buyBuilding = useCallback(
+    (id: string) => {
+      dispatch((prev) => {
+        const b = BUILDINGS.find((x) => x.id === id);
+        if (!b) return prev;
+        const owned = prev.upgrades[id] || 0;
+        if (owned >= MAX_UPGRADE_LEVEL) return prev;
+        const cost = calculateUpgradeCost(b.baseCost, owned);
+        if (prev.coins < cost) return prev;
+        return recalculateStats({
+          ...prev,
+          coins: prev.coins - cost,
+          upgrades: { ...prev.upgrades, [id]: owned + 1 },
+        });
       });
-    });
-  }, [recalculateStats]);
+    },
+    [recalculateStats],
+  );
 
-  const buyPower = useCallback((id: string) => {
-    dispatch(prev => {
-      const p = POWER_UPGRADES.find(x => x.id === id);
-      if (!p) return prev;
-      const owned = prev.upgrades[id] || 0;
-      if (owned >= MAX_UPGRADE_LEVEL) return prev;
-      const cost = calculateUpgradeCost(p.baseCost, owned);
-      if (prev.coins < cost) return prev;
-      return recalculateStats({
-        ...prev,
-        coins: prev.coins - cost,
-        upgrades: { ...prev.upgrades, [id]: owned + 1 },
+  const buyPower = useCallback(
+    (id: string) => {
+      dispatch((prev) => {
+        const p = POWER_UPGRADES.find((x) => x.id === id);
+        if (!p) return prev;
+        const owned = prev.upgrades[id] || 0;
+        if (owned >= MAX_UPGRADE_LEVEL) return prev;
+        const cost = calculateUpgradeCost(p.baseCost, owned);
+        if (prev.coins < cost) return prev;
+        return recalculateStats({
+          ...prev,
+          coins: prev.coins - cost,
+          upgrades: { ...prev.upgrades, [id]: owned + 1 },
+        });
       });
-    });
-  }, [recalculateStats]);
+    },
+    [recalculateStats],
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      const stateToSave = {
+        ...state,
+        lastSaveTime: Date.now(),
+      };
       try {
-        localStorage.setItem("monanimal-clicker-save-v2", JSON.stringify({
-          ...state,
-          lastSaveTime: Date.now(),
-        }));
+        localStorage.setItem(
+          "monanimal-clicker-save-v2",
+          JSON.stringify(stateToSave),
+        );
       } catch (e) {
         // storage quota exceeded — silently ignore
       }
+
+      fetch("/api/players", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: getOrCreatePlayerId(),
+          recoveryCode: getOrCreateRecoveryCode(),
+          state: stateToSave,
+        }),
+      }).catch(() => {
+        // офлайн или сервер недоступен — не страшно, localStorage уже сохранил
+      });
     }, 2000);
     return () => clearTimeout(timer);
   }, [state]);
@@ -230,7 +319,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updateMaxComboDuration = useCallback((seconds: number) => {
-    dispatch(prev => {
+    dispatch((prev) => {
       if (seconds > (prev.maxComboDuration ?? 0)) {
         return { ...prev, maxComboDuration: seconds };
       }
@@ -248,7 +337,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const newAchievements = [...state.achievements];
     const newlyUnlockedIds: string[] = [];
 
-    ACHIEVEMENTS.forEach(a => {
+    ACHIEVEMENTS.forEach((a) => {
       if (!newAchievements.includes(a.id) && a.check(state)) {
         newAchievements.push(a.id);
         newlyUnlockedIds.push(a.id);
@@ -257,23 +346,43 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
 
     if (newlyUnlockedIds.length > 0) {
-      setUnseenAchievements(prev => [...prev, ...newlyUnlockedIds]);
-      const last = ACHIEVEMENTS.find(a => a.id === newlyUnlockedIds[newlyUnlockedIds.length - 1]);
-      if (last) setLatestUnlocked({ id: last.id, name: last.name, icon: last.icon });
+      setUnseenAchievements((prev) => [...prev, ...newlyUnlockedIds]);
+      const last = ACHIEVEMENTS.find(
+        (a) => a.id === newlyUnlockedIds[newlyUnlockedIds.length - 1],
+      );
+      if (last)
+        setLatestUnlocked({ id: last.id, name: last.name, icon: last.icon });
     }
 
     if (changed) {
-      dispatch(prev => ({ ...prev, achievements: newAchievements }));
+      dispatch((prev) => ({ ...prev, achievements: newAchievements }));
     }
-  }, [state.coins, state.totalClicks, state.characterLevel, state.coinsPerSecond, state.upgrades, state.maxComboDuration]);
+  }, [
+    state.coins,
+    state.totalClicks,
+    state.characterLevel,
+    state.coinsPerSecond,
+    state.upgrades,
+    state.maxComboDuration,
+  ]);
 
   return (
-    <GameContext.Provider value={{
-      state, dispatch, handleClick, buyBuilding, buyPower, calculateUpgradeCost, resetGame,
-      unseenAchievements, clearUnseenAchievements,
-      latestUnlocked, dismissLatestUnlocked,
-      updateMaxComboDuration,
-    }}>
+    <GameContext.Provider
+      value={{
+        state,
+        dispatch,
+        handleClick,
+        buyBuilding,
+        buyPower,
+        calculateUpgradeCost,
+        resetGame,
+        unseenAchievements,
+        clearUnseenAchievements,
+        latestUnlocked,
+        dismissLatestUnlocked,
+        updateMaxComboDuration,
+      }}
+    >
       {children}
     </GameContext.Provider>
   );
